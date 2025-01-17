@@ -7,3 +7,4 @@
 7. create src folder and create app.js file
 8. create config folder and create config.js file 
 9. create middlewares folder and create globalErrorHandler.js file
+10. create user registration
