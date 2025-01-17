@@ -1,0 +1,9 @@
+1. Install express js.
+2. Install mongoose
+3. install eslint
+4. install dotenv and create .env and .env.example file
+5. create .gitignore file
+6. create server.js file 
+7. create src folder and create app.js file
+8. create config folder and create config.js file 
+9. create middlewares folder and create globalErrorHandler.js file
