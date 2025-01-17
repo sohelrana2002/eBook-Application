@@ -1,0 +1,65 @@
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { config } from "../config/config.js";
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true,
+  },
+
+  email: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true,
+    unique: true,
+  },
+
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+// ====secure pasword using bcrypt====
+userSchema.pre("save", async function (next) {
+  const user = this;
+
+  if (!user.isModified("password")) {
+    next();
+  }
+
+  try {
+    const saltRound = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(user.password, saltRound);
+    user.password = hashPassword;
+  } catch (error) {
+    next(error);
+  }
+});
+
+// =====json web token=====
+userSchema.methods.generateToken = async function () {
+  try {
+    return jwt.sign(
+      {
+        userId: this._id.toString(),
+        userEmail: this.email,
+      },
+      config.jwtSecretKey,
+      {
+        expiresIn: "30d",
+      }
+    );
+  } catch (error) {
+    console.error("JWT token generate error.", error);
+  }
+};
+
+const user = new mongoose.model("user", userSchema);
+
+export default user;
