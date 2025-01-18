@@ -4,6 +4,7 @@ import z from "zod";
 const usersValidatorSchema = z.object({
   name: z
     .string({ required_error: "Name must be required." })
+    .min(1, { message: "Name must be at least 1 character" })
     .trim()
     .toLowerCase(),
 
