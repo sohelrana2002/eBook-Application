@@ -66,4 +66,27 @@ const login = async (req, res, next) => {
   }
 };
 
-export { register, login };
+const getUserInfo = async (req, res, next) => {
+  try {
+    const userInfo = await user.find();
+
+    if (!userInfo) {
+      return res.status(404).json({
+        message: "Users not found.",
+      });
+    } else {
+      return res.status(201).json({
+        message: "Users founds successfully.",
+        length: userInfo.length,
+        users: userInfo,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export { register, login, getUserInfo };
