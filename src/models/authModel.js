@@ -3,27 +3,35 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-  },
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
 
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-    unique: true,
-  },
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+      unique: true,
+    },
 
-  password: {
-    type: String,
-    required: true,
+    password: {
+      type: String,
+      required: true,
+    },
   },
-});
+  {
+    timestamps: {
+      createdAt: "created_at", // Use `created_at` to store the created date
+      updatedAt: "updated_at", // and `updated_at` to store the last updated date
+    },
+  }
+);
 
 // ====secure pasword using bcrypt====
 userSchema.pre("save", async function (next) {
