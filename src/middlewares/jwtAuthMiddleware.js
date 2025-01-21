@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 
-const jwtAuthMiddleware = async (req, res, next) => {
+const jwtAuthMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
 
   if (!authorization) {
