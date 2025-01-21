@@ -93,5 +93,35 @@ const getUserInfo = async (req, res, next) => {
 };
 
 // ===individual profile information===
+const userProfile = async (req, res, next) => {
+  try {
+    const userData = req.jwtPayload;
+    // console.log(userData);
 
-export { register, login, getUserInfo };
+    const userId = userData.userId;
+
+    const profileDetails = await user.findById(userId);
+    // console.log(profileDetails);
+
+    if (profileDetails) {
+      return res.status(200).json({
+        message: "success.",
+        userProfile: profileDetails,
+      });
+    } else {
+      return res.status(401).json({
+        message: "failed.",
+        error: "invalid token",
+      });
+    }
+  } catch (err) {
+    console.error("Internal server error.");
+
+    res.status(500).json({
+      message: "Internal server error.",
+      error: err,
+    });
+  }
+};
+
+export { register, login, getUserInfo, userProfile };
