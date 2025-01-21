@@ -1,5 +1,6 @@
 import user from "../models/authModel.js";
 
+// ====register users===
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -31,6 +32,7 @@ const register = async (req, res) => {
   }
 };
 
+// ====login users===
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -66,6 +68,7 @@ const login = async (req, res, next) => {
   }
 };
 
+// ===get all users information===
 const getUserInfo = async (req, res, next) => {
   try {
     const userInfo = await user.find();
@@ -88,5 +91,7 @@ const getUserInfo = async (req, res, next) => {
     });
   }
 };
+
+// ===individual profile information===
 
 export { register, login, getUserInfo };
