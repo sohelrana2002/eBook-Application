@@ -20,6 +20,6 @@ router.route("/login").post(authLogin);
 router.route("/users-info").get(getUserInfo);
 
 // ====for individual profile information===
-router.route("/profile").get(jwtAuthMiddleware, userProfile);
+router.route("/user-profile").get(jwtAuthMiddleware, userProfile);
 
 export default router;
