@@ -9,6 +9,7 @@ import {
 } from "../controllers/authController.js";
 import validate from "../middlewares/validateMiddleware.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
+import authorizedRole from "../middlewares/authorizedRole.js";
 
 // =====for sign up=====
 router.route("/sign-up").post(validate(usersValidatorSchema), authRegister);
@@ -17,9 +18,13 @@ router.route("/sign-up").post(validate(usersValidatorSchema), authRegister);
 router.route("/login").post(authLogin);
 
 // ====for get users informantion=========
-router.route("/users-info").get(getUserInfo);
+router
+  .route("/users-info")
+  .get(jwtAuthMiddleware, authorizedRole("admin"), getUserInfo);
 
 // ====for individual profile information===
-router.route("/user-profile").get(jwtAuthMiddleware, userProfile);
+router
+  .route("/user-profile")
+  .get(jwtAuthMiddleware, authorizedRole("admin", "user"), userProfile);
 
 export default router;
