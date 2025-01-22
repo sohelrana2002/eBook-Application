@@ -92,6 +92,30 @@ const getUserInfo = async (req, res, next) => {
   }
 };
 
+// ===get all admin information===
+const getAdminInfo = async (req, res, next) => {
+  try {
+    const adminInfo = await user.find({ role: "admin" });
+
+    if (!adminInfo) {
+      return res.status(404).json({
+        message: "admin not found.",
+      });
+    } else {
+      return res.status(201).json({
+        message: "admin founds successfully.",
+        length: adminInfo.length,
+        users: adminInfo,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
 // ===individual profile information===
 const userProfile = async (req, res, next) => {
   try {
@@ -124,4 +148,4 @@ const userProfile = async (req, res, next) => {
   }
 };
 
-export { register, login, getUserInfo, userProfile };
+export { register, login, getUserInfo, userProfile, getAdminInfo };
