@@ -71,7 +71,7 @@ const login = async (req, res, next) => {
 // ===get all users information===
 const getUserInfo = async (req, res, next) => {
   try {
-    const userInfo = await user.find();
+    const userInfo = await user.find({ role: "user" });
 
     if (!userInfo) {
       return res.status(404).json({
