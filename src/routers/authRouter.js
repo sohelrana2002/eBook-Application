@@ -6,6 +6,7 @@ import {
   login as authLogin,
   getUserInfo,
   userProfile,
+  getAdminInfo,
 } from "../controllers/authController.js";
 import validate from "../middlewares/validateMiddleware.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
@@ -21,6 +22,11 @@ router.route("/login").post(authLogin);
 router
   .route("/users-info")
   .get(jwtAuthMiddleware, authorizedRole("admin"), getUserInfo);
+
+// ====for get admin informantion=========
+router
+  .route("/admin-info")
+  .get(jwtAuthMiddleware, authorizedRole("admin"), getAdminInfo);
 
 // ====for individual profile information===
 router
