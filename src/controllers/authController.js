@@ -3,7 +3,7 @@ import user from "../models/authModel.js";
 // ====register users===
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
     const userExist = await user.findOne({ email });
 
     if (userExist) {
@@ -16,6 +16,7 @@ const register = async (req, res) => {
       name,
       email,
       password,
+      role,
     });
 
     // console.log(createUser);
@@ -53,7 +54,6 @@ const login = async (req, res, next) => {
         message: "Successfully login",
         token: await userExist.generateToken(),
         userId: userExist._id.toString(),
-        email: userExist.email,
       });
     } else {
       res.status(400).json({
