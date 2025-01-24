@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/book", bookRouter);
+app.use("/api/books", bookRouter);
 
 app.get("/", (req, res) => {
   res.json({
