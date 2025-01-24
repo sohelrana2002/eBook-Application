@@ -21,10 +21,8 @@ const bookSchema = new mongoose.Schema(
     },
 
     genre: {
-      type: String,
+      type: Array,
       required: true,
-      lowercase: true,
-      trim: true,
     },
 
     language: {
@@ -40,12 +38,12 @@ const bookSchema = new mongoose.Schema(
     },
 
     price: {
-      type: Double,
+      type: Number,
       required: true,
     },
 
     tags: {
-      type: Array,
+      type: [String],
       required: true,
       lowercase: true,
     },
