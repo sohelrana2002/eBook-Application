@@ -1,12 +1,14 @@
 import express from "express";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
-import router from "./routers/authRouter.js";
+import authRouter from "./routers/authRouter.js";
+import bookRouter from "./routers/bookRouter.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/api/auth", router);
+app.use("/api/auth", authRouter);
+app.use("/api/book", bookRouter);
 
 app.get("/", (req, res) => {
   res.json({
