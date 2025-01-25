@@ -11,9 +11,12 @@ const createBook = async (req, res, next) => {
       publicationDate,
       price,
       tags,
-      coverImage,
-      bookFile,
     } = req.body;
+
+    const { coverImage, bookFile } = req.files;
+    // console.log("req.files:", req.files);
+    // console.log("coverImage", coverImage);
+    // console.log("bookFile path:", bookFile[0].path);
 
     const registerBook = await booksModel.create({
       title,
@@ -22,10 +25,10 @@ const createBook = async (req, res, next) => {
       genre,
       language,
       publicationDate,
-      price,
+      price: Number(price),
       tags,
-      coverImage,
-      bookFile,
+      coverImage: coverImage?.[0]?.path,
+      bookFile: bookFile?.[0]?.path,
     });
 
     res.status(201).json({
@@ -33,6 +36,8 @@ const createBook = async (req, res, next) => {
       id: registerBook._id,
     });
   } catch (err) {
+    console.log(err, "error from server");
+
     res.status(500).json({
       message: "internal server error",
       error: err,
