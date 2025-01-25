@@ -43,16 +43,22 @@ const booksValidatorSchema = z.object({
     z.date({ invalid_type_error: "Publication date must be a valid date" })
   ),
 
-  price: z.number({
-    required_error: "Price must be required.",
-    invalid_type_error: "Price must be a number",
-  }),
+  price: z
+    .string({
+      required_error: "Price must be required.",
+      invalid_type_error: "Price must be a number",
+    })
+    .optional(),
 
   tags: z.array(z.string(), { required_error: "tage must be required." }),
 
-  coverImage: z.string({ required_error: "CoverImage URL must be required." }),
+  coverImage: z
+    .string({ required_error: "CoverImage URL must be required." })
+    .optional(),
 
-  bookFile: z.string({ required_error: "bookFile URL must be required." }),
+  bookFile: z
+    .string({ required_error: "bookFile URL must be required." })
+    .optional(),
 });
 
 export default booksValidatorSchema;
