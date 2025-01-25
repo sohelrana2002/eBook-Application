@@ -50,12 +50,12 @@ const bookSchema = new mongoose.Schema(
 
     coverImage: {
       type: String,
-      required: true,
+      required: false,
     },
 
     bookFile: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
