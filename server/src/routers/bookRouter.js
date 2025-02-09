@@ -4,6 +4,8 @@ import { createBook, updateBook } from "../controllers/bookController.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
 import { upload } from "../middlewares/multerMiddleware.js";
+import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
+import authorizedRoles from "../middlewares/authorizedRole.js";
 
 // =====create book===
 bookRouter.route("/").post(
@@ -12,6 +14,8 @@ bookRouter.route("/").post(
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
+  jwtAuthMiddleware,
+  authorizedRoles("admin"),
   createBook
 );
 
@@ -22,6 +26,8 @@ bookRouter.route("/:bookId").patch(
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
+  jwtAuthMiddleware,
+  authorizedRoles("admin"),
   updateBook
 );
 
