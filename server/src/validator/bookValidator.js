@@ -26,11 +26,14 @@ const booksValidatorSchema = z.object({
 
   description: z.string({ required_error: "Description must be required." }),
 
-  genre: z
-    .array(genreEnum, { required_error: "Genre must be required." })
-    .min(1, "At least one genre is required")
-    .max(5, "You can select up to 5 genres")
-    .nonempty({ message: "Genres cannot be empty." }),
+  genre: z.preprocess(
+    (arg) => (typeof arg === "string" ? arg.split(",") : arg),
+    z
+      .array(genreEnum, { required_error: "Genre must be required." })
+      .min(1, "At least one genre is required")
+      .max(5, "You can select up to 5 genres")
+      .nonempty({ message: "Genres cannot be empty." })
+  ),
 
   language: z
     .string({ required_error: "Language must be required." })
@@ -50,7 +53,12 @@ const booksValidatorSchema = z.object({
     })
     .optional(),
 
-  tags: z.array(z.string(), { required_error: "tage must be required." }),
+  tags: z.preprocess(
+    (arg) => (typeof arg === "string" ? arg.split(",") : arg),
+    z.array(z.string(), {
+      required_error: "tage must be required.",
+    })
+  ),
 
   coverImage: z
     .string({ required_error: "CoverImage URL must be required." })
