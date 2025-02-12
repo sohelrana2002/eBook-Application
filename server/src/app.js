@@ -6,6 +6,7 @@ import bookRouter from "./routers/bookRouter.js";
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/books", bookRouter);
