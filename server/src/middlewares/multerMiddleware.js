@@ -10,7 +10,7 @@ const fileValidate = (file, cb) => {
   if (file.fieldname === "coverImage") {
     if (
       file.mimetype === "image/png" ||
-      file.mimetype === "image/jpl" ||
+      file.mimetype === "image/jpg" ||
       file.mimetype === "image/jpeg"
     ) {
       cb(null, true);
