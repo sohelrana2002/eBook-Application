@@ -1,5 +1,18 @@
 const validate = (schema) => async (req, res, next) => {
   try {
+    if (
+      req.is("multipart/form-data") ||
+      req.is("application/x-www-form-urlencoded")
+    ) {
+      // Handle form-data specific preprocessing
+      req.body = Object.fromEntries(
+        Object.entries(req.body).map(([key, value]) => [
+          key,
+          Array.isArray(value) ? value : value.toString(),
+        ])
+      );
+    }
+
     const parseBody = await schema.parseAsync(req.body);
     req.body = parseBody;
     next();
