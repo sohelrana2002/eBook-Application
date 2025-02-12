@@ -9,25 +9,25 @@ import authorizedRoles from "../middlewares/authorizedRole.js";
 
 // =====create book===
 bookRouter.route("/").post(
+  jwtAuthMiddleware,
+  authorizedRoles("admin"),
   upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
-  jwtAuthMiddleware,
-  authorizedRoles("admin"),
   createBook
 );
 
 // =====update book =====
 bookRouter.route("/:bookId").patch(
+  jwtAuthMiddleware,
+  authorizedRoles("admin"),
   upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
-  jwtAuthMiddleware,
-  authorizedRoles("admin"),
   updateBook
 );
 
