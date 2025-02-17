@@ -1,6 +1,10 @@
 import express from "express";
 const bookRouter = new express.Router();
-import { createBook, updateBook } from "../controllers/bookController.js";
+import {
+  createBook,
+  updateBook,
+  listBook,
+} from "../controllers/bookController.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
 import { upload } from "../middlewares/multerMiddleware.js";
@@ -30,5 +34,9 @@ bookRouter.route("/:bookId").patch(
   validate(booksValidatorSchema),
   updateBook
 );
+
+bookRouter
+  .route("/")
+  .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), listBook);
 
 export default bookRouter;
