@@ -4,6 +4,7 @@ import {
   createBook,
   updateBook,
   listBook,
+  getSingleBook,
 } from "../controllers/bookController.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
@@ -38,5 +39,9 @@ bookRouter.route("/:bookId").patch(
 bookRouter
   .route("/")
   .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), listBook);
+
+bookRouter
+  .route("/:bookId")
+  .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), getSingleBook);
 
 export default bookRouter;
