@@ -123,7 +123,7 @@ const listBook = async (req, res, next) => {
   try {
     const books = await booksModel.find({});
 
-    res.json({
+    res.status(200).json({
       message: "success",
       length: books.length,
       books: books,
@@ -131,11 +131,32 @@ const listBook = async (req, res, next) => {
   } catch (err) {
     console.error("Internal server error", err);
 
-    res.json({
+    res.status(500).json({
       message: "Internal server error",
       error: err,
     });
   }
 };
 
-export { createBook, updateBook, listBook };
+const getSingleBook = async (req, res, next) => {
+  try {
+    const bookId = req.params.bookId;
+    // console.log("bookId", bookId);
+
+    const singleBook = await booksModel.find({ _id: bookId });
+
+    res.status(200).json({
+      message: "success",
+      singeBook: singleBook,
+    });
+  } catch (err) {
+    console.error("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export { createBook, updateBook, listBook, getSingleBook };
