@@ -165,4 +165,23 @@ const getSingleBook = async (req, res, next) => {
   }
 };
 
-export { createBook, updateBook, listBook, getSingleBook };
+const deleteBook = async (req, res, next) => {
+  const bookId = req.params.bookId;
+
+  const book = await booksModel.findOne({ _id: bookId });
+
+  if (!book) {
+    res.status(404).json({
+      message: "Book not found!",
+    });
+  } else {
+    await booksModel.deleteOne({ _id: bookId });
+
+    res.status(200).json({
+      message: "Book deleted successfully!",
+      id: bookId,
+    });
+  }
+};
+
+export { createBook, updateBook, listBook, getSingleBook, deleteBook };
