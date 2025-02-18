@@ -145,10 +145,16 @@ const getSingleBook = async (req, res, next) => {
 
     const singleBook = await booksModel.find({ _id: bookId });
 
-    res.status(200).json({
-      message: "success",
-      singeBook: singleBook,
-    });
+    if (!singleBook) {
+      res.status(404).json({
+        message: "Book not found!",
+      });
+    } else {
+      res.status(200).json({
+        message: "success",
+        singeBook: singleBook,
+      });
+    }
   } catch (err) {
     console.error("Internal server error", err);
 
