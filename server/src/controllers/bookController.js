@@ -1,3 +1,4 @@
+import { log } from "console";
 import booksModel from "../models/bookModel.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -121,7 +122,30 @@ const updateBook = async (req, res, next) => {
 
 const listBook = async (req, res, next) => {
   try {
-    const books = await booksModel.find({});
+    const { genre, language, minPrice, maxPrice } = req.query;
+
+    let query = {};
+
+    // ---for genre---
+    if (genre) {
+      query.genre = {
+        $in: genre.split(",").map((g) => new RegExp(`^${g}$`, "i")),
+      };
+    }
+
+    // ---for language---
+    if (language) {
+      query.language = language.toLowerCase();
+    }
+
+    // ----for price---
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseFloat(minPrice);
+      if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    }
+
+    const books = await booksModel.find(query);
 
     res.status(200).json({
       message: "success",
