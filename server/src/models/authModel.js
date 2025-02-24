@@ -68,6 +68,7 @@ userSchema.methods.generateToken = async function () {
       {
         userId: this._id.toString(),
         role: this.role,
+        name: this.name,
       },
       config.jwtSecretKey,
       {
