@@ -122,7 +122,8 @@ const updateBook = async (req, res, next) => {
 
 const listBook = async (req, res, next) => {
   try {
-    const { genre, language, minPrice, maxPrice } = req.query;
+    const { genre, language, minPrice, maxPrice, title, sortBy, order } =
+      req.query;
 
     let query = {};
 
@@ -145,7 +146,22 @@ const listBook = async (req, res, next) => {
       if (maxPrice) query.price.$lte = parseFloat(maxPrice);
     }
 
-    const books = await booksModel.find(query);
+    // ---for title---
+    if (title) {
+      query.title = { $regex: title, $options: "i" };
+    }
+
+    // console.log("query", query);
+
+    let sortQuery = {};
+    const validSortFields = ["genre", "language", "price"];
+    if (sortBy && validSortFields.includes(sortBy)) {
+      sortQuery[sortBy] = order === "desc" ? -1 : 1;
+    }
+
+    // console.log("sortQuery", sortQuery);
+
+    const books = await booksModel.find(query).sort(sortQuery);
 
     res.status(200).json({
       message: "success",
