@@ -67,6 +67,10 @@ const booksValidatorSchema = z.object({
   bookFile: z
     .string({ required_error: "bookFile URL must be required." })
     .optional(),
+
+  averageRating: z
+    .number({ required_error: "Calculate average rating" })
+    .optional(),
 });
 
 export default booksValidatorSchema;
