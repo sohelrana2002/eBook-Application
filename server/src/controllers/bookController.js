@@ -122,8 +122,17 @@ const updateBook = async (req, res, next) => {
 
 const listBook = async (req, res, next) => {
   try {
-    const { genre, language, minPrice, maxPrice, title, sortBy, order } =
-      req.query;
+    const {
+      genre,
+      language,
+      minPrice,
+      maxPrice,
+      title,
+      sortBy,
+      order,
+      page,
+      limit,
+    } = req.query;
 
     let query = {};
 
@@ -161,11 +170,26 @@ const listBook = async (req, res, next) => {
 
     // console.log("sortQuery", sortQuery);
 
-    const books = await booksModel.find(query).sort(sortQuery);
+    // --- Pagination----
+    const pageNumber = parseInt(page) || 1;
+    const pageSize = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * pageSize;
+
+    // ---count total book list---
+    const totalBooks = await booksModel.countDocuments(query);
+
+    const books = await booksModel
+      .find(query)
+      .sort(sortQuery)
+      .skip(skip)
+      .limit(pageSize);
 
     res.status(200).json({
       message: "success",
-      length: books.length,
+      totalBooks: totalBooks,
+      currentPage: pageNumber,
+      totalPages: Math.ceil(totalBooks / pageSize),
+      currentLength: books.length,
       books: books,
     });
   } catch (err) {
