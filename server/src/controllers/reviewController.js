@@ -1,6 +1,7 @@
 import booksModel from "../models/bookModel.js";
 import reviewsModel from "../models/reviewModel.js";
 
+// -----Add a Review-----
 const addReview = async (req, res, next) => {
   try {
     const bookId = req.params.bookId;
@@ -55,4 +56,32 @@ const addReview = async (req, res, next) => {
   }
 };
 
-export { addReview };
+// ---------Get All Reviews for a Book-----------
+const allReview = async (req, res, next) => {
+  try {
+    const bookId = req.params.bookId;
+
+    const reviews = await reviewsModel.find({ bookId }).sort({ createdAt: -1 });
+
+    if (reviews.length === 0) {
+      return res.status(404).json({
+        message: "Review not found!",
+      });
+    } else {
+      res.status(200).json({
+        message: "success",
+        totalReview: reviews.length,
+        review: reviews,
+      });
+    }
+  } catch (err) {
+    console.error("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export { addReview, allReview };
