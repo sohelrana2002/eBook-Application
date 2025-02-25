@@ -84,4 +84,48 @@ const allReview = async (req, res, next) => {
   }
 };
 
-export { addReview, allReview };
+// -------update review controller----
+const updateReview = async (req, res, next) => {
+  try {
+    const reviewId = req.params.reviewId;
+    const { rating, comment } = req.body;
+
+    const review = await reviewsModel.findByIdAndUpdate(
+      reviewId,
+      {
+        rating,
+        comment,
+      },
+      { new: true }
+    );
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review not found!",
+      });
+    }
+
+    // Recalculate and update book's average rating
+    const reviews = await reviewsModel.find({ bookId: review.bookId });
+    const avgRating =
+      reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+    await booksModel.findByIdAndUpdate(review.bookId, {
+      averageRating: avgRating.toFixed(1),
+    });
+
+    res.status(200).json({
+      message: "Review updated successfully",
+      review: review,
+    });
+  } catch (err) {
+    console.error("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export { addReview, allReview, updateReview };
