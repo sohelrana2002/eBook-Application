@@ -128,4 +128,47 @@ const updateReview = async (req, res, next) => {
   }
 };
 
-export { addReview, allReview, updateReview };
+// -----delete review controller -----
+const deleteReview = async (req, res, next) => {
+  try {
+    const reviewId = req.params.reviewId;
+
+    const review = await reviewsModel.findByIdAndDelete(reviewId);
+    // console.log("review:", review);
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review not found.",
+      });
+    }
+
+    // Recalculate and update book's average rating
+    const reviews = await reviewsModel.find({ bookId: review.bookId });
+    // console.log("reviews: ", reviews);
+
+    const avgRating =
+      reviews.length > 0
+        ? (
+            reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+          ).toFixed(1)
+        : 0;
+
+    await booksModel.findByIdAndUpdate(review.bookId, {
+      averageRating: avgRating,
+    });
+
+    res.status(200).json({
+      message: "Review delete successfully",
+      reviewId: reviewId,
+    });
+  } catch (err) {
+    console.log("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export { addReview, allReview, updateReview, deleteReview };
