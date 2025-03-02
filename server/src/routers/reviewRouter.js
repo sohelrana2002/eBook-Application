@@ -4,6 +4,7 @@ import {
   addReview,
   allReview,
   updateReview,
+  deleteReview,
 } from "../controllers/reviewController.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 
@@ -15,5 +16,8 @@ reviewRouter.route("/:bookId/reviews").get(allReview);
 
 // --------update review router---
 reviewRouter.route("/review/:reviewId").put(updateReview);
+
+// ----delete review router----
+reviewRouter.route("/review/:reviewId").delete(deleteReview);
 
 export default reviewRouter;
