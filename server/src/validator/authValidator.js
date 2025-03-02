@@ -18,7 +18,9 @@ const usersValidatorSchema = z.object({
     .min(6, { message: "Password must be at least 6 character" })
     .max(1024, { message: "Password can't be greater than 1024 character" }),
 
-  role: z.enum(["admin", "user"], { required_error: "Role must be required" }),
+  role: z
+    .enum(["admin", "user"], { required_error: "Role must be required" })
+    .default("user"),
 });
 
 export default usersValidatorSchema;
