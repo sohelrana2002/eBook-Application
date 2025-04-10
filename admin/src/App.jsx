@@ -1,12 +1,21 @@
 import React from "react";
-import style from "./index.module.css";
+import "./index.module.css";
+import { Button } from "./components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const App = () => {
   return (
     <div>
       <h1 class="text-3xl font-bold underline text">Hello world!</h1>
 
-      <div className={`${style.container} font-bold underline text`}>hello</div>
+      <div className="flex flex-col items-center justify-center min-h-svh">
+        <Button>Click me</Button>
+        <Link className={buttonVariants({ variant: "outline" })}>
+          Click here
+        </Link>
+        <Button variant="destructive">Destructive</Button>
+      </div>
     </div>
   );
 };
