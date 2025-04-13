@@ -1,5 +1,4 @@
 import React from "react";
-import "./index.module.css";
 import { Button } from "./components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "react-router-dom";
