@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
+import AuthLayout from "@/layout/authLayout/AuthLayout";
 import Login from "../auth/login/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Books from "../pages/books/Books";
@@ -12,18 +13,24 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        path: "/dashboard",
+        path: "/",
         element: <Dashboard />,
       },
       {
-        path: "/books",
+        path: "books",
         element: <Books />,
       },
     ],
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "login",
+        element: <Login />,
+      },
+    ],
   },
 ]);
 
