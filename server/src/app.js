@@ -1,10 +1,19 @@
 import express from "express";
+import cors from "cors";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import authRouter from "./routers/authRouter.js";
 import bookRouter from "./routers/bookRouter.js";
 import reviewRouter from "./routers/reviewRouter.js";
 
 const app = express();
+
+var corsOptions = {
+  origin: "http://localhost:5173",
+  methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+  credentials: true,
+  // optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
