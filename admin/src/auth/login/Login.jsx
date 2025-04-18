@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/http/api";
 import { useNavigate } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 
 const Login = () => {
   const [userLogin, setUserLogin] = useState({
@@ -116,6 +117,9 @@ const Login = () => {
                         <p style={{ color: "red" }}>{userLogin.error}</p>
                       )}
                       <Button type="submit" className="w-full">
+                        {mutation.isPending && (
+                          <LoaderCircle className="animate-spin" />
+                        )}
                         Login
                       </Button>
                     </div>
