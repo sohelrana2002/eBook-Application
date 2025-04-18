@@ -1,3 +1,7 @@
+html {
+    overflow-x: hidden;
+}
+
 .dashboardlayout__container {
     width: 100vw;
     display: grid;
@@ -75,6 +79,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 260px;
+    z-index: 999;
+    background: #fff;
 }
 
 .search__content {
@@ -106,7 +116,7 @@
 }
 
 .right__dashboard-content {
-    padding: 30px 30px 0 30px;
+    padding: 80px 30px 0 30px;
 }
 
 
@@ -145,6 +155,6 @@
     }
 
     .right__dashboard-content {
-        padding: 30px 30px 0 30px;
+        padding: 20px 30px 0 20px;
     }
 }
