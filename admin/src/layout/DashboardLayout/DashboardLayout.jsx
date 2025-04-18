@@ -1,7 +1,7 @@
 import "./DashboardLayout.css";
 import { BookMarked, Logs } from "lucide-react";
 import { NavMenu } from "../../data/Data";
-import { Link, Outlet, Navigate } from "react-router-dom";
+import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
 
@@ -40,10 +40,14 @@ const DashboardLayout = () => {
           {NavMenu &&
             NavMenu.map((curElem) => {
               return (
-                <Link to={curElem.path} className="menu__box" key={curElem.id}>
+                <NavLink
+                  to={curElem.path}
+                  className="menu__box"
+                  key={curElem.id}
+                >
                   <span>{curElem.icon}</span>
                   <span>{curElem.title}</span>
-                </Link>
+                </NavLink>
               );
             })}
         </div>

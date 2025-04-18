@@ -30,7 +30,7 @@
 }
 
 .dashboard__menu {
-    padding-top: 40px;
+    padding-top: 30px;
     padding-left: 30px;
     display: flex;
     flex-direction: column;
@@ -41,6 +41,15 @@
     display: flex;
     align-items: center;
     gap: 7px;
+    padding-left: 30px;
+}
+
+.menu__box.active {
+    background: #000;
+    width: 200px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: #fff;
 }
 
 .menu__box>span {
