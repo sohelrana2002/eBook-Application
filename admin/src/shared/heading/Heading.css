@@ -13,3 +13,10 @@
 .heading__container h1 {
     font-weight: 700;
 }
+
+/* ============MEDIA QURIES(SMALL SCREEN)============== */
+@media screen and (max-width: 600px) {
+    .heading__container {
+        margin-bottom: 25px;
+    }
+}
