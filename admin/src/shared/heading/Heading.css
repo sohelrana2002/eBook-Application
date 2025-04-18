@@ -1,0 +1,15 @@
+.heading__container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: max-content;
+    background: #000;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 50px;
+}
+
+.heading__container h1 {
+    font-weight: 700;
+}
