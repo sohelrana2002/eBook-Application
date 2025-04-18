@@ -29,3 +29,9 @@ export const fetchProfile = async () => {
   const res = await api.get("/api/auth/user-profile");
   return res.data;
 };
+
+// ---for list of books---
+export const listBooks = async () => {
+  const res = await api.get("/api/books");
+  return res.data;
+};
