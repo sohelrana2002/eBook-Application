@@ -7,9 +7,25 @@ const api = axios.create({
   },
 });
 
+// Add token to headers for every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ----for login---
 export const login = async (email, password) => {
   // console.log("user data", { email, password });
 
   const res = await api.post("/api/auth/login", { email, password });
+  return res.data;
+};
+
+// ---for individual profile---
+export const fetchProfile = async () => {
+  const res = await api.get("/api/auth/user-profile");
   return res.data;
 };
