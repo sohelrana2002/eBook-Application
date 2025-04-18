@@ -54,6 +54,7 @@ const login = async (req, res, next) => {
         message: "Successfully login",
         token: await userExist.generateToken(),
         userId: userExist._id.toString(),
+        name: userExist.name,
       });
     } else {
       res.status(400).json({
