@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 const DashboardLayout = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
 
-  console.log(isNavShowing);
+  // console.log(isNavShowing);
 
   const handleMenuButton = () => {
     setIsNavShowing((prev) => !prev);
