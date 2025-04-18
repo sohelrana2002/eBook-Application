@@ -1,7 +1,7 @@
 import "./DashboardLayout.css";
 import { BookMarked, Logs } from "lucide-react";
 import { NavMenu } from "../../data/Data";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
 
@@ -21,6 +21,12 @@ const DashboardLayout = () => {
 
     document.addEventListener("mousedown", handleOutSideNav);
   }, []);
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/auth/login" replace />;
+  }
 
   return (
     <div className="dashboardlayout__container">

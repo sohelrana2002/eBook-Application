@@ -10,7 +10,7 @@ const Logout = () => {
     alert("Logout successfully");
   }, []);
 
-  return <Navigate to="/" />;
+  return <Navigate to="/auth/login" replace />;
 };
 
 export default Logout;

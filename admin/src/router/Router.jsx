@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <ViewProfile />,
       },
       {
-        path: "logout",
+        path: "auth/logout",
         element: <Logout />,
       },
     ],
