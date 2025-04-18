@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
+import { useAuthContext } from "@/context/authContext";
 
 const Login = () => {
   const [userLogin, setUserLogin] = useState({
@@ -22,6 +23,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const { storeTokenInLS } = useAuthContext();
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -37,7 +39,8 @@ const Login = () => {
     mutationFn: ({ email, password }) => login(email, password),
     onSuccess: (data) => {
       alert("Login successful!");
-      console.log("Logged in user:", data);
+      // console.log("Logged in user:", data);
+      storeTokenInLS(data.token, data.name);
 
       setUserLogin((prev) => ({
         ...prev,
@@ -116,7 +119,11 @@ const Login = () => {
                       {userLogin.error && (
                         <p style={{ color: "red" }}>{userLogin.error}</p>
                       )}
-                      <Button type="submit" className="w-full">
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={mutation.isPending}
+                      >
                         {mutation.isPending && (
                           <LoaderCircle className="animate-spin" />
                         )}
