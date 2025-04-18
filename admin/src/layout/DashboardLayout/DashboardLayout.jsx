@@ -3,6 +3,7 @@ import { BookMarked, Logs } from "lucide-react";
 import { NavMenu } from "../../data/Data";
 import { Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
 
 const DashboardLayout = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
@@ -52,12 +53,13 @@ const DashboardLayout = () => {
             <input type="text" placeholder="search..." />
           </div>
 
-          <div className="user__profile">SOHEL</div>
+          <div className="user__profile">
+            <ProfileDropdown />
+          </div>
         </div>
 
         {/* ----dashboard content--- */}
         <div className="right__dashboard-content">
-          actual content
           <Outlet />
         </div>
       </div>

@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
 import AuthLayout from "@/layout/authLayout/AuthLayout";
-import Login from "../auth/login/Login";
+import Login from "../auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Books from "../pages/books/Books";
+import ViewProfile from "@/shared/viewProfile/ViewProfile";
+import Logout from "@/auth/Logout";
 
 import App from "../App";
 
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "books",
         element: <Books />,
+      },
+      {
+        path: "profile",
+        element: <ViewProfile />,
+      },
+      {
+        path: "logout",
+        element: <Logout />,
       },
     ],
   },
