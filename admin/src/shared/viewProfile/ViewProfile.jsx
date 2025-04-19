@@ -3,31 +3,23 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/http/api";
 import Heading from "../heading/Heading";
 import { UserRoundPen } from "lucide-react";
+import Loading from "../loading/Loading";
 
 const ViewProfile = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchProfile,
+    staleTime: 10000,
   });
 
   console.log("data", data);
 
   if (isLoading) {
-    return (
-      <div className="max-w-md mx-auto">
-        <Heading icon={<UserRoundPen />} title="Profile" />
-        <p>Loading profile...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (isError) {
-    return (
-      <div>
-        <Heading icon={<UserRoundPen />} title="Profile" />
-        <p className="text-red-500">Error: {error.message}</p>
-      </div>
-    );
+    return <p className="text-red-500">Error: {error.message}</p>;
   }
 
   return (
