@@ -1,8 +1,11 @@
 import { listBooks } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
 import { useQuery } from "@tanstack/react-query";
-import { BookMarked, Logs } from "lucide-react";
+import { BookMarked, CirclePlus } from "lucide-react";
 import Loading from "@/shared/loading/Loading";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Books = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -10,6 +13,23 @@ const Books = () => {
     queryFn: listBooks,
     staleTime: 10000,
   });
+
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const toggleMenu = (id) => {
+    setOpenMenuId((prevId) => (prevId === id ? null : id));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".action-menu")) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // console.log("data", data);
 
@@ -35,7 +55,16 @@ const Books = () => {
       <Heading icon={<BookMarked />} title="Books" />
 
       <div className="border p-3 rounded-sm h-full">
-        <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
+        <div className="flex item-center justify-between">
+          <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
+          <Link to="/book/add-book">
+            <Button className="cursor-pointer">
+              <CirclePlus />
+              Add Book
+            </Button>
+          </Link>
+        </div>
+
         <p className="text-gray-500 mb-4">
           Manage your books and view their sales performance.
         </p>
@@ -105,6 +134,42 @@ const Books = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {curElem.created_at.substring(0, 10)}
+                      </td>
+
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 relative">
+                        <button
+                          onClick={() => toggleMenu(curElem._id)}
+                          className="p-1 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full cursor-pointer"
+                        >
+                          ⋮
+                        </button>
+
+                        {openMenuId === curElem._id && (
+                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col">
+                            <div className="px-4 py-2 text-sm text-gray-500 border-b">
+                              Actions
+                            </div>
+                            <button
+                              onClick={() => {
+                                console.log("Edit", curElem._id);
+                                setOpenMenuId(null);
+                                console.log("clicked");
+                              }}
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 cursor-pointer"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => {
+                                console.log("Delete", curElem._id);
+                                setOpenMenuId(null);
+                              }}
+                              className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   </tbody>
