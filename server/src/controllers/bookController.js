@@ -1,4 +1,3 @@
-import { log } from "console";
 import booksModel from "../models/bookModel.js";
 import path from "path";
 import { fileURLToPath } from "url";
