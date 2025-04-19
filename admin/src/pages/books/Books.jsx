@@ -2,20 +2,39 @@ import { listBooks } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
 import { useQuery } from "@tanstack/react-query";
 import { BookMarked, Logs } from "lucide-react";
+import Loading from "@/shared/loading/Loading";
 
 const Books = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["books"],
     queryFn: listBooks,
+    staleTime: 10000,
   });
 
   // console.log("data", data);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    console.log("isError", error.message);
+
+    return (
+      <h1>
+        Error:{" "}
+        {error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong"}
+      </h1>
+    );
+  }
 
   return (
     <div>
       <Heading icon={<BookMarked />} title="Books" />
 
-      <div className="border p-3 rounded-sm">
+      <div className="border p-3 rounded-sm h-full">
         <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
         <p className="text-gray-500 mb-4">
           Manage your books and view their sales performance.
