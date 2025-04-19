@@ -6,6 +6,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Books from "../pages/books/Books";
 import ViewProfile from "@/shared/viewProfile/ViewProfile";
 import Logout from "@/auth/Logout";
+import AddBook from "@/pages/addBook/AddBook";
 
 import App from "../App";
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "auth/logout",
         element: <Logout />,
+      },
+      {
+        path: "book/add-book",
+        element: <AddBook />,
       },
     ],
   },
