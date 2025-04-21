@@ -96,7 +96,7 @@ const Books = () => {
                   Author name
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Created at
+                  Publication Date
                 </th>
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Actions
@@ -117,7 +117,7 @@ const Books = () => {
                           className="h-10 w-10 rounded-md object-cover"
                         />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
                         {curElem.title}
                       </td>
                       <td className="py-4 whitespace-nowrap text-sm text-gray-700 flex flex-wrap gap-1 items-center">
@@ -133,13 +133,13 @@ const Books = () => {
                         })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        ৳ {curElem.price}
+                        ${curElem.price}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 capitalize">
                         {curElem.author}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {curElem.created_at.substring(0, 10)}
+                        {curElem.publicationDate.substring(0, 10)}
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 relative">
@@ -155,16 +155,12 @@ const Books = () => {
                             <div className="px-4 py-2 text-sm text-gray-500 border-b">
                               Actions
                             </div>
-                            <button
-                              onClick={() => {
-                                console.log("Edit", curElem._id);
-                                setOpenMenuId(null);
-                                console.log("clicked");
-                              }}
+                            <Link
+                              to={`/book/update/${curElem._id}`}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 cursor-pointer"
                             >
                               Edit
-                            </button>
+                            </Link>
                             <Link
                               to={`/book/delete/${curElem._id}`}
                               className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
