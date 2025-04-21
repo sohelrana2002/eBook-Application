@@ -114,7 +114,7 @@ const Books = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {curElem.title}
                       </td>
-                      <td className="py-4 whitespace-nowrap text-sm text-gray-700 flex flex-col gap-y-1 items-center">
+                      <td className="py-4 whitespace-nowrap text-sm text-gray-700 flex flex-wrap gap-1 items-center">
                         {curElem?.genre?.map((g, i) => {
                           return (
                             <span

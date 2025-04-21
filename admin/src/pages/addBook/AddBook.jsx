@@ -73,7 +73,7 @@ const AddBook = () => {
 
   const mutation = useMutation({
     mutationFn: createBook,
-    onSuccess: (data) => {
+    onSuccess: () => {
       // console.log("Book created:", data);
       alert("Book created successfully!");
       setFormData(reset);
