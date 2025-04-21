@@ -52,6 +52,8 @@ const AddBook = () => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
       setFormData({ ...formData, [name]: files[0] });
+    } else if (name === "price") {
+      setFormData({ ...formData, [name]: parseFloat(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -230,6 +232,7 @@ const AddBook = () => {
           </label>
           <input
             type="number"
+            step="0.01"
             name="price"
             value={formData.price}
             onChange={handleChange}
