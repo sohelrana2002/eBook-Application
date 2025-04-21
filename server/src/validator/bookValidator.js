@@ -24,13 +24,13 @@ const booksValidatorSchema = z.object({
     .string({ required_error: "Author must be required." })
     .trim()
     .toLowerCase()
-    .min(3, { message: "Title must be at least 3 character long." }),
+    .min(3, { message: "Author must be at least 3 character long." }),
 
   description: z
     .string({ required_error: "Description must be required." })
     .trim()
     .toLowerCase()
-    .min(3, { message: "Title must be at least 3 character long." }),
+    .min(3, { message: "Description must be at least 3 character long." }),
 
   genre: z.preprocess(
     (arg) => (typeof arg === "string" ? arg.split(",") : arg),
@@ -45,7 +45,7 @@ const booksValidatorSchema = z.object({
     .string({ required_error: "Language must be required." })
     .trim()
     .toLowerCase()
-    .min(3, { message: "Title must be at least 3 character long." }),
+    .min(3, { message: "Language must be at least 1 character long." }),
 
   publicationDate: z.preprocess(
     (arg) =>
