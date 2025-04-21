@@ -54,3 +54,17 @@ export const deleteBook = async (id) => {
   const res = await api.delete(`/api/books/${id}`);
   return res.data;
 };
+
+// ---get single book infor---
+export const singleBook = async (id) => {
+  const { data } = await api.get(`/api/books/${id}`);
+  return data;
+};
+
+// ---update book---
+export const updateBook = async ({ id, formData }) => {
+  const res = await api.patch(`/api/books/${id}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
