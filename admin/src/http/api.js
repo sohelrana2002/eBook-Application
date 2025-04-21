@@ -31,8 +31,9 @@ export const fetchProfile = async () => {
 };
 
 // ---for list of books---
-export const listBooks = async () => {
-  const res = await api.get("/api/books");
+export const listBooks = async ({ queryKey }) => {
+  const [_key, page] = queryKey;
+  const res = await api.get(`/api/books?page=${page}&limit=5`);
   return res.data;
 };
 
