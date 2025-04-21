@@ -9,6 +9,7 @@ import Logout from "@/auth/Logout";
 import AddBook from "@/pages/addBook/AddBook";
 
 import App from "../App";
+import DeleteBook from "@/pages/deleteBook/DeleteBook";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "book/add-book",
         element: <AddBook />,
+      },
+      {
+        path: "book/delete/:id",
+        element: <DeleteBook />,
       },
     ],
   },
