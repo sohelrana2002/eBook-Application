@@ -1,17 +1,22 @@
 import { listBooks } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { BookMarked, CirclePlus } from "lucide-react";
 import Loading from "@/shared/loading/Loading";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const Books = () => {
+  const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
+
+  const page = parseInt(searchParams.get("page")) || 1;
+
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["books"],
+    queryKey: ["books", page],
     queryFn: listBooks,
     staleTime: 10000,
+    placeholderData: keepPreviousData,
   });
 
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -51,10 +56,10 @@ const Books = () => {
   }
 
   return (
-    <div>
+    <div className="pb-10">
       <Heading icon={<BookMarked />} title="Books" />
 
-      <div className="border p-3 rounded-sm h-full">
+      <div className="border p-3 rounded-sm h-full pb-5">
         <div className="flex item-center justify-between">
           <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
           <Link to="/book/add-book">
@@ -178,8 +183,45 @@ const Books = () => {
           </table>
         </div>
 
-        <div className="mt-4 text-sm text-gray-600">
-          Showing 1-50 of 232 products
+        <div className="mt-5 text-sm text-gray-600">
+          <div className="flex justify-center gap-2 mt-4">
+            <button
+              onClick={() =>
+                setSearchParams({
+                  page: page === 1 ? 1 : page - 1,
+                })
+              }
+              disabled={page === 1}
+              className={`px-3 py-1 rounded ${
+                page === 1
+                  ? "bg-white text-black border cursor-auto"
+                  : "bg-black text-white cursor-pointer"
+              }`}
+            >
+              Prev
+            </button>
+
+            <span className="px-4 py-1">
+              {data.currentPage} out of {data.totalPages} & total -{" "}
+              {data.totalBooks}
+            </span>
+
+            <button
+              onClick={() =>
+                setSearchParams({
+                  page: data.totalPages > page ? page + 1 : page,
+                })
+              }
+              disabled={page === data.totalPages}
+              className={`px-3 py-1 rounded ${
+                page === data.totalPages
+                  ? "bg-white text-black border cursor-auto"
+                  : "bg-black text-white cursor-pointer"
+              }`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
