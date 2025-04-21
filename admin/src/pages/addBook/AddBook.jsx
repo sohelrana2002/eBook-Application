@@ -1,10 +1,13 @@
 import Heading from "@/shared/heading/Heading";
 import { CopyPlus, LoaderCircle } from "lucide-react";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBook } from "@/http/api";
+import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -70,13 +73,16 @@ const AddBook = () => {
       Array.isArray(value) ? [] : "",
     ])
   );
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createBook,
     onSuccess: () => {
       // console.log("Book created:", data);
       alert("Book created successfully!");
+      queryClient.invalidateQueries({ queryKey: ["books"] });
       setFormData(reset);
+      navigate("/books");
     },
     onError: (error) => {
       const backendMessage =
