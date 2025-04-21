@@ -5,10 +5,11 @@ import { BookMarked, CirclePlus } from "lucide-react";
 import Loading from "@/shared/loading/Loading";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
+  const actionRef = useRef();
 
   const page = parseInt(searchParams.get("page")) || 1;
 
@@ -27,7 +28,7 @@ const Books = () => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!e.target.closest(".action-menu")) {
+      if (!actionRef.current.contains(e.target)) {
         setOpenMenuId(null);
       }
     };
@@ -150,7 +151,10 @@ const Books = () => {
                         </button>
 
                         {openMenuId === curElem._id && (
-                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col">
+                          <div
+                            ref={actionRef}
+                            className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col"
+                          >
                             <div className="px-4 py-2 text-sm text-gray-500 border-b">
                               Actions
                             </div>
@@ -164,15 +168,12 @@ const Books = () => {
                             >
                               Edit
                             </button>
-                            <button
-                              onClick={() => {
-                                console.log("Delete", curElem._id);
-                                setOpenMenuId(null);
-                              }}
+                            <Link
+                              to={`/book/delete/${curElem._id}`}
                               className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
                             >
                               Delete
-                            </button>
+                            </Link>
                           </div>
                         )}
                       </td>
