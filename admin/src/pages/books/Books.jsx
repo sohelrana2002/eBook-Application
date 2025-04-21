@@ -28,7 +28,7 @@ const Books = () => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!actionRef.current.contains(e.target)) {
+      if (actionRef.current && !actionRef.current.contains(e.target)) {
         setOpenMenuId(null);
       }
     };
@@ -75,7 +75,7 @@ const Books = () => {
           Manage your books and view their sales performance.
         </p>
 
-        <div className="overflow-x-auto rounded-lg shadow">
+        <div className="overflow-x-auto rounded-lg shadow" ref={actionRef}>
           <table className="min-w-full divide-y divide-gray-200 bg-white">
             {/* ---books heading---- */}
             <thead className="bg-gray-50">
@@ -151,10 +151,7 @@ const Books = () => {
                         </button>
 
                         {openMenuId === curElem._id && (
-                          <div
-                            ref={actionRef}
-                            className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col"
-                          >
+                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col">
                             <div className="px-4 py-2 text-sm text-gray-500 border-b">
                               Actions
                             </div>
