@@ -10,6 +10,7 @@ import AddBook from "@/pages/addBook/AddBook";
 
 import App from "../App";
 import DeleteBook from "@/pages/deleteBook/DeleteBook";
+import UpdateBook from "@/pages/updateBook/UpdateBook";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "book/delete/:id",
         element: <DeleteBook />,
+      },
+      {
+        path: "book/update/:id",
+        element: <UpdateBook />,
       },
     ],
   },
