@@ -30,7 +30,7 @@ const createBook = async (req, res, next) => {
       genre,
       language,
       publicationDate,
-      price: Number(price),
+      price: parseFloat(price),
       tags,
       coverImage: coverImage?.[0]?.path,
       bookFile: bookFile?.[0]?.path,
@@ -74,16 +74,16 @@ const updateBook = async (req, res, next) => {
       });
     }
 
-    if (coverImage) {
-      const oldCoverImage = coverImage;
-      const coverImagePath = path.join(
-        __dirname,
-        "../../public/uploads/",
-        oldCoverImage.originalname
-      );
-      await oldCoverImage.mv(coverImagePath);
-      coverImage.oldCoverImage = `../../public/uploads/${oldCoverImage.originalname}`;
-    }
+    // if (coverImage) {
+    //   const oldCoverImage = coverImage;
+    //   const coverImagePath = path.join(
+    //     __dirname,
+    //     "../../public/uploads/",
+    //     oldCoverImage.originalname
+    //   );
+    //   await oldCoverImage.mv(coverImagePath);
+    //   coverImage.oldCoverImage = `../../public/uploads/${oldCoverImage.originalname}`;
+    // }
 
     const updatedBook = await booksModel.findByIdAndUpdate(
       { _id: bookId },
