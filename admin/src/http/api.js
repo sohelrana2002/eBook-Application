@@ -37,11 +37,20 @@ export const listBooks = async ({ queryKey }) => {
   return res.data;
 };
 
+// ----create a book---
 export const createBook = async (formData) => {
   const res = await api.post("/api/books", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+  return res.data;
+};
+
+// ---delete a book---
+export const deleteBook = async (id) => {
+  console.log("bak", id);
+
+  const res = await api.delete(`/api/books/${id}`);
   return res.data;
 };
