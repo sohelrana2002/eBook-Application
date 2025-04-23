@@ -7,6 +7,7 @@ import {
   getUserInfo,
   userProfile,
   getAdminInfo,
+  deleteUser,
 } from "../controllers/authController.js";
 import validate from "../middlewares/validateMiddleware.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
@@ -32,5 +33,9 @@ authRouter
 authRouter
   .route("/user-profile")
   .get(jwtAuthMiddleware, authorizedRole("admin", "user"), userProfile);
+
+authRouter
+  .route("/delete-user/:userId")
+  .delete(jwtAuthMiddleware, authorizedRole("admin"), deleteUser);
 
 export default authRouter;
