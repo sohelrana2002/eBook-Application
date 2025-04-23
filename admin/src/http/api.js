@@ -80,3 +80,9 @@ export const deleteUser = async (id) => {
   const res = await api.delete(`/api/auth/delete-user/${id}`);
   return res.data;
 };
+
+// ---get all admins---
+export const allAsmins = async () => {
+  const res = await api.get("/api/auth/admin-info");
+  return res.data;
+};
