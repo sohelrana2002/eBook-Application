@@ -11,6 +11,7 @@ import AddBook from "@/pages/addBook/AddBook";
 import App from "../App";
 import DeleteBook from "@/pages/deleteBook/DeleteBook";
 import UpdateBook from "@/pages/updateBook/UpdateBook";
+import Users from "@/pages/users/Users";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "book/update/:id",
         element: <UpdateBook />,
+      },
+      {
+        path: "users",
+        element: <Users />,
       },
     ],
   },
