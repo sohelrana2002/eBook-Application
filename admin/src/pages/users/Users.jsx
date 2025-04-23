@@ -3,7 +3,7 @@ import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { UsersRound } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const { data: UsersData, isLoading } = useQuery({
@@ -11,8 +11,6 @@ const Users = () => {
     queryFn: allUsers,
     staleTime: 10000,
   });
-
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loading />;
@@ -23,9 +21,12 @@ const Users = () => {
       <Heading icon={<UsersRound />} title="All Users" />
 
       <div className="max-w-6xl mx-auto mt-10 p-4 sm:p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
-          User List
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+            User List
+          </h2>
+          <h3>Total Users: {UsersData.length}</h3>
+        </div>
 
         <div className="overflow-x-auto">
           <table className="min-w-full text-left border border-gray-200">
@@ -48,9 +49,12 @@ const Users = () => {
                     {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 text-sm">
-                    <button className="text-red-600 hover:underline cursor-pointer">
+                    <Link
+                      to={`/users/delete-user/${user._id}`}
+                      className="text-red-600 hover:underline cursor-pointer"
+                    >
                       Delete
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
