@@ -149,4 +149,34 @@ const userProfile = async (req, res, next) => {
   }
 };
 
-export { register, login, getUserInfo, userProfile, getAdminInfo };
+// ===delete user from admin access====
+const deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    // console.log("userId", userId);
+
+    const userExist = await user.findOne({ _id: userId });
+
+    if (!userExist) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    } else {
+      await user.deleteOne({ _id: userId });
+
+      res.status(200).json({
+        message: "User deleted succesfully.",
+        id: userId,
+      });
+    }
+  } catch (err) {
+    console.log("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error.",
+      error: err,
+    });
+  }
+};
+
+export { register, login, getUserInfo, userProfile, getAdminInfo, deleteUser };
