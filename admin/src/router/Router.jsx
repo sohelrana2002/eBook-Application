@@ -12,6 +12,7 @@ import App from "../App";
 import DeleteBook from "@/pages/deleteBook/DeleteBook";
 import UpdateBook from "@/pages/updateBook/UpdateBook";
 import Users from "@/pages/users/Users";
+import DeleteUser from "@/pages/deleteUser/DeleteUser";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <Users />,
+      },
+      {
+        path: "users/delete-user/:id",
+        element: <DeleteUser />,
       },
     ],
   },
