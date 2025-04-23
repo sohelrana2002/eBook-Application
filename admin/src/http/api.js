@@ -68,3 +68,9 @@ export const updateBook = async ({ id, formData }) => {
   });
   return res.data;
 };
+
+// ---get all users---
+export const allUsers = async () => {
+  const res = await api.get("/api/auth/users-info");
+  return res.data;
+};
