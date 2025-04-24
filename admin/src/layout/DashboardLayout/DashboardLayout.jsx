@@ -60,7 +60,6 @@ const DashboardLayout = () => {
             <div className="menu__button" onClick={handleMenuButton}>
               <Logs />
             </div>
-            <input type="text" placeholder="search..." />
           </div>
 
           <div className="user__profile">
