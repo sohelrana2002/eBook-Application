@@ -131,6 +131,7 @@ const listBook = async (req, res, next) => {
       order,
       page,
       limit,
+      search,
     } = req.query;
 
     let query = {};
@@ -157,6 +158,13 @@ const listBook = async (req, res, next) => {
     // ---for title---
     if (title) {
       query.title = { $regex: title, $options: "i" };
+    }
+
+    // ---for search---
+    if (search) {
+      query = {
+        $or: [{ title: { $regex: search, $options: "i" } }],
+      };
     }
 
     // console.log("query", query);
