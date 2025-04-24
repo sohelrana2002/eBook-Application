@@ -32,8 +32,10 @@ export const fetchProfile = async () => {
 
 // ---for list of books---
 export const listBooks = async ({ queryKey }) => {
-  const [_key, page] = queryKey;
-  const res = await api.get(`/api/books?page=${page}&limit=5`);
+  const [_key, { search, page }] = queryKey;
+  const res = await api.get("/api/books", {
+    params: { search, page, limit: 5 },
+  });
   return res.data;
 };
 
@@ -49,8 +51,6 @@ export const createBook = async (formData) => {
 
 // ---delete a book---
 export const deleteBook = async (id) => {
-  console.log("bak", id);
-
   const res = await api.delete(`/api/books/${id}`);
   return res.data;
 };
