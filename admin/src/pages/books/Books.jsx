@@ -8,13 +8,25 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
 const Books = () => {
-  const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: 1,
+    search: "",
+  });
   const actionRef = useRef();
 
   const page = parseInt(searchParams.get("page")) || 1;
+  const search = searchParams.get("search");
+
+  // ---handle search book ===
+  const handleSearchBook = (e) => {
+    setSearchParams({
+      search: e.target.value,
+      page: 1,
+    });
+  };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["books", page],
+    queryKey: ["books", { page, search }],
     queryFn: listBooks,
     staleTime: 10000,
     placeholderData: keepPreviousData,
@@ -58,7 +70,16 @@ const Books = () => {
 
   return (
     <div className="pb-10">
-      <Heading icon={<BookMarked />} title="Books" />
+      <div className="md:flex flex-row items-center justify-between  ">
+        <Heading icon={<BookMarked />} title="Books" />
+        <input
+          type="search"
+          value={search}
+          className="mb-5 border rounded px-3 py-2 mt-[-50px] md:mb-0"
+          placeholder="search book..."
+          onChange={handleSearchBook}
+        />
+      </div>
 
       <div className="border p-3 rounded-sm h-full pb-5">
         <div className="flex item-center justify-between">
