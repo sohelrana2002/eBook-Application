@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+:root {
+    --white: #F9FAFB;
+    --black: #111827;
+    --blue: #2563EB;
+    --darker-blue: #1D4ED8;
+    --Accent: #6366F1;
+    --border: rgba(128, 128, 128, 0.446);
+
+
+    /* --width-lg-screen: 91%;
+    --width-md-screen: 90%;
+    --width-sm-screen: 93%; */
+    --transition: all .4s ease;
+}
