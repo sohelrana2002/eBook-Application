@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <nav className="nav">
-      <div className="navbar__conatiner">
+      <div className="container navbar__conatiner">
         <Link href={"/"} className="logo">
           <div>
             <NotebookText />

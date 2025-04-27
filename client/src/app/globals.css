@@ -9,8 +9,32 @@
     --border: rgba(128, 128, 128, 0.446);
 
 
-    /* --width-lg-screen: 91%;
+    --width-lg-screen: 91%;
     --width-md-screen: 90%;
-    --width-sm-screen: 93%; */
+    --width-sm-screen: 93%;
     --transition: all .4s ease;
+}
+
+.container {
+    max-width: 1600px;
+    width: var(--width-lg-screen);
+    margin: 0 auto;
+}
+
+
+
+
+/* ---------------media query(mediam screen)------------- */
+@media screen and (max-width: 1024px) {
+    .container {
+        width: var(--width-md-screen);
+    }
+}
+
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 700px) {
+    .container {
+        width: var(--width-sm-screen);
+    }
 }

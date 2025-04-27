@@ -13,11 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1450px;
-    width: 100%;
-    margin: 0 auto;
     height: 100%;
-    padding: 0 2rem;
 }
 
 .logo {
@@ -123,10 +119,6 @@
 
 /*---------------media query(mediam screen)------------- */
 @media screen and (max-width: 700px) {
-    .navbar__conatiner {
-        padding: 0 1.25rem;
-    }
-
     .menu__item {
         width: 75%;
         padding: 0 1.25rem;
