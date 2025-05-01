@@ -21,6 +21,75 @@
     margin: 0 auto;
 }
 
+/* ----for custom loadint page--- */
+.loading__container {
+    width: 96vw;
+    height: 80vh;
+    display: grid;
+    place-items: center;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--black);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ----for not found page---- */
+.not__found {
+    width: 90vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.not__found>h1 {
+    font-size: 7rem;
+    color: var(--black);
+    line-height: 1;
+}
+
+.not__found>h2 {
+    font-size: 1.5rem;
+    color: var(--black);
+}
+
+.not__found>p {
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
+
+/* ----for custom button---- */
+.btn {
+    width: max-content;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 1rem;
+    padding: .6rem 1.8rem;
+    border-radius: 3.5rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 
 
 
@@ -29,6 +98,22 @@
     .container {
         width: var(--width-md-screen);
     }
+
+    /* ----for not found page---- */
+
+    .not__found>h1 {
+        font-size: 6rem;
+    }
+
+    .not__found>h2 {
+        font-size: 1.35rem;
+    }
+
+    .not__found>p {
+        font-size: 1rem;
+        text-align: center;
+    }
+
 }
 
 
@@ -36,5 +121,20 @@
 @media screen and (max-width: 700px) {
     .container {
         width: var(--width-sm-screen);
+    }
+
+    /* ----for not found page---- */
+
+    .not__found>h1 {
+        font-size: 5rem;
+    }
+
+    .not__found>h2 {
+        font-size: 1.2rem;
+    }
+
+    .not__found>p {
+        font-size: 1rem;
+        text-align: center;
     }
 }

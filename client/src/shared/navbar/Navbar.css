@@ -40,7 +40,7 @@
 .menu__item {
     display: flex;
     align-items: center;
-    gap: .7rem;
+    gap: 2rem;
 }
 
 .menu__item li {

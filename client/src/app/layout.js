@@ -20,7 +20,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-arp="">
-      <body data-new-gr-c-s-check-loaded="14.1232.0" data-gr-ext-installed="">
+      <body data-new-gr-c-s-check-loaded="14.1233.0" data-gr-ext-installed="">
         <Navbar />
         <div className="pt-[6rem]">{children}</div>
       </body>
