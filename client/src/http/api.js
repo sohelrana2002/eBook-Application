@@ -19,11 +19,13 @@ api.interceptors.request.use((config) => {
 // ----for login---
 export const login = async (email, password) => {
   // console.log("user data", { email, password });
-  console.log(
-    "process.env.NEXT_PUBLIC_BASE_URL",
-    process.env.NEXT_PUBLIC_BASE_URL
-  );
 
   const res = await api.post("/api/auth/login", { email, password });
+  return res.data;
+};
+
+// ---for individual profile---
+export const fetchProfile = async () => {
+  const res = await api.get("/api/auth/user-profile");
   return res.data;
 };
