@@ -114,7 +114,7 @@ const Login = () => {
                 <input type="checkbox" className="mr-2" />
                 Remember me
               </label>
-              <Link href="#" className="text-blue-600 hover:underline">
+              <Link href="#" className="text-[#000] hover:underline">
                 Forgot password?
               </Link>
             </div>
@@ -126,7 +126,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200 flex items-center gap-2 justify-center"
+              className="w-full bg-[#000] text-white py-2 rounded-md hover: transition duration-200 flex items-center gap-2 justify-center"
             >
               {mutation.isPending && <LoaderCircle className="animate-spin" />}
               Sign In
@@ -135,7 +135,7 @@ const Login = () => {
 
           <p className="text-center text-sm text-gray-600 mt-6">
             Don’t have an account?
-            <Link href="/signup" className="text-blue-600 hover:underline ml-1">
+            <Link href="/signup" className="text-[#000] hover:underline ml-1">
               Register
             </Link>
           </p>
