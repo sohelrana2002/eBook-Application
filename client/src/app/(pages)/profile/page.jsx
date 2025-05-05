@@ -12,7 +12,7 @@ const ViewProfile = () => {
     staleTime: 10000,
   });
 
-  console.log("data", data);
+  // console.log("data", data);
 
   if (isLoading) {
     return <Loading />;

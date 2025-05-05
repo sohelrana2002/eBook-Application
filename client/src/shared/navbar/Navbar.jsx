@@ -11,15 +11,15 @@ import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 const Navbar = () => {
   const pathName = usePathname();
   const [isNavShowing, setIsNavShowing] = useState(false);
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const navRef = useRef();
 
   // ---token ---
-  // const token = localStorage?.getItem("token");
+  const token = localStorage?.getItem("token");
 
-  useEffect(() => {
-    setToken(localStorage?.getItem("token"));
-  }, []);
+  // useEffect(() => {
+  //   setToken(localStorage?.getItem("token"));
+  // }, []);
 
   const handleToggle = () => {
     setIsNavShowing((prev) => !prev);

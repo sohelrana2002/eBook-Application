@@ -66,7 +66,7 @@ const Login = () => {
 
   return (
     <div className="container">
-      <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <div className="h-[85vh] flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border-1 border-[var(--border)]">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
             Login to Your Account
