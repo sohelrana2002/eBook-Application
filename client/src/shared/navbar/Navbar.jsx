@@ -6,11 +6,20 @@ import Link from "next/link";
 import { NotebookText, X, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 
 const Navbar = () => {
   const pathName = usePathname();
   const [isNavShowing, setIsNavShowing] = useState(false);
+  const [token, setToken] = useState(null);
   const navRef = useRef();
+
+  // ---token ---
+  // const token = localStorage?.getItem("token");
+
+  useEffect(() => {
+    setToken(localStorage?.getItem("token"));
+  }, []);
 
   const handleToggle = () => {
     setIsNavShowing((prev) => !prev);
@@ -49,7 +58,7 @@ const Navbar = () => {
                   key={curElem.id}
                   className={
                     pathName === curElem.path
-                      ? "text-[var(--blue)]"
+                      ? "border-b-2  border-[var(--blue)]"
                       : "text-[var(--black)]"
                   }
                 >
@@ -60,7 +69,15 @@ const Navbar = () => {
         </ul>
 
         <div className="user">
-          <div className="profile">Sohel Rana</div>
+          <div>
+            {token ? (
+              <ProfileDropdown />
+            ) : (
+              <Link href="/login" className="profile">
+                Login
+              </Link>
+            )}
+          </div>
           <div className="toggle__menu" onClick={handleToggle}>
             {isNavShowing ? <X /> : <Menu />}
           </div>
