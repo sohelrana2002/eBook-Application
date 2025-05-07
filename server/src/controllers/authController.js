@@ -1,4 +1,6 @@
 import user from "../models/authModel.js";
+import jwt from "jsonwebtoken";
+import { config } from "../config/config.js";
 
 // ====register users===
 const register = async (req, res) => {
@@ -179,4 +181,54 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-export { register, login, getUserInfo, userProfile, getAdminInfo, deleteUser };
+// ======forgot password ====
+const forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
+  const userExist = await user.findOne({ email });
+
+  if (!userExist) return res.status(404).json({ message: "User not found" });
+
+  const token = jwt.sign({ userId: userExist._id }, config.jwtSecretKey, {
+    expiresIn: "15m",
+  });
+
+  const resetLink = `http://localhost:3000/api/auth/reset-password/${token}`;
+
+  // In real life: send email with resetLink
+  console.log("Password reset link:", resetLink);
+
+  res.json({ message: "Reset link sent to email (simulated)" });
+};
+
+// =====reset password==========
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, config.jwtSecretKey);
+    console.log("decoded", decoded);
+
+    const userExist = await user.findById(decoded.userId);
+
+    if (!userExist) return res.status(404).json({ message: "User not found" });
+
+    userExist.password = newPassword;
+    await userExist.save();
+
+    res.json({ message: "Password reset successful" });
+  } catch (err) {
+    res.status(400).json({ message: "Invalid or expired token" });
+  }
+};
+
+export {
+  register,
+  login,
+  getUserInfo,
+  userProfile,
+  getAdminInfo,
+  deleteUser,
+  forgotPassword,
+  resetPassword,
+};
