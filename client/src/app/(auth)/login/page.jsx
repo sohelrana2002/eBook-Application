@@ -66,13 +66,13 @@ const Login = () => {
 
   return (
     <div className="container">
-      <div className="h-[85vh] flex items-center justify-center px-4 py-8">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg border-1 border-[var(--border)]">
+      <div className="h-[85vh] flex items-center justify-center px-0 py-8">
+        <div className="w-full max-w-[400px] bg-white p-7 rounded-2xl shadow-lg border-1 border-[var(--border)]">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
             Login to Your Account
           </h2>
 
-          <form className="space-y-5" onSubmit={handleLoginSubmit}>
+          <form className="space-y-3" onSubmit={handleLoginSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -126,14 +126,14 @@ const Login = () => {
             <button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full bg-[#000] text-white py-2 rounded-md hover: transition duration-200 flex items-center gap-2 justify-center"
+              className="w-full bg-[#000] cursor-pointer text-white py-2 rounded-md hover: transition duration-200 flex items-center gap-2 justify-center"
             >
               {mutation.isPending && <LoaderCircle className="animate-spin" />}
-              Sign In
+              Log In
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-sm text-gray-600 mt-4">
             Don’t have an account?
             <Link href="/signup" className="text-[#000] hover:underline ml-1">
               Register
