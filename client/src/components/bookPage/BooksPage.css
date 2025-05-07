@@ -1,0 +1,53 @@
+.left__conatiner-book {
+    width: 300px;
+    position: fixed;
+    left: 0;
+    top: 64px;
+    bottom: 0;
+    height: 100vh;
+    border-right: 2px solid var(--border);
+    z-index: 99999;
+    background: #fff;
+}
+
+
+
+
+/* ----right side---- */
+.right__container-book {
+    position: relative;
+    width: calc(100vw - 300px);
+    left: 300px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0 2rem;
+}
+
+/* ---top right ---  */
+.right__top {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search__book input {
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.sort__filter select {
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.right__book__content {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
