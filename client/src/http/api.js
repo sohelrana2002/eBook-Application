@@ -37,3 +37,29 @@ export const fetchProfile = async () => {
   const res = await api.get("/api/auth/user-profile");
   return res.data;
 };
+
+// ---for list of books---
+// export const listBooks = async ({ queryKey }) => {
+//   const [_key, { search, page }] = queryKey;
+//   const res = await api.get("/api/books", {
+//     params: { search, page, limit: 5 },
+//   });
+//   return res.data;
+// };
+
+export async function listBooks() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`, {
+      cache: "no-cache",
+    });
+
+    if (!res.ok) {
+      throw new Error("Response is not ok");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return null;
+  }
+}
