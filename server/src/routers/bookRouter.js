@@ -37,10 +37,13 @@ bookRouter.route("/:bookId").patch(
   updateBook
 );
 
-// =====list of all books====
-bookRouter
-  .route("/")
-  .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), listBook);
+// =====list of all books (for user plan)====
+// bookRouter
+//   .route("/")
+//   .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), listBook);
+
+// =====list of all books (for current plan)====
+bookRouter.route("/").get(listBook);
 
 // ===details of individual book===
 bookRouter
