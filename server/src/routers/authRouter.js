@@ -8,6 +8,8 @@ import {
   userProfile,
   getAdminInfo,
   deleteUser,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/authController.js";
 import validate from "../middlewares/validateMiddleware.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
@@ -38,4 +40,7 @@ authRouter
   .route("/delete-user/:userId")
   .delete(jwtAuthMiddleware, authorizedRole("admin"), deleteUser);
 
+authRouter.route("/forgot-password").post(forgotPassword);
+
+authRouter.route("/reset-password/:token").post(resetPassword);
 export default authRouter;
