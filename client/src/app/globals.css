@@ -91,6 +91,14 @@
 }
 
 
+.heading {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--black);
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
 
 
 /* ---------------media query(mediam screen)------------- */
@@ -136,5 +144,13 @@
     .not__found>p {
         font-size: 1rem;
         text-align: center;
+    }
+
+    .heading {
+        font-size: 1.5625rem;
+        font-weight: 700;
+        color: var(--black);
+        text-transform: capitalize;
+        letter-spacing: 0.5px;
     }
 }
