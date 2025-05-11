@@ -16,7 +16,7 @@
 /* ----right side---- */
 .right__container-book {
     position: relative;
-    width: calc(100vw - 300px);
+    width: calc(100vw - 320px);
     left: 300px;
     right: 0;
     top: 0;
@@ -31,6 +31,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.search__book {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.colapse__menu {
+    width: 38px;
+    height: 38px;
+    background: rgba(128, 128, 128, 0.093);
+    border-radius: 5px;
+    display: none;
+    place-items: center;
+    cursor: pointer;
 }
 
 .search__book input {
@@ -50,4 +66,42 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+}
+
+
+
+
+
+
+
+/* ---------------media query(mediam screen)------------- */
+@media screen and (max-width: 1024px) {
+    .left__conatiner-book {
+        left: -300px;
+    }
+
+    .right__container-book {
+        width: 100vw;
+        left: 0;
+    }
+
+    .colapse__menu {
+        display: grid;
+    }
+}
+
+/* ---------------media query(mediam and mediam screen)------------- */
+@media screen and (max-width: 850px) {
+    .right__book__content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 700px) {
+    .right__book__content {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
 }
