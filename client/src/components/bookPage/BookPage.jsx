@@ -5,6 +5,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { listBooks } from "@/http/api";
 import BookCard from "../bookCard/BookCard";
 import Link from "next/link";
+import { SquareChevronLeft } from "lucide-react";
 
 const BookPage = ({ allBooks }) => {
   //   const {
@@ -30,7 +31,12 @@ const BookPage = ({ allBooks }) => {
       <div className="right__container-book">
         {/* ----right top side ----  */}
         <div className="right__top">
+          {/* ---search book --  */}
           <div className="search__book">
+            {/* ---colapse filter menu--- */}
+            <div className="colapse__menu">
+              <SquareChevronLeft />
+            </div>
             <input type="search" placeholder="search book ..." />
           </div>
           {/* ----filter ----  */}
