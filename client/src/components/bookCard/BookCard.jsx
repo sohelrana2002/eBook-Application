@@ -1,24 +1,32 @@
 import { Star } from "lucide-react";
 
-const BookCard = ({ coverImage, title, rating, price }) => {
+const BookCard = ({ coverImage, title, rating, price, author }) => {
   return (
-    <div className="max-w-xs bg-white shadow-lg rounded-2xl  hover:shadow-xl transition-shadow duration-300">
+    <div className="w-full md:max-w-xs bg-white shadow-lg rounded-2xl  hover:shadow-xl transition-shadow duration-300 border border-[var(--border)] overflow-auto">
       <img src="/book.jpg" alt={title} className="w-full h-60 object-cover" />
-      <div className="p-4 space-y-2 border-t-2 border-[var(--border)]">
-        <h2 className="text-lg font-semibold text-gray-800 line-clamp-2 capitalize">
-          {title}
-        </h2>
-        <div className="flex items-center gap-1 text-yellow-500">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              size={16}
-              fill={i < rating ? "#facc15" : "none"}
-              stroke={i < rating ? "#facc15" : "currentColor"}
-            />
-          ))}
+      <div className="p-4 space-y-2 border-t-2 border-[var(--border)] flex items-start justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-800 line-clamp-2 capitalize max-w-[200px]">
+            {title}
+          </h2>
+
+          <h2 className="text-sm font-semibold text-gray-800 line-clamp-2 capitalize">
+            {author}
+          </h2>
         </div>
-        <p className="text-lg font-bold text-[var(--blue)]">${price}</p>
+        <div className="flex flex-col items-end">
+          <p className="text-lg font-bold text-[var(--blue)]">${price}</p>
+          <div className="flex items-center gap-1 text-yellow-500">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                size={16}
+                fill={i < rating ? "#facc15" : "none"}
+                stroke={i < rating ? "#facc15" : "currentColor"}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
