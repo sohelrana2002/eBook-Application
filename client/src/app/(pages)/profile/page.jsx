@@ -2,7 +2,7 @@
 
 import "./profile.css";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProfile } from "@/http/api";
+import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
 
 const ViewProfile = () => {

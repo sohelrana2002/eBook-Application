@@ -1,5 +1,5 @@
 import BookPage from "@/components/bookPage/BookPage";
-import { listBooks } from "@/http/api";
+import { listBooks } from "@/lib/api";
 
 const Books = async () => {
   const allBooks = await listBooks();

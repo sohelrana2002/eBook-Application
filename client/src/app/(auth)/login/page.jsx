@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useAuthContext } from "@/context/authContext";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import { login } from "@/http/api";
+import { login } from "@/lib/api";
 
 const Login = () => {
   const router = useRouter();

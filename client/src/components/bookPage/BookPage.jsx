@@ -2,7 +2,7 @@
 
 import "./BooksPage.css";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { listBooks } from "@/http/api";
+import { listBooks } from "@/lib/api";
 import BookCard from "../bookCard/BookCard";
 import Link from "next/link";
 import { SquareChevronLeft } from "lucide-react";

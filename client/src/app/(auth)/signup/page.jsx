@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import { signup } from "@/http/api";
+import { signup } from "@/lib/api";
 
 const Signup = () => {
   const router = useRouter();

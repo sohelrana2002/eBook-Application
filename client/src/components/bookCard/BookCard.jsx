@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 
-const BookCard = ({ coverImage, title, rating, price, author }) => {
+const BookCard = ({ coverImage, title, averageRating, price, author }) => {
   return (
     <div className="w-full md:max-w-xs bg-white shadow-lg rounded-2xl  hover:shadow-xl transition-shadow duration-300 border border-[var(--border)] overflow-auto">
       <img src="/book.jpg" alt={title} className="w-full h-60 object-cover" />
@@ -21,8 +21,8 @@ const BookCard = ({ coverImage, title, rating, price, author }) => {
               <Star
                 key={i}
                 size={16}
-                fill={i < rating ? "#facc15" : "none"}
-                stroke={i < rating ? "#facc15" : "currentColor"}
+                fill={i < averageRating ? "#facc15" : "none"}
+                stroke={i < averageRating ? "#facc15" : "currentColor"}
               />
             ))}
           </div>
