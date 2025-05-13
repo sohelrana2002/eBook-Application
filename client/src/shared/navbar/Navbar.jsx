@@ -7,19 +7,14 @@ import { NotebookText, X, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
+import { useAuthContext } from "@/context/authContext";
+import { LoaderCircle } from "lucide-react";
 
 const Navbar = () => {
   const pathName = usePathname();
   const [isNavShowing, setIsNavShowing] = useState(false);
-  // const [token, setToken] = useState(null);
   const navRef = useRef();
-
-  // ---token ---
-  const token = localStorage?.getItem("token");
-
-  // useEffect(() => {
-  //   setToken(localStorage?.getItem("token"));
-  // }, []);
+  const { isLoggedIn, isLoading } = useAuthContext();
 
   const handleToggle = () => {
     setIsNavShowing((prev) => !prev);
@@ -70,7 +65,11 @@ const Navbar = () => {
 
         <div className="user">
           <div>
-            {token ? (
+            {isLoading ? (
+              <div className="profile">
+                <LoaderCircle className="animate-spin" />
+              </div>
+            ) : isLoggedIn ? (
               <ProfileDropdown />
             ) : (
               <Link href="/login" className="profile">
