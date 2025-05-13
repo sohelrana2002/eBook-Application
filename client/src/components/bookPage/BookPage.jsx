@@ -7,6 +7,7 @@ import BookCard from "../bookCard/BookCard";
 import Link from "next/link";
 import { SquareChevronLeft } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import FilterBook from "../filterBook/FilterBook";
 
 const BookPage = ({ allBooks }) => {
   //   const {
@@ -51,7 +52,7 @@ const BookPage = ({ allBooks }) => {
         ref={filterMenuRef}
         className={`left__conatiner-book ${isFilterMenuShowing && "show"}`}
       >
-        left
+        <FilterBook />
       </div>
 
       {/* ----right side book ---  */}
