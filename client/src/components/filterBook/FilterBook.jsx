@@ -1,84 +1,149 @@
 "use client";
 import "./FilterBook.css";
-// 27575350
-
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Select from "react-select";
+import { allAuthor } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+
+const allGenre = [
+  "Fiction",
+  "Non-Fiction",
+  "Mystery",
+  "Science Fiction",
+  "Fantasy",
+  // ... rest of your genres
+];
 
 const FilterBook = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [selectedFilters, setSelectedFilters] = useState({
+    genre: [],
+    author: null,
+  });
 
-  const [genre, setGenre] = useState(searchParams.get("genre") || "");
-  const [languages, setLanguages] = useState(
-    searchParams.getAll("language") || []
-  );
-  const [prices, setPrices] = useState(searchParams.getAll("price") || []);
-
-  // Update URL when filters change
+  // Initialize state from URL params
   useEffect(() => {
+    const params = {
+      genre: searchParams.getAll("genre") || [],
+      author: searchParams.get("author") || null,
+    };
+    setSelectedFilters(params);
+  }, [searchParams]);
+
+  const { data: authorData } = useQuery({
+    queryKey: ["allAuthor"],
+    queryFn: allAuthor,
+    staleTime: 10000,
+  });
+
+  // Genre options
+  const genreOptions = allGenre?.map((curElem) => ({
+    value: curElem,
+    label: curElem,
+    type: "genre",
+  }));
+
+  // Author options
+  const authorOptions = [
+    { value: "none", label: "None", type: "author" },
+    ...(authorData?.allAuthorName?.map((author) => ({
+      value: author,
+      label: author,
+      type: "author",
+    })) || []),
+  ];
+
+  // Update URL with current filters
+  const updateUrl = (newFilters) => {
     const params = new URLSearchParams();
 
-    if (genre) params.set("genre", genre);
-    languages.forEach((lang) => params.append("language", lang));
-    prices.forEach((price) => params.append("price", price));
+    // Add genre filters
+    newFilters.genre.forEach((genre) => {
+      params.append("genre", genre);
+    });
 
-    router.push(`/books?${params.toString()}`);
-  }, [genre, languages, prices, router]);
-
-  // Toggle helper for checkbox arrays
-  const toggleFilter = (value, list, setList) => {
-    if (list.includes(value)) {
-      setList(list.filter((item) => item !== value));
-    } else {
-      setList([...list, value]);
+    // Add author filter if not "none"
+    if (newFilters.author && newFilters.author !== "none") {
+      params.set("author", newFilters.author);
     }
+
+    const queryString = params.toString();
+    console.log("queryString", queryString);
+
+    router.push(queryString ? `/books?${queryString}` : "/books", {
+      scroll: false,
+    });
+  };
+
+  // Handle genre selection (multi-select)
+  const handleGenreChange = (selectedOptions) => {
+    const newFilters = {
+      ...selectedFilters,
+      genre: selectedOptions.map((opt) => opt.value),
+    };
+
+    console.log("newFilters", newFilters);
+
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
+  };
+
+  // Handle author selection (single-select)
+  const handleAuthorChange = (selectedOption) => {
+    const newFilters = {
+      ...selectedFilters,
+      author: selectedOption?.value || null,
+    };
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
+  };
+
+  // React select styles
+  const selectStyle = {
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      fontSize: "15px",
+      textTransform: "capitalize",
+      cursor: "pointer",
+    }),
+    option: (baseStyles, state) => ({
+      ...baseStyles,
+      fontSize: "15px",
+      textTransform: "capitalize",
+    }),
   };
 
   return (
-    <div className="filter__wrapper">
-      {/* Genre select */}
-      <div className="filter__group">
-        <label>Genre</label>
-        <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-          <option value="">All</option>
-          <option value="fiction">Fiction</option>
-          <option value="nonfiction">Non-fiction</option>
-          <option value="fantasy">Fantasy</option>
-          <option value="romance">Romance</option>
-        </select>
+    <div className="filter__container">
+      <h1 className="heading">Filters</h1>
+
+      <div className="filter__box">
+        <h4>Genre</h4>
+        <Select
+          onChange={handleGenreChange}
+          options={genreOptions}
+          styles={selectStyle}
+          isMulti
+          value={genreOptions?.filter((opt) =>
+            selectedFilters.genre.includes(opt.value)
+          )}
+        />
       </div>
 
-      {/* Language checkboxes */}
-      <div className="filter__group">
-        <label>Language</label>
-        {["English", "Spanish", "French", "Hindi"].map((lang) => (
-          <div key={lang}>
-            <input
-              type="checkbox"
-              id={lang}
-              checked={languages.includes(lang)}
-              onChange={() => toggleFilter(lang, languages, setLanguages)}
-            />
-            <label htmlFor={lang}>{lang}</label>
-          </div>
-        ))}
-      </div>
-
-      {/* Price checkboxes */}
-      <div className="filter__group">
-        <label>Price</label>
-        {["0-10", "10-20", "20-50"].map((range) => (
-          <div key={range}>
-            <input
-              type="checkbox"
-              id={range}
-              checked={prices.includes(range)}
-              onChange={() => toggleFilter(range, prices, setPrices)}
-            />
-            <label htmlFor={range}>${range}</label>
-          </div>
-        ))}
+      <div className="filter__box">
+        <h4>Author</h4>
+        <Select
+          onChange={handleAuthorChange}
+          options={authorOptions}
+          styles={selectStyle}
+          value={authorOptions?.find(
+            (opt) =>
+              opt.value === selectedFilters.author ||
+              (selectedFilters.author === null && opt.value === "none")
+          )}
+        />
       </div>
     </div>
   );

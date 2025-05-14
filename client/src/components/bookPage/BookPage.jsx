@@ -2,27 +2,21 @@
 
 import "./BooksPage.css";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { listBooks } from "@/lib/api";
 import BookCard from "../bookCard/BookCard";
 import Link from "next/link";
 import { SquareChevronLeft } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import FilterBook from "../filterBook/FilterBook";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
-const BookPage = ({ allBooks }) => {
-  //   const {
-  //     data: allBooks,
-  //     isLoading,
-  //     isError,
-  //     error,
-  //   } = useQuery({
-  //     queryKey: ["books"],
-  //     queryFn: listBooks,
-  //     staleTime: 10000,
-  //     placeholderData: keepPreviousData,
-  //   });
-
-  // console.log("data", allBooks);
+const BookPage = () => {
+  const searchParams = useSearchParams();
+  const genre = searchParams.get("genre");
+  const author = searchParams.get("author");
+  // const price = searchParams.get("price");
+  // const brand = searchParams.get("brand");
 
   const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
   const filterMenuRef = useRef();
@@ -44,6 +38,37 @@ const BookPage = ({ allBooks }) => {
       document.removeEventListener("mousedown", handleOutSideNav);
     };
   }, []);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["books", genre, author],
+    queryFn: async () => {
+      try {
+        let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books`;
+
+        if (genre) {
+          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?genre=${genre}`;
+        }
+
+        if (author) {
+          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?author=${author}`;
+        }
+
+        const res = await fetch(url, {
+          cache: "no-cache",
+        });
+
+        if (!res.ok) {
+          throw new Error("Response is not ok");
+        }
+
+        return res.json();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    placeholderData: keepPreviousData,
+    // initialData: showAllProducts
+  });
 
   return (
     <div className="book__conatiner">
@@ -82,11 +107,13 @@ const BookPage = ({ allBooks }) => {
 
         {/* ----right cntent ----  */}
         <div className="right__book__content">
-          {allBooks?.books?.map((curElem) => {
+          {data?.books?.map((curElem) => {
             return (
-              <Link href="#">
-                <BookCard key={curElem._id} {...curElem} />
-              </Link>
+              <Suspense key={curElem._id} fallback={<Loading />}>
+                <Link href="#">
+                  <BookCard {...curElem} />
+                </Link>
+              </Suspense>
             );
           })}
         </div>
