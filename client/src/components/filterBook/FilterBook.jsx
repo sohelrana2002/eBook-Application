@@ -3,7 +3,7 @@ import "./FilterBook.css";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { allAuthor } from "@/lib/api";
+import { allAuthor, allLanguage } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
 const allGenre = [
@@ -12,7 +12,12 @@ const allGenre = [
   "Mystery",
   "Science Fiction",
   "Fantasy",
-  // ... rest of your genres
+  "Historical Fiction",
+  "Biography",
+  "Horror",
+  "Poetry",
+  "Drama",
+  "Health",
 ];
 
 const FilterBook = () => {
@@ -21,6 +26,7 @@ const FilterBook = () => {
   const [selectedFilters, setSelectedFilters] = useState({
     genre: [],
     author: null,
+    language: null,
   });
 
   // Initialize state from URL params
@@ -28,6 +34,7 @@ const FilterBook = () => {
     const params = {
       genre: searchParams.getAll("genre") || [],
       author: searchParams.get("author") || null,
+      language: searchParams.get("language") || null,
     };
     setSelectedFilters(params);
   }, [searchParams]);
@@ -35,6 +42,12 @@ const FilterBook = () => {
   const { data: authorData } = useQuery({
     queryKey: ["allAuthor"],
     queryFn: allAuthor,
+    staleTime: 10000,
+  });
+
+  const { data: languageData } = useQuery({
+    queryKey: ["allLanguage"],
+    queryFn: allLanguage,
     staleTime: 10000,
   });
 
@@ -55,6 +68,16 @@ const FilterBook = () => {
     })) || []),
   ];
 
+  // language options
+  const languageOptions = [
+    { value: "none", label: "None", type: "language" },
+    ...(languageData?.allLanguageName?.map((language) => ({
+      value: language,
+      label: language,
+      type: "language",
+    })) || []),
+  ];
+
   // Update URL with current filters
   const updateUrl = (newFilters) => {
     const params = new URLSearchParams();
@@ -67,6 +90,11 @@ const FilterBook = () => {
     // Add author filter if not "none"
     if (newFilters.author && newFilters.author !== "none") {
       params.set("author", newFilters.author);
+    }
+
+    // Add author filter if not "none"
+    if (newFilters.language && newFilters.language !== "none") {
+      params.set("language", newFilters.language);
     }
 
     const queryString = params.toString();
@@ -95,6 +123,16 @@ const FilterBook = () => {
     const newFilters = {
       ...selectedFilters,
       author: selectedOption?.value || null,
+    };
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
+  };
+
+  // Handle author selection (single-select)
+  const handleLanguageChange = (selectedOption) => {
+    const newFilters = {
+      ...selectedFilters,
+      language: selectedOption?.value || null,
     };
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -142,6 +180,20 @@ const FilterBook = () => {
             (opt) =>
               opt.value === selectedFilters.author ||
               (selectedFilters.author === null && opt.value === "none")
+          )}
+        />
+      </div>
+
+      <div className="filter__box">
+        <h4>Language</h4>
+        <Select
+          onChange={handleLanguageChange}
+          options={languageOptions}
+          styles={selectStyle}
+          value={languageOptions?.find(
+            (opt) =>
+              opt.value === selectedFilters.language ||
+              (selectedFilters.language === null && opt.value === "none")
           )}
         />
       </div>
