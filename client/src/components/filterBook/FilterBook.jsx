@@ -27,6 +27,8 @@ const FilterBook = () => {
     genre: [],
     author: null,
     language: null,
+    minPrice: "",
+    maxPrice: "",
   });
 
   // Initialize state from URL params
@@ -35,6 +37,8 @@ const FilterBook = () => {
       genre: searchParams.getAll("genre") || [],
       author: searchParams.get("author") || null,
       language: searchParams.get("language") || null,
+      minPrice: searchParams.get("minPrice") || null,
+      maxPrice: searchParams.get("maxPrice") || null,
     };
     setSelectedFilters(params);
   }, [searchParams]);
@@ -92,10 +96,14 @@ const FilterBook = () => {
       params.set("author", newFilters.author);
     }
 
-    // Add author filter if not "none"
+    // Add language filter if not "none"
     if (newFilters.language && newFilters.language !== "none") {
       params.set("language", newFilters.language);
     }
+
+    // Add price filters
+    if (newFilters.minPrice) params.set("minPrice", newFilters.minPrice);
+    if (newFilters.maxPrice) params.set("maxPrice", newFilters.maxPrice);
 
     const queryString = params.toString();
     console.log("queryString", queryString);
@@ -153,6 +161,24 @@ const FilterBook = () => {
     }),
   };
 
+  // Handle price input changes
+  const handlePriceChange = (type, value) => {
+    const newValue = value.replace(/[^0-9.]/g, "");
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [type]: newValue,
+    }));
+  };
+
+  // Debounced update when prices change
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateUrl(selectedFilters);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [selectedFilters.minPrice, selectedFilters.maxPrice]);
+
   return (
     <div className="filter__container">
       <h1 className="heading">Filters</h1>
@@ -196,6 +222,29 @@ const FilterBook = () => {
               (selectedFilters.language === null && opt.value === "none")
           )}
         />
+      </div>
+
+      <div className="filter__box">
+        <h4>Price Range</h4>
+        <div className="price-input-group">
+          <input
+            type="text"
+            placeholder="Min price"
+            value={selectedFilters.minPrice || ""}
+            onChange={(e) => handlePriceChange("minPrice", e.target.value)}
+            pattern="[0-9]*"
+            inputMode="numeric"
+          />
+          <span className="price-separator">-</span>
+          <input
+            type="text"
+            placeholder="Max price"
+            value={selectedFilters.maxPrice || ""}
+            onChange={(e) => handlePriceChange("maxPrice", e.target.value)}
+            pattern="[0-9]*"
+            inputMode="numeric"
+          />
+        </div>
       </div>
     </div>
   );
