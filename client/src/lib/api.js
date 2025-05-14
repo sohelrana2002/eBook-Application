@@ -44,6 +44,12 @@ export const allAuthor = async () => {
   return res.data;
 };
 
+// ---for all language---
+export const allLanguage = async () => {
+  const res = await api.get("/api/filter/language");
+  return res.data;
+};
+
 // ---for list of books---
 // export const listBooks = async ({ queryKey }) => {
 //   const [_key, { search, page }] = queryKey;
