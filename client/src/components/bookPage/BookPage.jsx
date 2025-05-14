@@ -10,13 +10,15 @@ import FilterBook from "../filterBook/FilterBook";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
+import { fetchBooks } from "@/lib/api";
 
-const BookPage = () => {
+const BookPage = ({ allBooks }) => {
   const searchParams = useSearchParams();
   const genre = searchParams.get("genre");
   const author = searchParams.get("author");
   const language = searchParams.get("language");
-  // const brand = searchParams.get("brand");
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
 
   const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
   const filterMenuRef = useRef();
@@ -40,38 +42,10 @@ const BookPage = () => {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["books", genre, author, language],
-    queryFn: async () => {
-      try {
-        let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books`;
-
-        if (genre) {
-          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?genre=${genre}`;
-        }
-
-        if (author) {
-          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?author=${author}`;
-        }
-
-        if (language) {
-          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?language=${language}`;
-        }
-
-        const res = await fetch(url, {
-          cache: "no-cache",
-        });
-
-        if (!res.ok) {
-          throw new Error("Response is not ok");
-        }
-
-        return res.json();
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    queryKey: ["books", genre, author, language, minPrice, maxPrice],
+    queryFn: () => fetchBooks({ genre, author, language, minPrice, maxPrice }),
     placeholderData: keepPreviousData,
-    // initialData: showAllProducts
+    initialData: allBooks,
   });
 
   return (
@@ -111,15 +85,20 @@ const BookPage = () => {
 
         {/* ----right cntent ----  */}
         <div className="right__book__content">
-          {data?.books?.map((curElem) => {
-            return (
-              <Suspense key={curElem._id} fallback={<Loading />}>
-                <Link href="#">
+          {data?.books?.length === 0 ? (
+            <h1>There are no books available</h1>
+          ) : (
+            <Suspense fallback={<Loading />}>
+              {data?.books?.map((curElem) => (
+                <Link
+                  key={curElem._id}
+                  href={`/books/${curElem._id}`} // Use proper href
+                >
                   <BookCard {...curElem} />
                 </Link>
-              </Suspense>
-            );
-          })}
+              ))}
+            </Suspense>
+          )}
         </div>
       </div>
     </div>
