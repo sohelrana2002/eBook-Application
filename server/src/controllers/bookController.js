@@ -149,7 +149,7 @@ const listBook = async (req, res, next) => {
       query.language = language.toLowerCase();
     }
 
-    // ---for language---
+    // ---for author---
     if (author) {
       query.author = author.toLowerCase();
     }
