@@ -17,3 +17,22 @@
 .filter__box h4 {
     font-weight: 500;
 }
+
+.price-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.price-input-group input {
+    width: 100px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fff;
+}
+
+.price-separator {
+    color: #666;
+    font-weight: 500;
+}
