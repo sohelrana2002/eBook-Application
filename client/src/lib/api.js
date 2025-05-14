@@ -38,6 +38,12 @@ export const fetchProfile = async () => {
   return res.data;
 };
 
+// ---for all author---
+export const allAuthor = async () => {
+  const res = await api.get("/api/filter/authors");
+  return res.data;
+};
+
 // ---for list of books---
 // export const listBooks = async ({ queryKey }) => {
 //   const [_key, { search, page }] = queryKey;
