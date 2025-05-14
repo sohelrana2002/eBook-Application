@@ -15,7 +15,7 @@ const BookPage = () => {
   const searchParams = useSearchParams();
   const genre = searchParams.get("genre");
   const author = searchParams.get("author");
-  // const price = searchParams.get("price");
+  const language = searchParams.get("language");
   // const brand = searchParams.get("brand");
 
   const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
@@ -40,7 +40,7 @@ const BookPage = () => {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["books", genre, author],
+    queryKey: ["books", genre, author, language],
     queryFn: async () => {
       try {
         let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books`;
@@ -51,6 +51,10 @@ const BookPage = () => {
 
         if (author) {
           url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?author=${author}`;
+        }
+
+        if (language) {
+          url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books?language=${language}`;
         }
 
         const res = await fetch(url, {
