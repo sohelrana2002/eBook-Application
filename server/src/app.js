@@ -4,6 +4,7 @@ import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import authRouter from "./routers/authRouter.js";
 import bookRouter from "./routers/bookRouter.js";
 import reviewRouter from "./routers/reviewRouter.js";
+import filterRouter from "./routers/filterRouter.js";
 
 const app = express();
 const allowedOrigins = ["http://localhost:5173", "http://localhost:3001"];
@@ -34,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/books", bookRouter);
+app.use("/api/filter", filterRouter);
 app.use("/api", reviewRouter);
 
 app.get("/", (req, res) => {
