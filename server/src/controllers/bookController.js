@@ -124,6 +124,7 @@ const listBook = async (req, res, next) => {
     const {
       genre,
       language,
+      author,
       minPrice,
       maxPrice,
       title,
@@ -146,6 +147,11 @@ const listBook = async (req, res, next) => {
     // ---for language---
     if (language) {
       query.language = language.toLowerCase();
+    }
+
+    // ---for language---
+    if (author) {
+      query.author = author.toLowerCase();
     }
 
     // ----for price---
