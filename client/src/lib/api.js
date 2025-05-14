@@ -50,15 +50,32 @@ export const allLanguage = async () => {
   return res.data;
 };
 
-// ---for list of books---
-// export const listBooks = async ({ queryKey }) => {
-//   const [_key, { search, page }] = queryKey;
-//   const res = await api.get("/api/books", {
-//     params: { search, page, limit: 5 },
-//   });
-//   return res.data;
-// };
+// ----------fetchBooks-----
+export const fetchBooks = async (filters = {}) => {
+  const { genre, author, language, minPrice, maxPrice } = filters;
+  const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`);
 
+  const params = new URLSearchParams();
+
+  if (genre) params.append("genre", genre);
+  if (author) params.append("author", author);
+  if (language) params.append("language", language);
+  if (minPrice) params.append("minPrice", minPrice);
+  if (maxPrice) params.append("maxPrice", maxPrice);
+
+  url.search = params.toString();
+
+  try {
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) throw new Error("Failed to fetch books");
+    return await res.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error; // Rethrow to let React Query handle it
+  }
+};
+
+// ----------list of books-------
 export async function listBooks() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`, {
@@ -71,7 +88,6 @@ export async function listBooks() {
 
     return res.json();
   } catch (error) {
-    console.error("Error fetching books:", error);
-    return null;
+    console.log(error);
   }
 }
