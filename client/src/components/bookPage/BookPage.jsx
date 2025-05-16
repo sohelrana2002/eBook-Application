@@ -19,8 +19,17 @@ const BookPage = ({ allBooks }) => {
   const router = useRouter();
 
   const [selectedFilters, setSelectedFilters] = useState({
+    genre: [],
+    author: null,
+    language: null,
+    minPrice: "",
+    maxPrice: "",
     search: "",
+    sortBy: "",
+    order: "",
   });
+
+  // console.log("selectedFilters", selectedFilters);
 
   const genre = searchParams.get("genre");
   const author = searchParams.get("author");
@@ -28,6 +37,8 @@ const BookPage = ({ allBooks }) => {
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
   const search = searchParams.get("search");
+  const sortBy = searchParams.get("sortBy");
+  const order = searchParams.get("order");
 
   const handleMenuButton = () => {
     setIsFilterMenuShowing((prev) => !prev);
@@ -47,21 +58,57 @@ const BookPage = ({ allBooks }) => {
     };
   }, []);
 
-  // Initialize state from URL params
+  // -------Initialize state from URL params
   useEffect(() => {
     const params = {
+      genre: searchParams.getAll("genre") || [],
+      author: searchParams.get("author") || null,
+      language: searchParams.get("language") || null,
+      minPrice: searchParams.get("minPrice") || null,
+      maxPrice: searchParams.get("maxPrice") || null,
       search: searchParams.get("search") || "",
+      sortBy: searchParams.get("sortBy") || "",
+      order: searchParams.get("order") || "",
     };
     setSelectedFilters(params);
   }, [searchParams]);
 
-  // Update URL with current filters
+  // ---Update URL with current filters
   const updateUrl = (newFilters) => {
     const params = new URLSearchParams();
 
-    // Add search filter
+    // Add genre filters
+    newFilters.genre.forEach((genre) => {
+      params.append("genre", genre);
+    });
+
+    // Add author filter if not "none"
+    if (newFilters.author && newFilters.author !== "none") {
+      params.set("author", newFilters.author);
+    }
+
+    // Add language filter if not "none"
+    if (newFilters.language && newFilters.language !== "none") {
+      params.set("language", newFilters.language);
+    }
+
+    // Add price filters
+    if (newFilters.minPrice) params.set("minPrice", newFilters.minPrice);
+    if (newFilters.maxPrice) params.set("maxPrice", newFilters.maxPrice);
+
+    // ---Add search filter
     if (newFilters.search && newFilters.search !== "") {
       params.set("search", newFilters.search);
+    }
+
+    // ---Add sortby filter
+    if (newFilters.sortBy && newFilters.sortBy !== "") {
+      params.set("sortBy", newFilters.sortBy);
+    }
+
+    // ---Add order filter
+    if (newFilters.order && newFilters.order !== "") {
+      params.set("order", newFilters.order);
     }
 
     const queryString = params.toString();
@@ -73,14 +120,33 @@ const BookPage = ({ allBooks }) => {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["books", genre, author, language, minPrice, maxPrice, search],
+    queryKey: [
+      "books",
+      genre,
+      author,
+      language,
+      minPrice,
+      maxPrice,
+      search,
+      sortBy,
+      order,
+    ],
     queryFn: () =>
-      fetchBooks({ genre, author, language, minPrice, maxPrice, search }),
+      fetchBooks({
+        genre,
+        author,
+        language,
+        minPrice,
+        maxPrice,
+        search,
+        sortBy,
+        order,
+      }),
     placeholderData: keepPreviousData,
     initialData: allBooks,
   });
 
-  // Handle price input changes
+  // -------Handle search input changes-----------
   const handleSearchBook = (type, value) => {
     setSelectedFilters((prev) => ({
       ...prev,
@@ -88,14 +154,39 @@ const BookPage = ({ allBooks }) => {
     }));
   };
 
-  // Debounced update when search change
+  // ----handle sort and order ----
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+
+    if (value === "_") {
+      const newFilters = {
+        ...selectedFilters,
+        sortBy: "",
+        order: "",
+      };
+      setSelectedFilters(newFilters);
+      updateUrl(newFilters);
+      return;
+    }
+
+    const [sortBy, order] = value.split("_");
+    const newFilters = { ...selectedFilters, sortBy, order };
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
+  };
+
+  // ----------Debounced update when search change----------
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateUrl(selectedFilters);
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [selectedFilters.search]);
+  }, [
+    selectedFilters.search,
+    selectedFilters.minPrice,
+    selectedFilters.maxPrice,
+  ]);
 
   return (
     <div className="book__conatiner">
@@ -104,7 +195,11 @@ const BookPage = ({ allBooks }) => {
         ref={filterMenuRef}
         className={`left__conatiner-book ${isFilterMenuShowing && "show"}`}
       >
-        <FilterBook />
+        <FilterBook
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+          updateUrl={updateUrl}
+        />
       </div>
 
       {/* ----right side book ---  */}
@@ -129,10 +224,19 @@ const BookPage = ({ allBooks }) => {
           </div>
           {/* ----filter ----  */}
           <div className="sort__filter">
-            <select>
-              <option value="atoz">A to Z</option>
-              <option value="ztoa">Z to Z</option>
-              <option value="atoz">A to Z</option>
+            <select
+              onChange={handleSortChange}
+              value={
+                selectedFilters.sortBy && selectedFilters.order
+                  ? `${selectedFilters.sortBy}_${selectedFilters.order}`
+                  : "_"
+              }
+            >
+              <option value="_">Sort By</option>
+              <option value="title_asc">A to Z</option>
+              <option value="title_desc">Z to A</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
             </select>
           </div>
         </div>
