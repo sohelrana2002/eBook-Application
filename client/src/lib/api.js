@@ -95,3 +95,23 @@ export async function listBooks() {
     console.log(error);
   }
 }
+
+// -----singe book page ---
+export async function singleBook(bookId) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/books/${bookId}`,
+      {
+        cache: "no-cache",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Response is not ok");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
