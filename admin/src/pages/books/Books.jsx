@@ -133,7 +133,7 @@ const Books = () => {
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <img
-                          src={curElem.coverImage}
+                          src="/book.jpg"
                           alt="books images"
                           className="h-10 w-10 rounded-md object-cover"
                         />
