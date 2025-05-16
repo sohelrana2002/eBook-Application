@@ -46,9 +46,7 @@ bookRouter.route("/:bookId").patch(
 bookRouter.route("/").get(listBook);
 
 // ===details of individual book===
-bookRouter
-  .route("/:bookId")
-  .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), getSingleBook);
+bookRouter.route("/:bookId").get(getSingleBook);
 
 bookRouter
   .route("/:bookId")
