@@ -7,21 +7,27 @@ import Link from "next/link";
 import { SquareChevronLeft } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import FilterBook from "../filterBook/FilterBook";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import { fetchBooks } from "@/lib/api";
 
 const BookPage = ({ allBooks }) => {
+  const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
+  const filterMenuRef = useRef();
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [selectedFilters, setSelectedFilters] = useState({
+    search: "",
+  });
+
   const genre = searchParams.get("genre");
   const author = searchParams.get("author");
   const language = searchParams.get("language");
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
-
-  const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
-  const filterMenuRef = useRef();
+  const search = searchParams.get("search");
 
   const handleMenuButton = () => {
     setIsFilterMenuShowing((prev) => !prev);
@@ -41,12 +47,55 @@ const BookPage = ({ allBooks }) => {
     };
   }, []);
 
+  // Initialize state from URL params
+  useEffect(() => {
+    const params = {
+      search: searchParams.get("search") || "",
+    };
+    setSelectedFilters(params);
+  }, [searchParams]);
+
+  // Update URL with current filters
+  const updateUrl = (newFilters) => {
+    const params = new URLSearchParams();
+
+    // Add search filter
+    if (newFilters.search && newFilters.search !== "") {
+      params.set("search", newFilters.search);
+    }
+
+    const queryString = params.toString();
+    // console.log("queryString", queryString);
+
+    router.push(queryString ? `/books?${queryString}` : "/books", {
+      scroll: false,
+    });
+  };
+
   const { data, isLoading } = useQuery({
-    queryKey: ["books", genre, author, language, minPrice, maxPrice],
-    queryFn: () => fetchBooks({ genre, author, language, minPrice, maxPrice }),
+    queryKey: ["books", genre, author, language, minPrice, maxPrice, search],
+    queryFn: () =>
+      fetchBooks({ genre, author, language, minPrice, maxPrice, search }),
     placeholderData: keepPreviousData,
     initialData: allBooks,
   });
+
+  // Handle price input changes
+  const handleSearchBook = (type, value) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [type]: value,
+    }));
+  };
+
+  // Debounced update when search change
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateUrl(selectedFilters);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [selectedFilters.search]);
 
   return (
     <div className="book__conatiner">
@@ -71,7 +120,12 @@ const BookPage = ({ allBooks }) => {
             <div className="colapse__menu" onClick={handleMenuButton}>
               <SquareChevronLeft />
             </div>
-            <input type="search" placeholder="search book ..." />
+            <input
+              type="search"
+              placeholder="search book ..."
+              value={selectedFilters.search || ""}
+              onChange={(e) => handleSearchBook("search", e.target.value)}
+            />
           </div>
           {/* ----filter ----  */}
           <div className="sort__filter">
