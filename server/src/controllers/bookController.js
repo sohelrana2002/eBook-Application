@@ -176,7 +176,7 @@ const listBook = async (req, res, next) => {
     // console.log("query", query);
 
     let sortQuery = {};
-    const validSortFields = ["genre", "language", "price"];
+    const validSortFields = ["genre", "title", "price"];
     if (sortBy && validSortFields.includes(sortBy)) {
       sortQuery[sortBy] = order === "desc" ? -1 : 1;
     }
