@@ -2,9 +2,9 @@ import Image from "next/image";
 import { singleBook } from "@/lib/api";
 
 const SingleBookPage = async ({ params }) => {
-  const bookId = params.book_id;
+  const { book_id } = await params;
 
-  const singleBookData = await singleBook(bookId);
+  const singleBookData = await singleBook(book_id);
 
   const bookDetails = singleBookData?.singeBook[0];
   // console.log("singleBookData", bookDetails);
