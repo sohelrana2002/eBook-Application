@@ -52,7 +52,7 @@ export const allLanguage = async () => {
 
 // ----------fetchBooks-----
 export const fetchBooks = async (filters = {}) => {
-  const { genre, author, language, minPrice, maxPrice } = filters;
+  const { genre, author, language, minPrice, maxPrice, search } = filters;
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`);
 
   const params = new URLSearchParams();
@@ -62,6 +62,7 @@ export const fetchBooks = async (filters = {}) => {
   if (language) params.append("language", language);
   if (minPrice) params.append("minPrice", minPrice);
   if (maxPrice) params.append("maxPrice", maxPrice);
+  if (search) params.append("search", search);
 
   url.search = params.toString();
 
