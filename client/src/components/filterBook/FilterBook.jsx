@@ -20,29 +20,7 @@ const allGenre = [
   "Health",
 ];
 
-const FilterBook = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [selectedFilters, setSelectedFilters] = useState({
-    genre: [],
-    author: null,
-    language: null,
-    minPrice: "",
-    maxPrice: "",
-  });
-
-  // Initialize state from URL params
-  useEffect(() => {
-    const params = {
-      genre: searchParams.getAll("genre") || [],
-      author: searchParams.get("author") || null,
-      language: searchParams.get("language") || null,
-      minPrice: searchParams.get("minPrice") || null,
-      maxPrice: searchParams.get("maxPrice") || null,
-    };
-    setSelectedFilters(params);
-  }, [searchParams]);
-
+const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
   const { data: authorData } = useQuery({
     queryKey: ["allAuthor"],
     queryFn: allAuthor,
@@ -82,37 +60,6 @@ const FilterBook = () => {
     })) || []),
   ];
 
-  // Update URL with current filters
-  const updateUrl = (newFilters) => {
-    const params = new URLSearchParams();
-
-    // Add genre filters
-    newFilters.genre.forEach((genre) => {
-      params.append("genre", genre);
-    });
-
-    // Add author filter if not "none"
-    if (newFilters.author && newFilters.author !== "none") {
-      params.set("author", newFilters.author);
-    }
-
-    // Add language filter if not "none"
-    if (newFilters.language && newFilters.language !== "none") {
-      params.set("language", newFilters.language);
-    }
-
-    // Add price filters
-    if (newFilters.minPrice) params.set("minPrice", newFilters.minPrice);
-    if (newFilters.maxPrice) params.set("maxPrice", newFilters.maxPrice);
-
-    const queryString = params.toString();
-    // console.log("queryString", queryString);
-
-    router.push(queryString ? `/books?${queryString}` : "/books", {
-      scroll: false,
-    });
-  };
-
   // Handle genre selection (multi-select)
   const handleGenreChange = (selectedOptions) => {
     const newFilters = {
@@ -120,7 +67,7 @@ const FilterBook = () => {
       genre: selectedOptions.map((opt) => opt.value),
     };
 
-    // console.log("newFilters", newFilters);
+    console.log("newFilters", newFilters);
 
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -169,15 +116,6 @@ const FilterBook = () => {
       [type]: newValue,
     }));
   };
-
-  // Debounced update when prices change
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateUrl(selectedFilters);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [selectedFilters.minPrice, selectedFilters.maxPrice]);
 
   return (
     <div className="filter__container">
