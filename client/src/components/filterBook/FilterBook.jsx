@@ -106,7 +106,7 @@ const FilterBook = () => {
     if (newFilters.maxPrice) params.set("maxPrice", newFilters.maxPrice);
 
     const queryString = params.toString();
-    console.log("queryString", queryString);
+    // console.log("queryString", queryString);
 
     router.push(queryString ? `/books?${queryString}` : "/books", {
       scroll: false,
@@ -120,7 +120,7 @@ const FilterBook = () => {
       genre: selectedOptions.map((opt) => opt.value),
     };
 
-    console.log("newFilters", newFilters);
+    // console.log("newFilters", newFilters);
 
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
