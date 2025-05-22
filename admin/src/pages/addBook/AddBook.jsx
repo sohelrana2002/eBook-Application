@@ -17,6 +17,7 @@ const AddBook = () => {
     publicationDate: "",
     price: "",
     tags: [],
+    isOscar: false,
     coverImage: null,
     bookFile: null,
   });
@@ -49,9 +50,11 @@ const AddBook = () => {
   ];
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type, checked, files } = e.target;
     if (type === "file") {
       setFormData({ ...formData, [name]: files[0] });
+    } else if (type === "checkbox") {
+      setFormData({ ...formData, [name]: checked });
     } else if (name === "price") {
       setFormData({ ...formData, [name]: parseFloat(value) });
     } else {
@@ -117,11 +120,13 @@ const AddBook = () => {
     formData.tags.forEach((t) => formDataToSend.append("tags[]", t));
     formDataToSend.append("coverImage", formData.coverImage);
     formDataToSend.append("bookFile", formData.bookFile);
+    formDataToSend.append("isOscar", formData.isOscar);
 
     mutation.mutate(formDataToSend);
-    console.log(formData);
     // You can now send formData to backend using FormData if needed
   };
+
+  // console.log(formData);
 
   return (
     <div>
@@ -181,13 +186,13 @@ const AddBook = () => {
             Genre
           </label>
           <div className="flex flex-wrap gap-2 mt-1">
-            {genres.map((g) => (
+            {genres?.map((g) => (
               <button
                 type="button"
                 key={g}
                 onClick={() => handleMultiSelect("genre", g)}
                 className={`px-3 py-1 rounded-full text-sm border cursor-pointer ${
-                  formData.genre.includes(g)
+                  formData?.genre?.includes(g)
                     ? "bg-[#000] text-white "
                     : "bg-white text-gray-700 border-gray-300"
                 }`}
@@ -262,6 +267,17 @@ const AddBook = () => {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isOscar"
+            checked={formData.isOscar}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">This book won an Oscar</span>
         </div>
 
         {/* Cover Image */}
