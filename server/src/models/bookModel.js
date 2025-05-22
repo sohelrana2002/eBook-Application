@@ -60,7 +60,7 @@ const bookSchema = new mongoose.Schema(
 
     averageRating: { type: Number, default: 0 },
 
-    isOscor: {
+    isOscar: {
       type: Boolean,
       default: false,
     },
