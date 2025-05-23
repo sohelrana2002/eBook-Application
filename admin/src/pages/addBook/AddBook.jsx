@@ -269,17 +269,6 @@ const AddBook = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isOscar"
-            checked={formData.isOscar}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">This book won an Oscar</span>
-        </div>
-
         {/* Cover Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
@@ -306,6 +295,18 @@ const AddBook = () => {
             accept=".pdf"
             className="mt-1"
           />
+        </div>
+
+        {/* =====isOscar===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isOscar"
+            checked={formData.isOscar}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">This book won an Oscar?</span>
         </div>
 
         <div>
