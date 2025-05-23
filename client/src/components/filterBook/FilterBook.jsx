@@ -1,7 +1,5 @@
 "use client";
 import "./FilterBook.css";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Select from "react-select";
 import { allAuthor, allLanguage } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
@@ -67,7 +65,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
       genre: selectedOptions.map((opt) => opt.value),
     };
 
-    console.log("newFilters", newFilters);
+    // console.log("newFilters", newFilters);
 
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -115,6 +113,16 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
       ...prev,
       [type]: newValue,
     }));
+  };
+
+  // --handle isOscar input change---
+  const handleIsOscar = (e) => {
+    const newFilters = {
+      ...selectedFilters,
+      isOscar: e.target.checked ? true : null,
+    };
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
   };
 
   return (
@@ -183,6 +191,18 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
             inputMode="numeric"
           />
         </div>
+      </div>
+
+      <div className="filter__box">
+        <h4>Oscar Winner</h4>
+        <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <input
+            type="checkbox"
+            checked={selectedFilters.isOscar === true}
+            onChange={handleIsOscar}
+          />
+          Oscar-winning books
+        </label>
       </div>
     </div>
   );

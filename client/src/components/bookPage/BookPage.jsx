@@ -27,6 +27,7 @@ const BookPage = ({ allBooks }) => {
     search: "",
     sortBy: "",
     order: "",
+    isOscar: null,
   });
 
   // console.log("selectedFilters", selectedFilters);
@@ -39,6 +40,7 @@ const BookPage = ({ allBooks }) => {
   const search = searchParams.get("search");
   const sortBy = searchParams.get("sortBy");
   const order = searchParams.get("order");
+  const isOscar = searchParams.get("isOscar");
 
   const handleMenuButton = () => {
     setIsFilterMenuShowing((prev) => !prev);
@@ -69,6 +71,7 @@ const BookPage = ({ allBooks }) => {
       search: searchParams.get("search") || "",
       sortBy: searchParams.get("sortBy") || "",
       order: searchParams.get("order") || "",
+      isOscar: searchParams.get("isOscar") === "true" ? true : null,
     };
     setSelectedFilters(params);
   }, [searchParams]);
@@ -111,6 +114,11 @@ const BookPage = ({ allBooks }) => {
       params.set("order", newFilters.order);
     }
 
+    // ---Add oscar filter
+    if (newFilters.isOscar && newFilters.isOscar !== "") {
+      params.set("isOscar", newFilters.isOscar);
+    }
+
     const queryString = params.toString();
     // console.log("queryString", queryString);
 
@@ -130,6 +138,7 @@ const BookPage = ({ allBooks }) => {
       search,
       sortBy,
       order,
+      isOscar,
     ],
     queryFn: () =>
       fetchBooks({
@@ -141,6 +150,7 @@ const BookPage = ({ allBooks }) => {
         search,
         sortBy,
         order,
+        isOscar,
       }),
     placeholderData: keepPreviousData,
     initialData: allBooks,
@@ -179,7 +189,7 @@ const BookPage = ({ allBooks }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateUrl(selectedFilters);
-    }, 500);
+    }, 7000);
 
     return () => clearTimeout(timeout);
   }, [
