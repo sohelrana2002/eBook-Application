@@ -7,7 +7,7 @@ const BookCard = ({ coverImage, title, averageRating, price, author }) => {
       <div className="p-4 space-y-2 border-t-2 border-[var(--border)] flex items-start justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-800 line-clamp-2 capitalize max-w-[200px]">
-            {title}
+            {title.length > 17 ? `${title.substring(0, 17)}...` : title}
           </h2>
 
           <h2 className="text-sm font-semibold text-gray-800 line-clamp-2 capitalize">
