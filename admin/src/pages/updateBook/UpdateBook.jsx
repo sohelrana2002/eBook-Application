@@ -21,9 +21,12 @@ const UpdateBook = () => {
     publicationDate: "",
     price: "",
     tags: [],
+    isOscar: false,
     coverImage: null,
     bookFile: null,
   });
+
+  // console.log("formData", formData);
 
   const { data: bookData, isLoading } = useQuery({
     queryKey: ["book", id],
@@ -67,9 +70,13 @@ const UpdateBook = () => {
   ];
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value, type, checked, files } = e.target;
     if (type === "file") {
       setFormData({ ...formData, [name]: files[0] });
+    } else if (type === "checkbox") {
+      setFormData({ ...formData, [name]: checked });
+    } else if (name === "price") {
+      setFormData({ ...formData, [name]: parseFloat(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -111,6 +118,7 @@ const UpdateBook = () => {
     formData.tags.forEach((t) => formDataToSend.append("tags[]", t));
     formDataToSend.append("coverImage", formData.coverImage);
     formDataToSend.append("bookFile", formData.bookFile);
+    formDataToSend.append("isOscar", formData.isOscar);
 
     //   mutation.mutate(formDataToSend);
     mutation.mutate({ id, formData: formDataToSend });
@@ -289,6 +297,18 @@ const UpdateBook = () => {
             accept=".pdf"
             className="mt-1"
           />
+        </div>
+
+        {/* =====isOscar===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isOscar"
+            checked={formData.isOscar}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">This book won an Oscar?</span>
         </div>
 
         <div>
