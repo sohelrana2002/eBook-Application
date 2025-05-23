@@ -79,10 +79,10 @@ const booksValidatorSchema = z.object({
     .number({ required_error: "Calculate average rating" })
     .optional(),
 
-  isOscar: z
-    .boolean({ required_error: "Define book oscor or not!" })
-    .optional()
-    .default(false),
+  isOscar: z.preprocess(
+    (val) => val === true || val === "true",
+    z.boolean().default(false)
+  ),
 });
 
 export default booksValidatorSchema;
