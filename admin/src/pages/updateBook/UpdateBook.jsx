@@ -131,7 +131,7 @@ const UpdateBook = () => {
   }
 
   return (
-    <div>
+    <div className="pb-15">
       <Heading icon={<CopyPlus />} title="Update a Book" />
 
       <form
