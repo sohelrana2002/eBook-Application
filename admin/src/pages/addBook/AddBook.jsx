@@ -73,11 +73,14 @@ const AddBook = () => {
 
   // ---dynamically reset state---
   const reset = Object.fromEntries(
-    Object.entries(formData).map(([key, value]) => [
-      key,
-      Array.isArray(value) ? [] : "",
-    ])
+    Object.entries(formData).map(([key, value]) => {
+      if (Array.isArray(value)) return [key, []];
+      if (typeof value === "boolean") return [key, false];
+      if (value instanceof File || value === null) return [key, null];
+      return [key, ""];
+    })
   );
+
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -123,10 +126,7 @@ const AddBook = () => {
     formDataToSend.append("isOscar", formData.isOscar);
 
     mutation.mutate(formDataToSend);
-    // You can now send formData to backend using FormData if needed
   };
-
-  // console.log(formData);
 
   return (
     <div>
