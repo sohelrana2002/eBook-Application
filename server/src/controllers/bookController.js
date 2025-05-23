@@ -16,6 +16,7 @@ const createBook = async (req, res, next) => {
       publicationDate,
       price,
       tags,
+      isOscar,
     } = req.body;
 
     const { coverImage, bookFile } = req.files;
@@ -32,6 +33,7 @@ const createBook = async (req, res, next) => {
       publicationDate,
       price: parseFloat(price),
       tags,
+      isOscar,
       coverImage: coverImage?.[0]?.path,
       bookFile: bookFile?.[0]?.path,
     });
@@ -61,6 +63,7 @@ const updateBook = async (req, res, next) => {
       publicationDate,
       price,
       tags,
+      isOscar,
     } = req.body;
 
     const { coverImage, bookFile } = req.files;
@@ -96,6 +99,7 @@ const updateBook = async (req, res, next) => {
         publicationDate,
         price: Number(price),
         tags,
+        isOscar,
         coverImage: coverImage?.[0]?.path,
         bookFile: bookFile?.[0]?.path,
       },
@@ -133,6 +137,7 @@ const listBook = async (req, res, next) => {
       page,
       limit,
       search,
+      isOscar,
     } = req.query;
 
     let query = {};
@@ -164,6 +169,10 @@ const listBook = async (req, res, next) => {
     // ---for title---
     if (title) {
       query.title = { $regex: title, $options: "i" };
+    }
+
+    if (isOscar) {
+      query.isOscar = isOscar.toLowerCase();
     }
 
     // ---for search---
