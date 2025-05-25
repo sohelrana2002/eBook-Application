@@ -64,4 +64,28 @@ const getBookRequest = async (req, res) => {
   }
 };
 
-export { bookRequest, getBookRequest };
+//  Admin updates status
+const updateBookStatus = async (req, res) => {
+  const { status } = req.body;
+  const bookId = req.params.bookId;
+
+  try {
+    const updated = await bookRequestModel.findByIdAndUpdate(
+      { _id: bookId },
+      { status },
+      { new: true }
+    );
+    res.status(201).json({
+      message: "Book status updated successfully!",
+      bookId: updated._id,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+export { bookRequest, getBookRequest, updateBookStatus };
