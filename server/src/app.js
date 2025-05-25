@@ -5,6 +5,7 @@ import authRouter from "./routers/authRouter.js";
 import bookRouter from "./routers/bookRouter.js";
 import reviewRouter from "./routers/reviewRouter.js";
 import filterRouter from "./routers/filterRouter.js";
+import bookRequestRouter from "./routers/bookRequestRouter.js";
 
 const app = express();
 const allowedOrigins = ["http://localhost:5173", "http://localhost:3001"];
@@ -37,6 +38,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/filter", filterRouter);
 app.use("/api", reviewRouter);
+app.use("/api/bookRequest", bookRequestRouter);
 
 app.get("/", (req, res) => {
   res.json({
