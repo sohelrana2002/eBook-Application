@@ -3,10 +3,14 @@ const bookRequestRouter = new express.Router();
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRoles from "../middlewares/authorizedRole.js";
 import validate from "../middlewares/validateMiddleware.js";
-import bookRequestValidatorSchema from "../validator/bookRequestValidator.js";
+import {
+  bookRequestValidatorSchema,
+  bookRequestUpdateSchema,
+} from "../validator/bookRequestValidator.js";
 import {
   bookRequest,
   getBookRequest,
+  updateBookStatus,
 } from "../controllers/bookRequestController.js";
 
 // Create a book request
@@ -23,5 +27,15 @@ bookRequestRouter
 bookRequestRouter
   .route("/user/:userId")
   .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), getBookRequest);
+
+//  Admin updates status
+bookRequestRouter
+  .route("/:bookId/status")
+  .post(
+    validate(bookRequestUpdateSchema),
+    jwtAuthMiddleware,
+    authorizedRoles("admin"),
+    updateBookStatus
+  );
 
 export default bookRequestRouter;
