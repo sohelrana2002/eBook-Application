@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <TanstackProvider>
             <Navbar />
-            <div className="pt-[4.5rem]">{children}</div>
+            <div className="pt-[3.8rem]">{children}</div>
           </TanstackProvider>
         </AuthProvider>
       </body>
