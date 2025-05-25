@@ -8,13 +8,15 @@ const api = axios.create({
 });
 
 // Add token to headers for every request
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+if (typeof window !== "undefined") {
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+}
 
 // ----for login---
 export const login = async (email, password) => {
@@ -125,3 +127,27 @@ export async function singleBook(bookId) {
     console.log(error);
   }
 }
+
+// ---get review from each book---
+export async function reviewEachBook(bookId) {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/${bookId}/reviews`;
+  // console.log("Fetching URL:", url);
+
+  try {
+    const res = await fetch(url, {
+      cache: "no-cache",
+    });
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ---add review section-------
+export const addReview = async (bookId, rating, comment) => {
+  console.log("addreview data", { bookId, rating, comment });
+
+  const res = await api.post(`/api/${bookId}/review`, { rating, comment });
+  return res.data;
+};
