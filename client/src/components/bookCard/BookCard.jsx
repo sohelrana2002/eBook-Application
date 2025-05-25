@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { renderRatingStars } from "@/lib/renderRatingStars";
 
 const BookCard = ({ coverImage, title, averageRating, price, author }) => {
   return (
@@ -17,14 +17,7 @@ const BookCard = ({ coverImage, title, averageRating, price, author }) => {
         <div className="flex flex-col items-end">
           <p className="text-lg font-bold text-[var(--blue)]">${price}</p>
           <div className="flex items-center gap-1 text-yellow-500">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={16}
-                fill={i < averageRating ? "#facc15" : "none"}
-                stroke={i < averageRating ? "#facc15" : "currentColor"}
-              />
-            ))}
+            {renderRatingStars(averageRating)}
           </div>
         </div>
       </div>
