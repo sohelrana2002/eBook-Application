@@ -28,10 +28,12 @@ const bookRequestValidatorSchema = z.object({
     .toLowerCase(),
 
   status: z
-    .enum(["pending", "in-progress", "added"], {
+    .enum(["pending", "in-progress", "added", "not-found"], {
       required_error: "status must be required",
     })
     .default("pending"),
 });
 
-export default bookRequestValidatorSchema;
+const bookRequestUpdateSchema = bookRequestValidatorSchema.partial();
+
+export { bookRequestValidatorSchema, bookRequestUpdateSchema };
