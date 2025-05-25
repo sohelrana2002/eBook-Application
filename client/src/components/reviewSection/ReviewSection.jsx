@@ -173,16 +173,20 @@ const ReviewSection = ({ initialReviews, bookId }) => {
         ) : (
           <>
             {/* Sort Dropdown */}
-            <div>
-              <label className="mr-2 font-medium">Sort by:</label>
-              <select
-                className="border border-[var(--border)] rounded px-2 py-1"
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-              </select>
+            <div className="flex flex-col justify-between items-start gap-2 md:items-center md:flex-row ">
+              <div>
+                <label className="mr-2 font-medium">Sort by:</label>
+                <select
+                  className="border border-[var(--border)] rounded px-2 py-1"
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+
+              <div>Reviews ({sortedReviews.length})</div>
             </div>
 
             <ul className="space-y-4">
