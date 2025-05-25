@@ -1,33 +1,21 @@
 import Image from "next/image";
-import { singleBook } from "@/lib/api";
+import { singleBook, reviewEachBook } from "@/lib/api";
+import ReviewSection from "@/components/reviewSection/ReviewSection";
+import { renderRatingStars } from "@/lib/renderRatingStars";
 
 const SingleBookPage = async ({ params }) => {
   const { book_id } = await params;
 
   const singleBookData = await singleBook(book_id);
+  const bookReview = await reviewEachBook(book_id);
+
+  // console.log("bookReview", bookReview);
 
   const bookDetails = singleBookData?.singeBook[0];
   // console.log("singleBookData", bookDetails);
 
-  const renderRatingStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span
-          key={i}
-          className={`text-2xl ${
-            i <= rating ? "text-yellow-400" : "text-gray-300"
-          }`}
-        >
-          ★
-        </span>
-      );
-    }
-    return stars;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-5 md:p-8">
@@ -120,6 +108,11 @@ const SingleBookPage = async ({ params }) => {
           </div>
         </div>
       </div>
+
+      {/* ---review section---- */}
+      <main className="max-w-2xl mx-auto mt-10">
+        <ReviewSection initialReviews={bookReview} bookId={book_id} />
+      </main>
     </div>
   );
 };
