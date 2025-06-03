@@ -1,9 +1,12 @@
 import bookRequestModel from "../models/bookRequestModel.js";
 import userModel from "../models/authModel.js";
+import mongoose from "mongoose";
 
 // Create a book request
 const bookRequest = async (req, res) => {
-  const { userId, bookName, authorName, publicationDate, language } = req.body;
+  const { bookName, authorName, publicationDate, language } = req.body;
+
+  const userId = req.jwtPayload.userId;
 
   try {
     const userExist = await userModel.findOne({ _id: userId });
@@ -39,9 +42,26 @@ const bookRequest = async (req, res) => {
 const getBookRequest = async (req, res) => {
   try {
     const userId = req.params.userId;
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({
+        message: "Invalid user ID",
+      });
+    }
+
+    const userExist = await userModel
+      .findOne({ _id: userId })
+      .select("name email");
+
+    if (!userExist) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
+
     const requests = await bookRequestModel
       .find({ userId: userId })
-      .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
     if (!requests || requests.length === 0) {
@@ -53,6 +73,7 @@ const getBookRequest = async (req, res) => {
     res.status(201).json({
       message: "success",
       totalRequest: requests.length,
+      userData: userExist,
       allBookRequest: requests,
     });
   } catch (err) {
