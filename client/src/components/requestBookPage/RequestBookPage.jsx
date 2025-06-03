@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useAuthContext } from "@/context/authContext";
+import { requestBook } from "@/lib/api";
+import { useMutation } from "@tanstack/react-query";
+import { LoaderCircle } from "lucide-react";
 
 const RequestBookPage = () => {
   const { isLoggedIn } = useAuthContext();
@@ -12,6 +15,8 @@ const RequestBookPage = () => {
     language: "",
   });
 
+  console.log("form", form);
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -22,8 +27,35 @@ const RequestBookPage = () => {
     });
   };
 
+  // ---dynamically reset state---
+  const reset = Object.fromEntries(
+    Object.entries(form).map(([key, value]) => {
+      return [key, ""];
+    })
+  );
+
+  const mutation = useMutation({
+    mutationFn: ({ bookName, authorName, publicationDate, language }) =>
+      requestBook(bookName, authorName, publicationDate, language),
+    onSuccess: (data) => {
+      alert(data.message);
+      setForm(reset);
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message);
+      // console.log("error", error);
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    mutation.mutate({
+      bookName: form.bookName,
+      authorName: form.authorName,
+      publicationDate: form.publicationDate,
+      language: form.language,
+    });
   };
 
   if (!isLoggedIn) {
@@ -103,8 +135,10 @@ const RequestBookPage = () => {
 
           <button
             type="submit"
-            className="bg-[var(--blue)] text-white w-full py-2 rounded hover:bg-[var(--black)] cursor-pointer"
+            disabled={mutation.isPending}
+            className="w-full bg-[#000] cursor-pointer text-white py-2 rounded-md hover: transition duration-200 flex items-center gap-2 justify-center"
           >
+            {mutation.isPending && <LoaderCircle className="animate-spin" />}
             Send Request
           </button>
         </form>
