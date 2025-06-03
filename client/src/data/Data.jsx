@@ -24,4 +24,9 @@ export const navMenu = [
     path: "/contact",
     title: "contact",
   },
+  {
+    id: 6,
+    path: "/request-book",
+    title: "Request a Book",
+  },
 ];
