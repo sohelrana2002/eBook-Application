@@ -41,11 +41,12 @@ const getBookRequest = async (req, res) => {
     const userId = req.params.userId;
     const requests = await bookRequestModel
       .find({ userId: userId })
+      .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
-    if (!requests) {
-      res.status(404).json({
-        message: "There are no book request!",
+    if (!requests || requests.length === 0) {
+      return res.status(404).json({
+        message: "There are no book requests!",
       });
     }
 
