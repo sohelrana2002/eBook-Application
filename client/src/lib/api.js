@@ -153,12 +153,12 @@ export const addReview = async (bookId, rating, comment) => {
 };
 
 // ---create book request method-------
-export const requestBook = async (
+export const requestBook = async ({
   bookName,
   authorName,
   publicationDate,
-  language
-) => {
+  language,
+}) => {
   const res = await api.post(`api/bookRequest`, {
     bookName,
     authorName,
