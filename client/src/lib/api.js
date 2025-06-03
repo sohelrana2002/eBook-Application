@@ -146,8 +146,24 @@ export async function reviewEachBook(bookId) {
 
 // ---add review section-------
 export const addReview = async (bookId, rating, comment) => {
-  console.log("addreview data", { bookId, rating, comment });
+  // console.log("addreview data", { bookId, rating, comment });
 
   const res = await api.post(`/api/${bookId}/review`, { rating, comment });
+  return res.data;
+};
+
+// ---create book request method-------
+export const requestBook = async (
+  bookName,
+  authorName,
+  publicationDate,
+  language
+) => {
+  const res = await api.post(`api/bookRequest`, {
+    bookName,
+    authorName,
+    publicationDate,
+    language,
+  });
   return res.data;
 };
