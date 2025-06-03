@@ -35,14 +35,14 @@ const RequestBookPage = () => {
   );
 
   const mutation = useMutation({
-    mutationFn: ({ bookName, authorName, publicationDate, language }) =>
-      requestBook(bookName, authorName, publicationDate, language),
+    mutationFn: requestBook,
     onSuccess: (data) => {
       alert(data.message);
       setForm(reset);
     },
     onError: (error) => {
-      alert(error?.response?.data?.message);
+      const errMsg = error?.response?.data?.message;
+      alert(errMsg);
       // console.log("error", error);
     },
   });
@@ -50,12 +50,7 @@ const RequestBookPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    mutation.mutate({
-      bookName: form.bookName,
-      authorName: form.authorName,
-      publicationDate: form.publicationDate,
-      language: form.language,
-    });
+    mutation.mutate(form);
   };
 
   if (!isLoggedIn) {
