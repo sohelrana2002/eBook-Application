@@ -72,7 +72,10 @@ const Navbar = () => {
             ) : isLoggedIn ? (
               <ProfileDropdown />
             ) : (
-              <Link href="/login" className="profile">
+              <Link
+                href="/login"
+                className="flex items-center gap-2 rounded-full bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
+              >
                 Login
               </Link>
             )}
