@@ -4,8 +4,14 @@ import "./profile.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
+import { useAuthContext } from "@/context/authContext";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const ViewProfile = () => {
+  const router = useRouter();
+  const { isLoggedIn } = useAuthContext();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchProfile,
@@ -13,6 +19,12 @@ const ViewProfile = () => {
   });
 
   // console.log("data", data);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace("/");
+    }
+  }, [isLoggedIn, router]);
 
   if (isLoading) {
     return <Loading />;
