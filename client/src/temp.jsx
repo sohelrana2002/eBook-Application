@@ -1,6 +1,6 @@
 "use client";
 
-import "./profile.css";
+import "./UserProfilePage.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
@@ -8,7 +8,7 @@ import { useAuthContext } from "@/context/authContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const ViewProfile = () => {
+const UserProfilePage = () => {
   const router = useRouter();
   const { isLoggedIn } = useAuthContext();
 
@@ -54,4 +54,4 @@ const ViewProfile = () => {
   );
 };
 
-export default ViewProfile;
+export default UserProfilePage;

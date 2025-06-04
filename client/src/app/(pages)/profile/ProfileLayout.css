@@ -1,0 +1,19 @@
+.left__userProfile {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    width: 300px;
+    border-right: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right__userProfile {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 300px;
+    width: calc(99vw - 300px);
+}
