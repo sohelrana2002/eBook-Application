@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthContext } from "@/context/authContext";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
@@ -10,6 +10,7 @@ import { login } from "@/lib/api";
 
 const Login = () => {
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
@@ -18,7 +19,7 @@ const Login = () => {
 
   //   console.log("userLogin", userLogin);
 
-  const { storeTokenInLS } = useAuthContext();
+  const { storeTokenInLS, isLoggedIn, isLoading } = useAuthContext();
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -63,6 +64,22 @@ const Login = () => {
 
     // console.log("Submitted data:", userLogin);
   };
+
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      setIsRedirecting(true);
+      router.replace("/");
+    }
+  }, [isLoggedIn, router, isLoading]);
+
+  if (isLoading || isRedirecting) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoaderCircle className="animate-spin w-10 h-10 text-black" />
+        <span className="ml-2 text-gray-600">Redirecting...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
