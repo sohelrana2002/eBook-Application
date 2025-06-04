@@ -21,6 +21,13 @@ const Login = () => {
 
   const { storeTokenInLS, isLoggedIn, isLoading } = useAuthContext();
 
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      setIsRedirecting(true);
+      router.replace("/");
+    }
+  }, [isLoggedIn, router, isLoading]);
+
   const handleInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -64,13 +71,6 @@ const Login = () => {
 
     // console.log("Submitted data:", userLogin);
   };
-
-  useEffect(() => {
-    if (!isLoading && isLoggedIn) {
-      setIsRedirecting(true);
-      router.replace("/");
-    }
-  }, [isLoggedIn, router, isLoading]);
 
   if (isLoading || isRedirecting) {
     return (
