@@ -5,14 +5,18 @@ import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/authContext";
 
 const Logout = () => {
-  const { logOutUser } = useAuthContext();
+  const { logOutUser, isLoggedIn } = useAuthContext();
   const router = useRouter();
 
   useEffect(() => {
-    logOutUser();
-    alert("Logout successfully");
-    router.replace("/login");
-  }, []);
+    if (!isLoggedIn) {
+      router.replace("/");
+    } else {
+      logOutUser();
+      alert("Logout successfully");
+      router.replace("/login");
+    }
+  }, [isLoggedIn, router]);
 
   return null;
 };
