@@ -2,7 +2,7 @@
 
 import "./ProfileLayout.css";
 import Link from "next/link";
-import { LayoutDashboard, SquareChevronRight } from "lucide-react";
+import { LayoutDashboard, SquareChevronRight, BookCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 const ProfileLayout = ({ children }) => {
@@ -40,14 +40,28 @@ const ProfileLayout = ({ children }) => {
         ref={menuRef}
       >
         <ul>
+          {/* user dashboard */}
           <li className="border-b-2 border-[var(--border)] p-2 rounded-lg">
             <button data-title="user dashboard" onClick={handleClick}>
               <Link
                 href="/profile"
-                className="capitalize md:text-md text-lg font-semibold flex items-center gap-2"
+                className="capitalize md:text-sm text-md font-semibold flex items-center gap-2"
               >
-                <LayoutDashboard size="20" />
+                <LayoutDashboard size="18" />
                 <span>user dashboard</span>
+              </Link>
+            </button>
+          </li>
+
+          {/* requested book */}
+          <li className="border-b-2 border-[var(--border)] p-2 rounded-lg">
+            <button data-title="requested book" onClick={handleClick}>
+              <Link
+                href="/profile"
+                className="capitalize md:text-sm text-md font-semibold flex items-center gap-2"
+              >
+                <BookCheck size="18" />
+                <span>requested book</span>
               </Link>
             </button>
           </li>
