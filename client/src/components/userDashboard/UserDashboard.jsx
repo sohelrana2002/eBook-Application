@@ -41,7 +41,7 @@ const UserDashboard = () => {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-semibold ">My Profile</h1>
           <Link
-            href="#"
+            href="/profile/edit-profile"
             className="bg-[var(--blue)] text-[#fff] rounded-2xl px-3 py-1"
           >
             Edit Profile
