@@ -1,13 +1,15 @@
 .left__userProfile {
     position: fixed;
     left: 0;
-    top: 60px;
+    top: 64px;
     bottom: 0;
     width: 300px;
     border-right: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #fff;
+    z-index: 99999;
 }
 
 .right__userProfile {
@@ -16,4 +18,76 @@
     right: 0;
     left: 300px;
     width: calc(99vw - 300px);
+}
+
+.title__box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.profile__title {
+    width: max-content;
+    background: var(--blue);
+    padding: 6px 20px;
+    color: var(--white);
+    border-radius: 3px;
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.menu__btn {
+    width: max-content;
+    padding: 10px 10px;
+    background: rgba(128, 128, 128, 0.105);
+    border-radius: 2px;
+    cursor: pointer;
+    display: none;
+    place-items: center;
+}
+
+
+
+
+
+/* ---------------media query(mediam screen)------------- */
+@media screen and (max-width: 1024px) {
+    .left__userProfile {
+        left: -300px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .left__userProfile.active {
+        left: 0;
+    }
+
+    .right__userProfile {
+        left: 0;
+        width: 100%;
+    }
+
+    .menu__btn {
+        display: grid;
+    }
+
+}
+
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 700px) {
+    .left__userProfile {
+        left: -250px;
+        transition: 0.3s ease-in-out;
+        width: 250px;
+    }
+
+    /* .left__userProfile {
+        position: fixed;
+        left: 0;
+        top: 64px;
+        bottom: 0;
+        width: 200px;
+    } */
 }
