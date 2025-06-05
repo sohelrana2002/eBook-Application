@@ -3,14 +3,8 @@ import "./UserDashboard.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
-import { useAuthContext } from "@/context/authContext";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const UserDashboard = () => {
-  const router = useRouter();
-  const { isLoggedIn } = useAuthContext();
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchProfile,
@@ -19,14 +13,12 @@ const UserDashboard = () => {
 
   // console.log("data", data);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace("/");
-    }
-  }, [isLoggedIn, router]);
-
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div>
+        <Loading width={"calc(99vw-300px)"} />
+      </div>
+    );
   }
 
   if (isError) {

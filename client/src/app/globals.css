@@ -23,7 +23,6 @@
 
 /* ----for custom loadint page--- */
 .loading__container {
-    width: 96vw;
     height: 80vh;
     display: grid;
     place-items: center;
