@@ -30,7 +30,7 @@ authRouter
 // update profile
 authRouter
   .route("/update-profile")
-  .post(jwtAuthMiddleware, authorizedRole("admin", "user"), updateProfile);
+  .put(jwtAuthMiddleware, authorizedRole("admin", "user"), updateProfile);
 
 // ====for get admin informantion=========
 authRouter
