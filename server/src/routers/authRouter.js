@@ -6,6 +6,7 @@ import {
   login as authLogin,
   getUserInfo,
   userProfile,
+  updateProfile,
   getAdminInfo,
   deleteUser,
   forgotPassword,
@@ -25,6 +26,11 @@ authRouter.route("/login").post(authLogin);
 authRouter
   .route("/users-info")
   .get(jwtAuthMiddleware, authorizedRole("admin"), getUserInfo);
+
+// update profile
+authRouter
+  .route("/update-profile")
+  .post(jwtAuthMiddleware, authorizedRole("admin", "user"), updateProfile);
 
 // ====for get admin informantion=========
 authRouter
