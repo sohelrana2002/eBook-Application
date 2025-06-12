@@ -4,11 +4,13 @@ import "./ProfileLayout.css";
 import Link from "next/link";
 import { LayoutDashboard, SquareChevronRight, BookCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 const ProfileLayout = ({ children }) => {
   const [title, setTitle] = useState("user dashboard");
   const [isMenuShowing, setIsMenuShowing] = useState(false);
   const menuRef = useRef();
+  const pathname = usePathname();
 
   const handleToggle = () => {
     setIsMenuShowing((prev) => !prev);
@@ -27,6 +29,14 @@ const ProfileLayout = ({ children }) => {
       document.removeEventListener("mousedown", handleOutSideNav);
     };
   }, []);
+
+  useEffect(() => {
+    if (pathname === "/profile/requested-book") {
+      setTitle("requested book");
+    } else {
+      setTitle("user dashboard");
+    }
+  }, [pathname]);
 
   const handleClick = (e) => {
     const value = e.currentTarget.dataset.title;
