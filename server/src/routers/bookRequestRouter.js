@@ -23,9 +23,9 @@ bookRequestRouter
     bookRequest
   );
 
-// Create a book request
+// get all request
 bookRequestRouter
-  .route("/user/:userId")
+  .route("/user")
   .get(jwtAuthMiddleware, authorizedRoles("admin", "user"), getBookRequest);
 
 //  Admin updates status
