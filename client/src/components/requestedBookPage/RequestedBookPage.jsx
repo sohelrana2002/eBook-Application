@@ -11,6 +11,18 @@ const RequestedBookPage = () => {
     staleTime: 10000,
   });
 
+  const handleDelete = (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+    if (confirmDelete) {
+      console.log("Deleting book with ID:", id);
+      // TODO: Call your delete API here
+    } else {
+      console.log("Delete cancelled.");
+    }
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -39,6 +51,9 @@ const RequestedBookPage = () => {
               </th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -70,6 +85,14 @@ const RequestedBookPage = () => {
                   >
                     {book.status}
                   </span>
+                </td>
+                <td className="capitalize px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <button
+                    onClick={() => handleDelete(book._id)}
+                    className="rounded-full bg-red-600 px-2 py-1 text-white cursor-pointer"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
