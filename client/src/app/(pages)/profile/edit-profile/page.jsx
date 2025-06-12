@@ -26,8 +26,8 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white shadow-xl  rounded-2xl p-8">
+    <div className="min-h-screen flex items-center justify-center md:p-4">
+      <div className="w-full max-w-2xl bg-white shadow-xl  rounded-2xl p-5 md:p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b border-[var(--border)] pb-2">
           Profile Information
         </h2>
