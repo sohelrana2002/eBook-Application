@@ -71,6 +71,40 @@ const login = async (req, res, next) => {
   }
 };
 
+// update profile information
+const updateProfile = async (req, res) => {
+  try {
+    const { name, phoneNumber, bio, location, language } = req.body;
+    const userId = req.jwtPayload.userId;
+
+    const request = await user.findByIdAndUpdate(
+      userId,
+      { name, phoneNumber, bio, location, language },
+      { new: true }
+    );
+
+    if (!request) {
+      res.status(404).json({
+        message: "User not found!",
+      });
+    }
+
+    // console.log("request", request);
+
+    res.status(202).json({
+      message: "User information updated successfully!",
+      id: request._id,
+    });
+  } catch (err) {
+    console.log("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
 // ===get all users information===
 const getUserInfo = async (req, res, next) => {
   try {
@@ -231,4 +265,5 @@ export {
   deleteUser,
   forgotPassword,
   resetPassword,
+  updateProfile,
 };
