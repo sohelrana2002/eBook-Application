@@ -56,7 +56,7 @@ const EditProfile = () => {
   };
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
 
   return (
