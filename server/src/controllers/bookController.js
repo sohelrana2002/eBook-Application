@@ -224,6 +224,7 @@ const listBook = async (req, res, next) => {
   }
 };
 
+// get single book information
 const getSingleBook = async (req, res, next) => {
   try {
     const bookId = req.params.bookId;
@@ -251,21 +252,31 @@ const getSingleBook = async (req, res, next) => {
   }
 };
 
+// delete a book
 const deleteBook = async (req, res, next) => {
-  const bookId = req.params.bookId;
+  try {
+    const bookId = req.params.bookId;
 
-  const book = await booksModel.findOne({ _id: bookId });
+    const book = await booksModel.findOne({ _id: bookId });
 
-  if (!book) {
-    res.status(404).json({
-      message: "Book not found!",
-    });
-  } else {
-    await booksModel.deleteOne({ _id: bookId });
+    if (!book) {
+      return res.status(404).json({
+        message: "Book not found!",
+      });
+    } else {
+      await booksModel.deleteOne({ _id: bookId });
 
-    res.status(200).json({
-      message: "Book deleted successfully!",
-      id: bookId,
+      res.status(200).json({
+        message: "Book deleted successfully!",
+        id: bookId,
+      });
+    }
+  } catch (err) {
+    console.error("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
     });
   }
 };
