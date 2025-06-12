@@ -97,6 +97,7 @@ const updateBookStatus = async (req, res) => {
       { status },
       { new: true }
     );
+
     res.status(201).json({
       message: "Book status updated successfully!",
       bookId: updated._id,
@@ -110,4 +111,34 @@ const updateBookStatus = async (req, res) => {
     });
   }
 };
-export { bookRequest, getBookRequest, updateBookStatus };
+
+// delete requested book
+const deleteRequestedBook = async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+
+    const book = await bookRequestModel.findOne({ _id: bookId });
+
+    if (!book) {
+      return res.status(404).json({
+        message: "Book not found!",
+      });
+    }
+
+    await bookRequestModel.deleteOne({ _id: bookId });
+
+    return res.status(200).json({
+      message: "Requested book deleted successfully!",
+      id: bookId,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+
+export { bookRequest, getBookRequest, updateBookStatus, deleteRequestedBook };
