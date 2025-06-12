@@ -26,7 +26,7 @@ const bookRequestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "in-progress", "added", "not-found"],
+      enum: ["pending", "in-progress", "available", "not-found"],
       default: "pending",
     },
   },
