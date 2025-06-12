@@ -41,7 +41,7 @@ const bookRequest = async (req, res) => {
 // Get all requests for a user
 const getBookRequest = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.jwtPayload.userId;
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
