@@ -194,3 +194,10 @@ export const getRequestedBook = async () => {
 
   return res.data;
 };
+
+// delete requested book
+export const deleteRequestedBook = async (id) => {
+  const res = await api.delete(`/api/bookRequest/delete/${id}`);
+
+  return res.data;
+};
