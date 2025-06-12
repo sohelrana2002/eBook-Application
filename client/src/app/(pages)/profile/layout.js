@@ -57,7 +57,7 @@ const ProfileLayout = ({ children }) => {
           <li className="border-b-2 border-[var(--border)] p-2 rounded-lg">
             <button data-title="requested book" onClick={handleClick}>
               <Link
-                href="/profile"
+                href="/profile/requested-book"
                 className="capitalize md:text-sm text-md font-semibold flex items-center gap-2"
               >
                 <BookCheck size="18" />
