@@ -1,8 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { getRequestedBook } from "@/lib/api";
 import Loading from "@/app/loading";
+import { deleteRequestedBook } from "@/lib/api";
 
 const RequestedBookPage = () => {
   const { data, isLoading } = useQuery({
@@ -11,15 +12,28 @@ const RequestedBookPage = () => {
     staleTime: 10000,
   });
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (bookId) => deleteRequestedBook(bookId),
+    onSuccess: (data) => {
+      alert(data.message);
+      queryClient.invalidateQueries({ queryKey: ["getRequestedBook"] });
+    },
+    onError: (error) => {
+      const backendMessage =
+        error?.response?.data?.message || "Something went wrong";
+      alert(backendMessage);
+    },
+  });
+
   const handleDelete = (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this book?"
     );
     if (confirmDelete) {
-      console.log("Deleting book with ID:", id);
-      // TODO: Call your delete API here
-    } else {
-      console.log("Delete cancelled.");
+      //   console.log("Deleting book with ID:", id);
+      mutation.mutate(id);
     }
   };
 
