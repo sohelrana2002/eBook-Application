@@ -1,14 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchProfile, updateProfile } from "@/lib/api";
+import Loading from "@/app/loading";
+import { useRouter } from "next/navigation";
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
     name: "",
-    phone: "",
+    phoneNumber: "",
     bio: "",
     location: "",
     language: "",
+  });
+
+  const router = useRouter();
+
+  const { data: prodileData, isLoading } = useQuery({
+    queryKey: ["fetchProfile"],
+    queryFn: fetchProfile,
+  });
+
+  // console.log("prodileData", prodileData.userProfile);
+
+  useEffect(() => {
+    if (prodileData) {
+      setFormData({ ...prodileData?.userProfile });
+    }
+  }, [prodileData]);
+
+  const mutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (data) => {
+      alert(data.message);
+      router.push("/profile");
+    },
+
+    onError: (error) => {
+      alert(error?.response?.data?.message || "Update failed");
+    },
   });
 
   const handleChange = (e) => {
@@ -21,9 +52,12 @@ const EditProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted:", formData);
-    // You can integrate API logic here
+    mutation.mutate(formData);
   };
+
+  if (isLoading) {
+    <Loading />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center md:p-4">
@@ -54,8 +88,8 @@ const EditProfile = () => {
             </label>
             <input
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
               required
