@@ -6,6 +6,8 @@ import Loading from "@/shared/loading/Loading";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteBook } from "@/http/api";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -13,6 +15,7 @@ const Books = () => {
     search: "",
   });
   const actionRef = useRef();
+  const queryClient = useQueryClient();
 
   const page = parseInt(searchParams.get("page")) || 1;
   const search = searchParams.get("search");
@@ -48,6 +51,30 @@ const Books = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const mutation = useMutation({
+    mutationFn: (bookId) => deleteBook(bookId),
+    onSuccess: () => {
+      // console.log("Book created:", data);
+      alert("Book deleted successfully!");
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
+    onError: (error) => {
+      const backendMessage =
+        error?.response?.data?.message || "Something went wrong";
+      alert(backendMessage);
+    },
+  });
+
+  const handleDelete = (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure want to delete the book?"
+    );
+
+    if (confirmDelete) {
+      mutation.mutate(id);
+    }
+  };
 
   // console.log("data", data);
 
@@ -182,12 +209,12 @@ const Books = () => {
                             >
                               Edit
                             </Link>
-                            <Link
-                              to={`/book/delete/${curElem._id}`}
+                            <button
                               className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => handleDelete(curElem._id)}
                             >
                               Delete
-                            </Link>
+                            </button>
                           </div>
                         )}
                       </td>
