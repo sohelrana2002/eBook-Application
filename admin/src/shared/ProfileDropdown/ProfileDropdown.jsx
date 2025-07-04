@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "@/context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
+  const { logOutUser } = useAuthContext();
+  const navigate = useNavigate();
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -18,6 +22,17 @@ const ProfileDropdown = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // logout
+  const handleLogout = () => {
+    const confirmMessage = window.confirm("Are you sure want to lotout?");
+
+    if (confirmMessage) {
+      logOutUser();
+      alert("Logout successfully");
+      navigate("/auth/login", { replace: true });
+    }
+  };
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -37,12 +52,12 @@ const ProfileDropdown = () => {
             >
               View Profile
             </Link>
-            <Link
-              to="auth/logout"
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+            <button
+              onClick={handleLogout}
+              className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
             >
               Logout
-            </Link>
+            </button>
           </div>
         </div>
       )}
