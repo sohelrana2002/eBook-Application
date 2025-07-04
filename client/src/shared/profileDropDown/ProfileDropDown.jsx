@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useAuthContext } from "@/context/authContext";
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const { logOutUser } = useAuthContext();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -18,6 +20,16 @@ const ProfileDropdown = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // logout
+  const handleLogOut = () => {
+    const confirmLogout = window.confirm("Are you sure want to logout?");
+
+    if (confirmLogout) {
+      logOutUser();
+      alert("Logout successfully");
+    }
+  };
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -38,8 +50,9 @@ const ProfileDropdown = () => {
               View Profile
             </Link>
             <Link
-              href="/logout"
+              href=""
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              onClick={handleLogOut}
             >
               Logout
             </Link>
