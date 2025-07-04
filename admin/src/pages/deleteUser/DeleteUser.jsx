@@ -12,7 +12,7 @@ const DeleteUser = () => {
   const mutation = useMutation({
     mutationFn: (id) => deleteUser(id),
     onSuccess: (data) => {
-      alert("User Deleted successful!");
+      alert(data.message);
       // console.log("Logged in user:", data);
       queryClient.invalidateQueries(["users"]);
       navigate("/users");
