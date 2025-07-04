@@ -1,3 +1,5 @@
+// currently not used this page
+
 import { deleteBook } from "@/http/api";
 import Loading from "@/shared/loading/Loading";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
