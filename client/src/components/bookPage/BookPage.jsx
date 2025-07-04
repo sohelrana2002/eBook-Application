@@ -17,6 +17,7 @@ const BookPage = ({ allBooks }) => {
   const filterMenuRef = useRef();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const hasInitialized = useRef(false);
 
   const [selectedFilters, setSelectedFilters] = useState({
     genre: [],
@@ -62,19 +63,22 @@ const BookPage = ({ allBooks }) => {
 
   // -------Initialize state from URL params
   useEffect(() => {
-    const params = {
-      genre: searchParams.getAll("genre") || [],
-      author: searchParams.get("author") || null,
-      language: searchParams.get("language") || null,
-      minPrice: searchParams.get("minPrice") || null,
-      maxPrice: searchParams.get("maxPrice") || null,
-      search: searchParams.get("search") || "",
-      sortBy: searchParams.get("sortBy") || "",
-      order: searchParams.get("order") || "",
-      isOscar: searchParams.get("isOscar") === "true" ? true : null,
-    };
-    setSelectedFilters(params);
-  }, [searchParams]);
+    if (!hasInitialized.current) {
+      const params = {
+        genre: searchParams.getAll("genre") || [],
+        author: searchParams.get("author") || null,
+        language: searchParams.get("language") || null,
+        minPrice: searchParams.get("minPrice") || null,
+        maxPrice: searchParams.get("maxPrice") || null,
+        search: searchParams.get("search") || "",
+        sortBy: searchParams.get("sortBy") || "",
+        order: searchParams.get("order") || "",
+        isOscar: searchParams.get("isOscar") === "true" ? true : null,
+      };
+      setSelectedFilters(params);
+      hasInitialized.current = true;
+    }
+  }, []);
 
   // ---Update URL with current filters
   const updateUrl = (newFilters) => {
@@ -189,7 +193,7 @@ const BookPage = ({ allBooks }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateUrl(selectedFilters);
-    }, 7000);
+    }, 700);
 
     return () => clearTimeout(timeout);
   }, [
