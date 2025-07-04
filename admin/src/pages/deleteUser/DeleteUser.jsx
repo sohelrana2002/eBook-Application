@@ -4,7 +4,6 @@ import { deleteUser } from "@/http/api";
 
 const DeleteUser = () => {
   const { id } = useParams();
-  console.log("userId", id);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
