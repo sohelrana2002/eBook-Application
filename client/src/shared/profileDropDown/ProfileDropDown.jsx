@@ -49,13 +49,12 @@ const ProfileDropdown = () => {
             >
               View Profile
             </Link>
-            <Link
-              href=""
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+            <button
+              className="cursor-pointer block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
               onClick={handleLogOut}
             >
               Logout
-            </Link>
+            </button>
           </div>
         </div>
       )}
