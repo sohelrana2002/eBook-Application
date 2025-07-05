@@ -47,7 +47,7 @@ const ProfileDropdown = () => {
         <div className="absolute overflow-hidden right-0 z-10 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-gray-400 ring-opacity-5">
           <div className="py-1">
             <Link
-              to="/admin-dashboard"
+              to="/admin-profile"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               View Profile
