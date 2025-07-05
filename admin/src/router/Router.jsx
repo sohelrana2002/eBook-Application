@@ -8,12 +8,12 @@ import ViewProfile from "@/shared/viewProfile/ViewProfile";
 import Logout from "@/auth/Logout";
 import AddBook from "@/pages/addBook/AddBook";
 
-import App from "../App";
 import DeleteBook from "@/pages/deleteBook/DeleteBook";
 import UpdateBook from "@/pages/updateBook/UpdateBook";
 import Users from "@/pages/users/Users";
 import DeleteUser from "@/pages/deleteUser/DeleteUser";
 import Admins from "@/pages/admins/Admins";
+import AdminProfileLayout from "@/layout/AdminProfileLayout/AdminProfileLayout";
 
 const router = createBrowserRouter([
   {
@@ -27,10 +27,6 @@ const router = createBrowserRouter([
       {
         path: "books",
         element: <Books />,
-      },
-      {
-        path: "profile",
-        element: <ViewProfile />,
       },
       {
         path: "auth/logout",
@@ -69,6 +65,17 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+    ],
+  },
+
+  {
+    path: "/admin-dashboard",
+    element: <AdminProfileLayout />,
+    children: [
+      {
+        index: true,
+        element: <ViewProfile />,
       },
     ],
   },
