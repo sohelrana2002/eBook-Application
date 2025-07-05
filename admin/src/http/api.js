@@ -30,6 +30,25 @@ export const fetchProfile = async () => {
   return res.data;
 };
 
+// update profile information
+export const updateProfile = async ({
+  name,
+  phoneNumber,
+  bio,
+  location,
+  language,
+}) => {
+  const res = await api.put("api/auth/update-profile", {
+    name,
+    phoneNumber,
+    bio,
+    location,
+    language,
+  });
+
+  return res.data;
+};
+
 // ---for list of books---
 export const listBooks = async ({ queryKey }) => {
   const [_key, { search, page }] = queryKey;
