@@ -4,9 +4,20 @@ import { AdminProfileMenu } from "../../data/Data";
 import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
+import { useLocation } from "react-router-dom";
 
 const AdminProfileLayout = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
+  const [title, setTitle] = useState("admin profile");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/admin-profile/edit-profile") {
+      setTitle("edit profile");
+    } else {
+      setTitle("admin profile");
+    }
+  }, [location.pathname]);
 
   // console.log(isNavShowing);
 
@@ -69,7 +80,13 @@ const AdminProfileLayout = () => {
 
         {/* ----dashboard content--- */}
         <div className="right__dashboard-content">
-          <Outlet />
+          <div className="title__box">
+            <span className="profile__title">{title}</span>
+          </div>
+
+          <div className="pt-5">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
