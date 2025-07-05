@@ -33,6 +33,8 @@ const ProfileLayout = ({ children }) => {
   useEffect(() => {
     if (pathname === "/profile/requested-book") {
       setTitle("requested book");
+    } else if (pathname === "/profile/edit-profile") {
+      setTitle("edit profile");
     } else {
       setTitle("user dashboard");
     }
