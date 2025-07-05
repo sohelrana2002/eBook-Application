@@ -27,4 +27,13 @@ const NavMenu = [
   },
 ];
 
-export { NavMenu };
+const AdminProfileMenu = [
+  {
+    id: 1,
+    title: "Dashboard",
+    path: "/admin-dashboard",
+    icon: <LayoutDashboard />,
+  },
+];
+
+export { NavMenu, AdminProfileMenu };

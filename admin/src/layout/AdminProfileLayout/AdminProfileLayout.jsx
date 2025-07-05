@@ -1,6 +1,6 @@
 import "../DashboardLayout/DashboardLayout.css";
 import { BookMarked, Logs } from "lucide-react";
-import { UserProfileMenu } from "../../data/Data";
+import { AdminProfileMenu } from "../../data/Data";
 import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
@@ -37,8 +37,8 @@ const AdminProfileLayout = () => {
           <span>e-Book Platform</span>
         </Link>
         <div className="dashboard__menu">
-          {UserProfileMenu &&
-            UserProfileMenu.map((curElem) => {
+          {AdminProfileMenu &&
+            AdminProfileMenu.map((curElem) => {
               return (
                 <NavLink
                   to={curElem.path}
