@@ -30,8 +30,8 @@ const NavMenu = [
 const AdminProfileMenu = [
   {
     id: 1,
-    title: "Dashboard",
-    path: "/admin-dashboard",
+    title: "Prodile",
+    path: "/admin-profile",
     icon: <LayoutDashboard />,
   },
 ];
