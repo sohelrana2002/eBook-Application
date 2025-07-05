@@ -14,6 +14,7 @@ import Users from "@/pages/users/Users";
 import DeleteUser from "@/pages/deleteUser/DeleteUser";
 import Admins from "@/pages/admins/Admins";
 import AdminProfileLayout from "@/layout/AdminProfileLayout/AdminProfileLayout";
+import EditProfile from "@/pages/editProfile/EditProfile";
 
 const router = createBrowserRouter([
   {
@@ -70,12 +71,16 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/admin-dashboard",
+    path: "/admin-profile",
     element: <AdminProfileLayout />,
     children: [
       {
         index: true,
         element: <ViewProfile />,
+      },
+      {
+        path: "edit-profile",
+        element: <EditProfile />,
       },
     ],
   },
