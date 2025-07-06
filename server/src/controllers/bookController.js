@@ -281,4 +281,47 @@ const deleteBook = async (req, res, next) => {
   }
 };
 
-export { createBook, updateBook, listBook, getSingleBook, deleteBook };
+//smart recommended books
+const recommendedBooks = async (req, res) => {
+  const { bookId } = req.params;
+
+  try {
+    const currentBook = await booksModel.findById({ _id: bookId });
+
+    if (!currentBook) {
+      return res.status(404).json({
+        message: "Book not found!",
+      });
+    }
+
+    // Find books with similar tags, excluding the current one
+    const bookRecommentation = await booksModel
+      .find({
+        _id: { $ne: bookId },
+        tags: { $in: currentBook.tags },
+      })
+      .limit(8);
+
+    res.status(200).json({
+      message: "success",
+      length: bookRecommentation.length,
+      recommendations: bookRecommentation,
+    });
+  } catch (err) {
+    console.error("Internal server error", err);
+
+    res.status(500).json({
+      message: "Internal server error",
+      error: err,
+    });
+  }
+};
+
+export {
+  createBook,
+  updateBook,
+  listBook,
+  getSingleBook,
+  deleteBook,
+  recommendedBooks,
+};
