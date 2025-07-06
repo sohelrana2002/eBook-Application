@@ -12,6 +12,7 @@ import {
   getBookRequest,
   updateBookStatus,
   deleteRequestedBook,
+  allRequestedBook,
 } from "../controllers/bookRequestController.js";
 
 // Create a book request
@@ -41,5 +42,10 @@ bookRequestRouter
 
 // delete book requested
 bookRequestRouter.route("/delete/:bookId").delete(deleteRequestedBook);
+
+// get all book request
+bookRequestRouter
+  .route("/all-request")
+  .get(jwtAuthMiddleware, authorizedRoles("admin"), allRequestedBook);
 
 export default bookRequestRouter;
