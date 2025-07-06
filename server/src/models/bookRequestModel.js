@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import userModel from "./authModel.js";
 
 const bookRequestSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: userModel,
+      ref: "user", //model name(auth model name) as string
       required: true,
     },
     bookName: {
