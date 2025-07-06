@@ -7,7 +7,6 @@ import Books from "../pages/books/Books";
 import ViewProfile from "@/shared/viewProfile/ViewProfile";
 import Logout from "@/auth/Logout";
 import AddBook from "@/pages/addBook/AddBook";
-
 import DeleteBook from "@/pages/deleteBook/DeleteBook";
 import UpdateBook from "@/pages/updateBook/UpdateBook";
 import Users from "@/pages/users/Users";
@@ -15,6 +14,7 @@ import DeleteUser from "@/pages/deleteUser/DeleteUser";
 import Admins from "@/pages/admins/Admins";
 import AdminProfileLayout from "@/layout/AdminProfileLayout/AdminProfileLayout";
 import EditProfile from "@/pages/editProfile/EditProfile";
+import RequestedBook from "@/pages/requestedBook/RequestedBook";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "admins",
         element: <Admins />,
+      },
+      {
+        path: "requested-book",
+        element: <RequestedBook />,
       },
     ],
   },
