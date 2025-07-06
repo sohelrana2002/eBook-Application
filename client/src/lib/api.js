@@ -201,3 +201,19 @@ export const deleteRequestedBook = async (id) => {
 
   return res.data;
 };
+
+//recommented books
+export async function recommentedBook(bookId) {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/books/by-tags/${bookId}`;
+  // console.log("Fetching URL:", url);
+
+  try {
+    const res = await fetch(url, {
+      cache: "no-cache",
+    });
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
