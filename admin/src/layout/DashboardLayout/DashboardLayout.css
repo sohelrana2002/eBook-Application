@@ -35,7 +35,7 @@ html {
 
 .dashboard__menu {
     padding-top: 30px;
-    padding-left: 30px;
+    padding-left: 15px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -45,13 +45,13 @@ html {
     display: flex;
     align-items: center;
     gap: 7px;
-    padding-left: 30px;
+    padding-left: 15px;
 }
 
 .menu__box.active {
     background: #000;
     width: 200px;
-    padding: 10px 30px;
+    padding: 10px 15px;
     border-radius: 5px;
     color: #fff;
 }

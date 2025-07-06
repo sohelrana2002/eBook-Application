@@ -1,4 +1,4 @@
-import { LayoutDashboard, Book, User, Lock } from "lucide-react";
+import { LayoutDashboard, Book, User, Lock, HandHelping } from "lucide-react";
 
 const NavMenu = [
   {
@@ -24,6 +24,12 @@ const NavMenu = [
     title: "Users",
     path: "/users",
     icon: <User />,
+  },
+  {
+    id: 5,
+    title: "Requested Book",
+    path: "/requested-book",
+    icon: <HandHelping />,
   },
 ];
 
