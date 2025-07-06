@@ -6,6 +6,7 @@ import {
   listBook,
   getSingleBook,
   deleteBook,
+  recommendedBooks,
 } from "../controllers/bookController.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
@@ -51,5 +52,8 @@ bookRouter.route("/:bookId").get(getSingleBook);
 bookRouter
   .route("/:bookId")
   .delete(jwtAuthMiddleware, authorizedRoles("admin"), deleteBook);
+
+// recommeneded book
+bookRouter.route("/by-tags/:bookId").get(recommendedBooks);
 
 export default bookRouter;
