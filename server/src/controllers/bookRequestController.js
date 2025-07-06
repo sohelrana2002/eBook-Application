@@ -141,4 +141,32 @@ const deleteRequestedBook = async (req, res) => {
   }
 };
 
-export { bookRequest, getBookRequest, updateBookStatus, deleteRequestedBook };
+// get all requested book
+const allRequestedBook = async (req, res) => {
+  try {
+    const allRequest = await bookRequestModel
+      .find()
+      .populate("userId", "name email");
+
+    res.status(200).json({
+      message: "success",
+      length: allRequest.length,
+      requestedBook: allRequest,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+
+export {
+  bookRequest,
+  getBookRequest,
+  updateBookStatus,
+  deleteRequestedBook,
+  allRequestedBook,
+};
