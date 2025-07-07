@@ -7,7 +7,7 @@ import Loading from "@/shared/loading/Loading";
 import { Link } from "react-router-dom";
 
 const RequestedBook = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["allRequestedBook"],
     queryFn: allRequestedBook,
     staleTime: 10000,
@@ -29,7 +29,7 @@ const RequestedBook = () => {
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
               All Requested Book
             </h2>
-            <h3>Total Users: {data.length}</h3>
+            <h3>Total request: {data.length}</h3>
           </div>
 
           <div className="overflow-x-auto">
@@ -63,15 +63,21 @@ const RequestedBook = () => {
                       {new Date(curElem.publicationDate).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 text-sm ">{curElem?.language}</td>
-                    <td className={`px-4 py-3 text-sm`}>
-                      <span className="flex justify-center items-center bg-red-800 text-white rounded-full px-2 py-2 text-center">
+                    <td className="px-4 py-3 text-sm">
+                      <span
+                        className={`flex justify-center items-center  text-white rounded-full p-1 text-center ${
+                          curElem?.status === "available"
+                            ? "bg-green-700"
+                            : "bg-red-800"
+                        }`}
+                      >
                         {curElem?.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-sm">
                       <Link
-                        to={`/users/delete-user/${curElem._id}`}
-                        className="text-red-600 hover:underline cursor-pointer"
+                        to={`/requested-book/update-request/${curElem._id}`}
+                        className="text-green-800 hover:underline cursor-pointer"
                       >
                         Update
                       </Link>
