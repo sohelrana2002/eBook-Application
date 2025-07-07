@@ -111,3 +111,15 @@ export const allRequestedBook = async () => {
   const res = await api.get("/api/bookRequest/all-request");
   return res.data;
 };
+
+// single book request details
+export const singleBookRequestDetails = async (bookId) => {
+  const res = await api.get(`/api/bookRequest/single-book-request/${bookId}`);
+  return res.data;
+};
+
+// update requested book status
+export const updateBookRequestStatus = async ({ bookId, status }) => {
+  const res = await api.post(`/api/bookRequest/${bookId}/status`, { status });
+  return res.data;
+};
