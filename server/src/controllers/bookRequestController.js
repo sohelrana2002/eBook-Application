@@ -163,10 +163,34 @@ const allRequestedBook = async (req, res) => {
   }
 };
 
+// single requested book details
+const singleRequestedBook = async (req, res) => {
+  const { bookId } = req.params;
+  try {
+    const singleRequest = await bookRequestModel
+      .find({ _id: bookId })
+      .populate("userId", "name email");
+
+    res.status(200).json({
+      message: "success",
+      length: singleRequest.length,
+      singleRequestBook: singleRequest,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+
 export {
   bookRequest,
   getBookRequest,
   updateBookStatus,
   deleteRequestedBook,
   allRequestedBook,
+  singleRequestedBook,
 };
