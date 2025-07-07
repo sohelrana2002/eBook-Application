@@ -105,3 +105,9 @@ export const allAsmins = async () => {
   const res = await api.get("/api/auth/admin-info");
   return res.data;
 };
+
+// get all requested book
+export const allRequestedBook = async () => {
+  const res = await api.get("/api/bookRequest/all-request");
+  return res.data;
+};
