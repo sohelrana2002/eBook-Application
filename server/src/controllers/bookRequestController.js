@@ -168,12 +168,11 @@ const singleRequestedBook = async (req, res) => {
   const { bookId } = req.params;
   try {
     const singleRequest = await bookRequestModel
-      .find({ _id: bookId })
+      .findById({ _id: bookId })
       .populate("userId", "name email");
 
     res.status(200).json({
       message: "success",
-      length: singleRequest.length,
       singleRequestBook: singleRequest,
     });
   } catch (err) {
