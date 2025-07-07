@@ -15,6 +15,7 @@ import Admins from "@/pages/admins/Admins";
 import AdminProfileLayout from "@/layout/AdminProfileLayout/AdminProfileLayout";
 import EditProfile from "@/pages/editProfile/EditProfile";
 import RequestedBook from "@/pages/requestedBook/RequestedBook";
+import UpdateRequest from "@/pages/updateRequest/UpdateRequest";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "requested-book",
         element: <RequestedBook />,
+      },
+      {
+        path: "requested-book/update-request/:bookId",
+        element: <UpdateRequest />,
       },
     ],
   },
