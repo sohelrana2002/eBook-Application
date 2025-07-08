@@ -14,6 +14,7 @@ import {
   deleteRequestedBook,
   allRequestedBook,
   singleRequestedBook,
+  newRequestCount,
 } from "../controllers/bookRequestController.js";
 
 // Create a book request
@@ -53,5 +54,9 @@ bookRequestRouter
 bookRequestRouter
   .route("/single-book-request/:bookId")
   .get(jwtAuthMiddleware, authorizedRoles("admin"), singleRequestedBook);
+
+bookRequestRouter
+  .route("/unseen-count")
+  .get(jwtAuthMiddleware, authorizedRoles("admin"), newRequestCount);
 
 export default bookRequestRouter;
