@@ -28,6 +28,10 @@ const bookRequestSchema = new mongoose.Schema(
       enum: ["pending", "in-progress", "available", "not-found"],
       default: "pending",
     },
+    isSeen: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
