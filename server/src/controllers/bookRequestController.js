@@ -208,10 +208,20 @@ const markRequestSeen = async (req, res) => {
   try {
     const { bookId } = req.params;
 
-    await bookRequestModel.findByIdAndUpdate(bookId, { isSeen: true });
+    // Find the current request
+    const existingRequest = await bookRequestModel.findById(bookId);
+
+    if (!existingRequest) {
+      return res.status(404).json({ message: "Book request not found" });
+    }
+
+    //  Only update if it's not already seen
+    if (!existingRequest.isSeen) {
+      await bookRequestModel.findByIdAndUpdate(bookId, { isSeen: true });
+    }
 
     res.status(200).json({
-      message: "Marked as seen",
+      message: existingRequest.isSeen ? "Already seen" : "Marked as seen",
       id: bookId,
     });
   } catch (err) {
