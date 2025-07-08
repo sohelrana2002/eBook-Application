@@ -2,13 +2,14 @@ import "./DashboardLayout.css";
 import { BookMarked, Logs } from "lucide-react";
 import { NavMenu } from "../../data/Data";
 import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
 import { useQuery } from "@tanstack/react-query";
 import { getUnseenRequestCount } from "@/http/api";
 
 const DashboardLayout = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
+  const navRef = useRef();
 
   // console.log(isNavShowing);
 
@@ -17,11 +18,17 @@ const DashboardLayout = () => {
   };
 
   useEffect(() => {
-    const handleOutSideNav = () => {
-      setIsNavShowing(false);
+    const handleOutSideNav = (e) => {
+      if (!navRef.current?.contains(e.target)) {
+        setIsNavShowing(false);
+      }
     };
 
     document.addEventListener("mousedown", handleOutSideNav);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutSideNav);
+    };
   }, []);
 
   // set token in local storage
@@ -49,7 +56,7 @@ const DashboardLayout = () => {
           <BookMarked />
           <span>e-Book Platform</span>
         </Link>
-        <div className="dashboard__menu">
+        <div className="dashboard__menu" ref={navRef}>
           {NavMenu &&
             NavMenu.map((curElem) => {
               const showBadge =
