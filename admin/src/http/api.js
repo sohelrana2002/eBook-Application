@@ -129,3 +129,9 @@ export const getUnseenRequestCount = async () => {
   const res = await api.get("/api/bookRequest/unseen-count");
   return res.data;
 };
+
+// after update the status mark as seen
+export const markRequestSeen = async ({ bookId }) => {
+  const res = await api.post(`api/bookRequest/${bookId}/mark-seen`);
+  return res.data;
+};
