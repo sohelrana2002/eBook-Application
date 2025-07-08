@@ -15,6 +15,7 @@ import {
   allRequestedBook,
   singleRequestedBook,
   newRequestCount,
+  markRequestSeen,
 } from "../controllers/bookRequestController.js";
 
 // Create a book request
@@ -58,5 +59,9 @@ bookRequestRouter
 bookRequestRouter
   .route("/unseen-count")
   .get(jwtAuthMiddleware, authorizedRoles("admin"), newRequestCount);
+
+bookRequestRouter
+  .route("/:bookId/mark-seen")
+  .post(jwtAuthMiddleware, authorizedRoles("admin"), markRequestSeen);
 
 export default bookRequestRouter;
