@@ -1,5 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { singleBookRequestDetails, updateBookRequestStatus } from "@/http/api";
+import {
+  singleBookRequestDetails,
+  updateBookRequestStatus,
+  markRequestSeen,
+} from "@/http/api";
 import { useParams } from "react-router-dom";
 import { HandHelping } from "lucide-react";
 import Heading from "@/shared/heading/Heading";
@@ -29,9 +33,24 @@ const UpdateRequest = () => {
     },
   });
 
+  // isSeen is get true when wny book request details show
+  const isSeenMutation = useMutation({
+    mutationFn: ({ bookId }) => markRequestSeen({ bookId }),
+    onSuccess: (data) => {
+      alert(data.message);
+      console.log("data", data.message);
+      queryClient.invalidateQueries(["unseenRequestCount"]);
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message || "Update failed");
+    },
+  });
+
   const handleStatusChange = (event) => {
     const newStatus = event.target.value;
     mutation.mutate({ bookId, status: newStatus });
+
+    isSeenMutation.mutate({ bookId });
   };
 
   if (isLoading) {
