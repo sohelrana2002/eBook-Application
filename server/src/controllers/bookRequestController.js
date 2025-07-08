@@ -203,6 +203,27 @@ const newRequestCount = async (req, res) => {
   }
 };
 
+// mark as the request seen after seen the details
+const markRequestSeen = async (req, res) => {
+  try {
+    const { bookId } = req.params;
+
+    await bookRequestModel.findByIdAndUpdate(bookId, { isSeen: true });
+
+    res.status(200).json({
+      message: "Marked as seen",
+      id: bookId,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+
 export {
   bookRequest,
   getBookRequest,
@@ -211,4 +232,5 @@ export {
   allRequestedBook,
   singleRequestedBook,
   newRequestCount,
+  markRequestSeen,
 };
