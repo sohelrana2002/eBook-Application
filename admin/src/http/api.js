@@ -123,3 +123,9 @@ export const updateBookRequestStatus = async ({ bookId, status }) => {
   const res = await api.post(`/api/bookRequest/${bookId}/status`, { status });
   return res.data;
 };
+
+// total unseen count book request
+export const getUnseenRequestCount = async () => {
+  const res = await api.get("/api/bookRequest/unseen-count");
+  return res.data;
+};
