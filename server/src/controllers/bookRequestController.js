@@ -185,6 +185,24 @@ const singleRequestedBook = async (req, res) => {
   }
 };
 
+// count new request
+const newRequestCount = async (req, res) => {
+  try {
+    const count = await bookRequestModel.countDocuments({ isSeen: false });
+    res.status(200).json({
+      message: "success",
+      count: count,
+    });
+  } catch (err) {
+    console.log("error from server", err);
+
+    res.status(500).json({
+      message: "internal server error",
+      error: err,
+    });
+  }
+};
+
 export {
   bookRequest,
   getBookRequest,
@@ -192,4 +210,5 @@ export {
   deleteRequestedBook,
   allRequestedBook,
   singleRequestedBook,
+  newRequestCount,
 };
