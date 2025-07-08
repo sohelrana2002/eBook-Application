@@ -37,8 +37,8 @@ const UpdateRequest = () => {
   const isSeenMutation = useMutation({
     mutationFn: ({ bookId }) => markRequestSeen({ bookId }),
     onSuccess: (data) => {
-      alert(data.message);
-      console.log("data", data.message);
+      // alert(data.message);
+      // console.log("data", data.message);
       queryClient.invalidateQueries(["unseenRequestCount"]);
     },
     onError: (error) => {
