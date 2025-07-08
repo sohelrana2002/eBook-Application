@@ -4,6 +4,8 @@ import { NavMenu } from "../../data/Data";
 import { Link, Outlet, Navigate, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProfileDropdown from "@/shared/ProfileDropdown/ProfileDropdown";
+import { useQuery } from "@tanstack/react-query";
+import { getUnseenRequestCount } from "@/http/api";
 
 const DashboardLayout = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
@@ -22,8 +24,19 @@ const DashboardLayout = () => {
     document.addEventListener("mousedown", handleOutSideNav);
   }, []);
 
+  // set token in local storage
   const token = localStorage.getItem("token");
 
+  // unseen count function
+  const { data: unseenCount } = useQuery({
+    queryKey: ["unseenRequestCount"],
+    queryFn: getUnseenRequestCount,
+    staleTime: 10000,
+  });
+
+  // console.log("unseenCount", unseenCount?.count);
+
+  // protected route
   if (!token) {
     return <Navigate to="/auth/login" replace />;
   }
@@ -39,6 +52,11 @@ const DashboardLayout = () => {
         <div className="dashboard__menu">
           {NavMenu &&
             NavMenu.map((curElem) => {
+              const showBadge =
+                curElem.title === "Requested Book" && unseenCount?.count > 0;
+
+              // console.log("showBadge", showBadge);
+
               return (
                 <NavLink
                   to={curElem.path}
@@ -46,7 +64,14 @@ const DashboardLayout = () => {
                   key={curElem.id}
                 >
                   <span>{curElem.icon}</span>
-                  <span>{curElem.title}</span>
+                  <span className="relative">
+                    {curElem.title}
+                    {showBadge && (
+                      <span className="absolute top-1 -right-6 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                        {unseenCount?.count}
+                      </span>
+                    )}
+                  </span>
                 </NavLink>
               );
             })}
