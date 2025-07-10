@@ -26,7 +26,7 @@ const AddBook = () => {
     bookFile: null,
   });
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   const genres = [
     "Fiction",
