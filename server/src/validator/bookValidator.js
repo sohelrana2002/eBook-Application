@@ -83,6 +83,26 @@ const booksValidatorSchema = z.object({
     (val) => val === true || val === "true",
     z.boolean().default(false)
   ),
+
+  isNovel: z.preprocess(
+    (val) => val === true || val === "true",
+    z.boolean().default(false)
+  ),
+
+  isShortStory: z.preprocess(
+    (val) => val === true || val === "true",
+    z.boolean().default(false)
+  ),
+
+  isPoetry: z.preprocess(
+    (val) => val === true || val === "true",
+    z.boolean().default(false)
+  ),
+
+  isKidsBook: z.preprocess(
+    (val) => val === true || val === "true",
+    z.boolean().default(false)
+  ),
 });
 
 export default booksValidatorSchema;
