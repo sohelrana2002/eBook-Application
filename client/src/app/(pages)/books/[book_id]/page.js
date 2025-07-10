@@ -95,6 +95,11 @@ const SingleBookPage = async ({ params }) => {
                 ))}
               </div>
 
+              {bookDetails.isOscar && (
+                <h3 className="text-xl text-gray-700 font-semibold mb-2">
+                  This book won an Oscar for its amazing story.🏆
+                </h3>
+              )}
               {/* Description */}
               <div className="prose max-w-none text-gray-700">
                 <h3 className="text-xl font-semibold mb-2">Description</h3>
