@@ -64,6 +64,26 @@ const bookSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    isNovel: {
+      type: Boolean,
+      default: false,
+    },
+
+    isShortStory: {
+      type: Boolean,
+      default: false,
+    },
+
+    isPoetry: {
+      type: Boolean,
+      default: false,
+    },
+
+    isKidsBook: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
