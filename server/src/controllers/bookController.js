@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// create a book
 const createBook = async (req, res, next) => {
   try {
     const {
@@ -17,6 +18,10 @@ const createBook = async (req, res, next) => {
       price,
       tags,
       isOscar,
+      isNovel,
+      isShortStory,
+      isPoetry,
+      isKidsBook,
     } = req.body;
 
     const { coverImage, bookFile } = req.files;
@@ -34,6 +39,10 @@ const createBook = async (req, res, next) => {
       price: parseFloat(price),
       tags,
       isOscar,
+      isNovel,
+      isShortStory,
+      isPoetry,
+      isKidsBook,
       coverImage: coverImage?.[0]?.path,
       bookFile: bookFile?.[0]?.path,
     });
@@ -52,6 +61,7 @@ const createBook = async (req, res, next) => {
   }
 };
 
+// update a book
 const updateBook = async (req, res, next) => {
   try {
     const {
@@ -64,6 +74,10 @@ const updateBook = async (req, res, next) => {
       price,
       tags,
       isOscar,
+      isNovel,
+      isShortStory,
+      isPoetry,
+      isKidsBook,
     } = req.body;
 
     const { coverImage, bookFile } = req.files;
@@ -100,6 +114,10 @@ const updateBook = async (req, res, next) => {
         price: Number(price),
         tags,
         isOscar,
+        isNovel,
+        isShortStory,
+        isPoetry,
+        isKidsBook,
         coverImage: coverImage?.[0]?.path,
         bookFile: bookFile?.[0]?.path,
       },
@@ -112,7 +130,10 @@ const updateBook = async (req, res, next) => {
       return res.status(404).json({ message: "Book not found" });
     }
 
-    res.status(200).json(updatedBook);
+    res.status(200).json({
+      message: "Book update successfully!",
+      id: updatedBook._id,
+    });
   } catch (err) {
     console.log(err, "error from server");
 
@@ -123,6 +144,7 @@ const updateBook = async (req, res, next) => {
   }
 };
 
+// all book list
 const listBook = async (req, res, next) => {
   try {
     const {
