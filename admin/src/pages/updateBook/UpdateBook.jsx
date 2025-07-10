@@ -22,6 +22,10 @@ const UpdateBook = () => {
     price: "",
     tags: [],
     isOscar: false,
+    isNovel: false,
+    isShortStory: false,
+    isPoetry: false,
+    isKidsBook: false,
     coverImage: null,
     bookFile: null,
   });
@@ -93,8 +97,8 @@ const UpdateBook = () => {
 
   const mutation = useMutation({
     mutationFn: ({ id, formData }) => updateBook({ id, formData }),
-    onSuccess: () => {
-      alert("Book updated successfully!");
+    onSuccess: (data) => {
+      alert(data.message);
       queryClient.invalidateQueries(["books"]);
       navigate("/books");
     },
@@ -119,6 +123,10 @@ const UpdateBook = () => {
     formDataToSend.append("coverImage", formData.coverImage);
     formDataToSend.append("bookFile", formData.bookFile);
     formDataToSend.append("isOscar", formData.isOscar);
+    formDataToSend.append("isNovel", formData.isNovel);
+    formDataToSend.append("isShortStory", formData.isShortStory);
+    formDataToSend.append("isPoetry", formData.isPoetry);
+    formDataToSend.append("isKidsBook", formData.isKidsBook);
 
     //   mutation.mutate(formDataToSend);
     mutation.mutate({ id, formData: formDataToSend });
@@ -309,6 +317,62 @@ const UpdateBook = () => {
             className="h-4 w-4 text-blue-600 border-gray-300 rounded"
           />
           <span className="text-sm text-gray-700">This book won an Oscar?</span>
+        </div>
+
+        {/* =====isNovel===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isNovel"
+            checked={formData.isNovel}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">
+            Is this book a full-length novel?
+          </span>
+        </div>
+
+        {/* =====isShortStory===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isShortStory"
+            checked={formData.isShortStory}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">
+            Is this book a short story?
+          </span>
+        </div>
+
+        {/* =====isPoetry===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isPoetry"
+            checked={formData.isPoetry}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">
+            Is this book a collection of poetry?
+          </span>
+        </div>
+
+        {/* =====isKidsBook===== */}
+        <div className="flex items-center gap-2 mt-1">
+          <input
+            type="checkbox"
+            name="isKidsBook"
+            checked={formData.isKidsBook}
+            onChange={handleChange}
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-700">
+            Is this book meant for children?
+          </span>
         </div>
 
         <div>
