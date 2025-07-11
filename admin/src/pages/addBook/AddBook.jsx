@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 // --- Reusable MultiSelect With Custom Input ---
 const MultiSelectWithCustomInput = ({
   label,
-  name,
   options,
   selected,
   setSelected,
@@ -363,7 +362,7 @@ const AddBook = () => {
         <div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-black text-white rounded-md flex items-center gap-2 justify-center"
+            className="cursor-pointer w-full py-2 px-4 bg-black text-white rounded-md flex items-center gap-2 justify-center"
             disabled={mutation.isPending}
           >
             {mutation.isPending && <LoaderCircle className="animate-spin" />}

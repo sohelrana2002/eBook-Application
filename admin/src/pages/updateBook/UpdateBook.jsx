@@ -7,6 +7,87 @@ import { singleBook, updateBook } from "@/http/api";
 import Loading from "@/shared/loading/Loading";
 var singleBookData;
 
+// --- Reusable MultiSelect With Custom Input ---
+const MultiSelectWithCustomInput = ({
+  label,
+  options,
+  selected,
+  setSelected,
+}) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleToggle = (item) => {
+    if (!Array.isArray(selected)) return;
+    setSelected(
+      selected.includes(item)
+        ? selected.filter((i) => i !== item)
+        : [...selected, item]
+    );
+  };
+
+  const handleKeyDown = (e) => {
+    if ((e.key === "Enter" || e.key === ",") && inputValue.trim()) {
+      e.preventDefault();
+      const newItem = inputValue.trim();
+
+      if (!Array.isArray(selected)) return;
+      if (!selected.includes(newItem)) {
+        setSelected([...selected, newItem]);
+      }
+
+      setInputValue("");
+    }
+  };
+
+  return (
+    <div className="mt-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+
+      {/* Predefined Options */}
+      <div className="flex flex-wrap gap-2">
+        {options.map((item) => (
+          <button
+            type="button"
+            key={item}
+            onClick={() => handleToggle(item)}
+            className={`px-3 py-1 rounded-full text-sm border cursor-pointer ${
+              selected?.includes(item)
+                ? "bg-black text-white"
+                : "bg-white text-gray-700 border-gray-300"
+            }`}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      {/* Custom input */}
+      <input
+        type="text"
+        placeholder={`Add custom ${label.toLowerCase()}...`}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className="mt-2 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+      />
+
+      {/* Display selected items */}
+      <div className="mt-2 flex flex-wrap gap-2">
+        {selected?.map((item) => (
+          <span
+            key={item}
+            className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const UpdateBook = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,7 +127,7 @@ const UpdateBook = () => {
     }
   }, [bookData]);
 
-  const genres = [
+  const defaultGenres = [
     "Fiction",
     "Non-Fiction",
     "Mystery",
@@ -59,7 +140,7 @@ const UpdateBook = () => {
     "Drama",
     "Health",
   ];
-  const allTags = [
+  const defaultTags = [
     "fiction",
     "non-fiction",
     "mystery",
@@ -86,14 +167,14 @@ const UpdateBook = () => {
     }
   };
 
-  const handleMultiSelect = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: prev[name].includes(value)
-        ? prev[name].filter((v) => v !== value)
-        : [...prev[name], value],
-    }));
-  };
+  // const handleMultiSelect = (name, value) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: prev[name].includes(value)
+  //       ? prev[name].filter((v) => v !== value)
+  //       : [...prev[name], value],
+  //   }));
+  // };
 
   const mutation = useMutation({
     mutationFn: ({ id, formData }) => updateBook({ id, formData }),
@@ -190,28 +271,16 @@ const UpdateBook = () => {
           />
         </div>
 
-        {/* Genre (multi-select) */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Genre
-          </label>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {genres?.map((g) => (
-              <button
-                type="button"
-                key={g}
-                onClick={() => handleMultiSelect("genre", g)}
-                className={`px-3 py-1 rounded-full text-sm border cursor-pointer ${
-                  formData?.genre?.includes(g)
-                    ? "bg-[#000] text-white "
-                    : "bg-white text-gray-700 border-gray-300"
-                }`}
-              >
-                {g}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Genre (with custom input) */}
+        <MultiSelectWithCustomInput
+          label="Genre"
+          name="genre"
+          options={defaultGenres}
+          selected={formData.genre}
+          setSelected={(genres) =>
+            setFormData((prev) => ({ ...prev, genre: genres }))
+          }
+        />
 
         {/* Language */}
         <div>
@@ -256,28 +325,14 @@ const UpdateBook = () => {
           />
         </div>
 
-        {/* Tags (multi-select) */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Tags
-          </label>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {allTags?.map((tag) => (
-              <button
-                type="button"
-                key={tag}
-                onClick={() => handleMultiSelect("tags", tag)}
-                className={`px-3 py-1 rounded-full text-sm border cursor-pointer ${
-                  formData?.tags?.includes(tag)
-                    ? "bg-[#000] text-white"
-                    : "bg-white text-gray-700 border-gray-300"
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Tags (with custom input) */}
+        <MultiSelectWithCustomInput
+          label="Tags"
+          name="tags"
+          options={defaultTags}
+          selected={formData.tags}
+          setSelected={(tags) => setFormData((prev) => ({ ...prev, tags }))}
+        />
 
         {/* Cover Image */}
         <div>
@@ -307,74 +362,27 @@ const UpdateBook = () => {
           />
         </div>
 
-        {/* =====isOscar===== */}
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isOscar"
-            checked={formData.isOscar}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">This book won an Oscar?</span>
-        </div>
+        {/* Flags */}
+        {[
+          ["isOscar", "This book won an Oscar?"],
+          ["isNovel", "Is this book a full-length novel?"],
+          ["isShortStory", "Is this book a short story?"],
+          ["isPoetry", "Is this book a collection of poetry?"],
+          ["isKidsBook", "Is this book meant for children?"],
+        ].map(([name, label]) => (
+          <div className="flex items-center gap-2 mt-1" key={name}>
+            <input
+              type="checkbox"
+              name={name}
+              checked={formData[name]}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700">{label}</span>
+          </div>
+        ))}
 
-        {/* =====isNovel===== */}
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isNovel"
-            checked={formData.isNovel}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">
-            Is this book a full-length novel?
-          </span>
-        </div>
-
-        {/* =====isShortStory===== */}
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isShortStory"
-            checked={formData.isShortStory}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">
-            Is this book a short story?
-          </span>
-        </div>
-
-        {/* =====isPoetry===== */}
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isPoetry"
-            checked={formData.isPoetry}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">
-            Is this book a collection of poetry?
-          </span>
-        </div>
-
-        {/* =====isKidsBook===== */}
-        <div className="flex items-center gap-2 mt-1">
-          <input
-            type="checkbox"
-            name="isKidsBook"
-            checked={formData.isKidsBook}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <span className="text-sm text-gray-700">
-            Is this book meant for children?
-          </span>
-        </div>
-
+        {/* submit  */}
         <div>
           <button
             type="submit"
