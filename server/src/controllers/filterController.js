@@ -30,4 +30,20 @@ const allLanguage = async (req, res) => {
   }
 };
 
-export { allAuthor, allLanguage };
+// all genres
+const allGenre = async (req, res) => {
+  try {
+    const genres = await BookModel.distinct("genre");
+    res.status(200).json({
+      message: "success",
+      allGenreName: genres,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+      error: error.message,
+    });
+  }
+};
+
+export { allAuthor, allLanguage, allGenre };
