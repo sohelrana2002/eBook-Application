@@ -1,24 +1,16 @@
 "use client";
 import "./FilterBook.css";
 import Select from "react-select";
-import { allAuthor, allLanguage } from "@/lib/api";
+import { allAuthor, allLanguage, allGenre } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
-const allGenre = [
-  "Fiction",
-  "Non-Fiction",
-  "Mystery",
-  "Science Fiction",
-  "Fantasy",
-  "Historical Fiction",
-  "Biography",
-  "Horror",
-  "Poetry",
-  "Drama",
-  "Health",
-];
-
 const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
+  const { data: genreData } = useQuery({
+    queryKey: ["allGenre"],
+    queryFn: allGenre,
+    staleTime: 10000,
+  });
+
   const { data: authorData } = useQuery({
     queryKey: ["allAuthor"],
     queryFn: allAuthor,
@@ -32,7 +24,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
   });
 
   // Genre options
-  const genreOptions = allGenre?.map((curElem) => ({
+  const genreOptions = genreData?.allGenreName?.map((curElem) => ({
     value: curElem,
     label: curElem,
     type: "genre",
