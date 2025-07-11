@@ -131,6 +131,7 @@ const BookPage = ({ allBooks }) => {
     });
   };
 
+  const limit = 50;
   const { data, isLoading } = useQuery({
     queryKey: [
       "books",
@@ -143,6 +144,7 @@ const BookPage = ({ allBooks }) => {
       sortBy,
       order,
       isOscar,
+      limit,
     ],
     queryFn: () =>
       fetchBooks({
@@ -155,6 +157,7 @@ const BookPage = ({ allBooks }) => {
         sortBy,
         order,
         isOscar,
+        limit,
       }),
     placeholderData: keepPreviousData,
     initialData: allBooks,

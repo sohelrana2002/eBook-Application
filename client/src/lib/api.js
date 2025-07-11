@@ -70,6 +70,7 @@ export const fetchBooks = async (filters = {}) => {
     sortBy,
     order,
     isOscar,
+    limit,
   } = filters;
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`);
 
@@ -84,6 +85,7 @@ export const fetchBooks = async (filters = {}) => {
   if (sortBy) params.append("sortBy", sortBy);
   if (order) params.append("order", order);
   if (isOscar) params.append("isOscar", isOscar);
+  if (limit) params.append("limit", limit);
 
   url.search = params.toString();
 
