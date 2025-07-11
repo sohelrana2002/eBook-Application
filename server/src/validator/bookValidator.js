@@ -1,17 +1,4 @@
 import z from "zod";
-const genreEnum = z.enum([
-  "Fiction",
-  "Non-Fiction",
-  "Mystery",
-  "Science Fiction",
-  "Fantasy",
-  "Historical Fiction",
-  "Biography",
-  "Horror",
-  "Poetry",
-  "Drama",
-  "Health",
-]);
 
 const booksValidatorSchema = z.object({
   title: z
@@ -35,7 +22,9 @@ const booksValidatorSchema = z.object({
   genre: z.preprocess(
     (arg) => (typeof arg === "string" ? arg.split(",") : arg),
     z
-      .array(genreEnum, { required_error: "Genre must be required." })
+      .array(z.string().min(1), {
+        required_error: "Genre must be required.",
+      })
       .min(1, "At least one genre is required")
       .max(5, "You can select up to 5 genres")
       .nonempty({ message: "Genres cannot be empty." })
@@ -62,9 +51,11 @@ const booksValidatorSchema = z.object({
 
   tags: z.preprocess(
     (arg) => (typeof arg === "string" ? arg.split(",") : arg),
-    z.array(z.string(), {
-      required_error: "tage must be required.",
-    })
+    z
+      .array(z.string().min(1), {
+        required_error: "Tags must be required.",
+      })
+      .nonempty("At least one tag is required")
   ),
 
   coverImage: z
