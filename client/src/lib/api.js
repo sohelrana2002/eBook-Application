@@ -40,6 +40,12 @@ export const fetchProfile = async () => {
   return res.data;
 };
 
+// ---for all genres---
+export const allGenre = async () => {
+  const res = await api.get("/api/filter/genres");
+  return res.data;
+};
+
 // ---for all author---
 export const allAuthor = async () => {
   const res = await api.get("/api/filter/authors");
