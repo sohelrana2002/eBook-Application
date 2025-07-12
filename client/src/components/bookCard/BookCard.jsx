@@ -6,11 +6,11 @@ const BookCard = ({ coverImage, title, averageRating, price, author }) => {
       <img src="/book.jpg" alt={title} className="w-full h-60 object-cover" />
       <div className="p-4 space-y-2 border-t-2 border-[var(--border)] flex items-start justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 line-clamp-2 capitalize max-w-[200px]">
+          <h2 className="text-lg font-semibold text-gray-800 line-clamp-2 capitalize max-w-[200px] text-left">
             {title.length > 17 ? `${title.substring(0, 17)}...` : title}
           </h2>
 
-          <h2 className="text-sm font-semibold text-gray-800 line-clamp-2 capitalize">
+          <h2 className="text-sm font-semibold text-gray-800 line-clamp-2 capitalize text-left">
             {author}
           </h2>
         </div>
