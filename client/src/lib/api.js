@@ -225,3 +225,18 @@ export async function recommentedBook(bookId) {
     console.log(error);
   }
 }
+
+// featured books
+export async function featuredBook() {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/featured-book`;
+
+  try {
+    const res = await fetch(url, {
+      cache: "no-cache",
+    });
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
