@@ -6,6 +6,7 @@ import bookRouter from "./routers/bookRouter.js";
 import reviewRouter from "./routers/reviewRouter.js";
 import filterRouter from "./routers/filterRouter.js";
 import bookRequestRouter from "./routers/bookRequestRouter.js";
+import featuredBookRouter from "./routers/featuredBookRouter.js";
 
 const app = express();
 const allowedOrigins = [
@@ -43,6 +44,7 @@ app.use("/api/books", bookRouter);
 app.use("/api/filter", filterRouter);
 app.use("/api", reviewRouter);
 app.use("/api/bookRequest", bookRequestRouter);
+app.use("/api/featured-book", featuredBookRouter);
 
 app.get("/", (req, res) => {
   res.json({
