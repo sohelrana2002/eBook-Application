@@ -31,9 +31,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           }}
           breakpoints={{
             320: { slidesPerView: 1 },
-            // 480: { slidesPerView: 2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            671: { slidesPerView: 2 },
+            890: { slidesPerView: 3 },
+            1300: { slidesPerView: 4 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -41,7 +41,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           {allFeaturedBook &&
             allFeaturedBook?.oscarBook?.map((curElem) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide className="swiper_slide">
                   <Link key={curElem._id} href={`/books/${curElem._id}`}>
                     <BookCard {...curElem} />
                   </Link>
@@ -63,9 +63,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           }}
           breakpoints={{
             320: { slidesPerView: 1 },
-            // 480: { slidesPerView: 2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            671: { slidesPerView: 2 },
+            890: { slidesPerView: 3 },
+            1300: { slidesPerView: 4 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -95,9 +95,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           }}
           breakpoints={{
             320: { slidesPerView: 1 },
-            // 480: { slidesPerView: 2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            671: { slidesPerView: 2 },
+            890: { slidesPerView: 3 },
+            1300: { slidesPerView: 4 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -127,9 +127,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           }}
           breakpoints={{
             320: { slidesPerView: 1 },
-            // 480: { slidesPerView: 2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            671: { slidesPerView: 2 },
+            890: { slidesPerView: 3 },
+            1300: { slidesPerView: 4 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -159,9 +159,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
           }}
           breakpoints={{
             320: { slidesPerView: 1 },
-            // 480: { slidesPerView: 2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            671: { slidesPerView: 2 },
+            890: { slidesPerView: 3 },
+            1300: { slidesPerView: 4 },
           }}
           modules={[Pagination]}
           className="mySwiper"

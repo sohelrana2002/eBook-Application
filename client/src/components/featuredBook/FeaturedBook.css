@@ -1,6 +1,6 @@
 .swiper {
     width: 100%;
-    height: 370px;
+    height: 395px;
     margin: 0 auto;
     display: flex;
     justify-content: flex-start;
@@ -9,8 +9,6 @@
 
 .swiper-slide {
     text-align: left;
-    font-size: 18px;
-
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -18,8 +16,8 @@
 
 .swiper-slide img {
     display: block;
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     object-fit: cover;
 }
 
@@ -40,6 +38,42 @@
     max-width: 1600px;
     width: var(--width-lg-screen);
     margin: 0 auto;
-
     padding: 50px 0;
+}
+
+.oscar__book .heading {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 1px;
+    margin-bottom: 20px;
+    display: inline-block;
+    border-radius: 10px;
+    font-size: 1.675rem;
+}
+
+
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 1300px) {
+    .swiper {
+        height: 410px;
+    }
+}
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 890px) {
+    .swiper {
+        height: 405px;
+    }
+
+    .oscar__book .heading {
+        font-size: 1.5rem;
+    }
+
+}
+
+/*---------------media query(mediam screen)------------- */
+@media screen and (max-width: 500px) {
+    .swiper {
+        height: 390px;
+    }
 }
