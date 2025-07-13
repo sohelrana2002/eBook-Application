@@ -33,9 +33,13 @@
 
 /*---------------media query(mediam screen)------------- */
 @media screen and (max-width: 700px) {
+    .banner__section {
+        height: calc(98vh - 3.75rem);
+    }
+
     .banner__section-content {
-        bottom: 5%;
-        left: 5%;
+        bottom: 10%;
+        left: 10%;
         padding: 1.2rem 1rem;
         gap: .7rem;
     }
