@@ -7,14 +7,14 @@ import { FAQData } from "@/data/Data";
 import { Minus, Plus } from "lucide-react";
 
 const FAQ = () => {
-  const [isAnswerShowing, setIsAnswerShowing] = useState(null);
+  const [answerShowing, setAnswerShowing] = useState(null);
 
   const handleClick = (id) => {
-    if (isAnswerShowing === id) {
-      setIsAnswerShowing(null);
+    if (answerShowing === id) {
+      setAnswerShowing(null);
       return;
     } else {
-      setIsAnswerShowing(id);
+      setAnswerShowing(id);
     }
   };
 
@@ -31,14 +31,14 @@ const FAQ = () => {
                   className="faq__question"
                   onClick={() => handleClick(curElem.id)}
                 >
-                  {curElem.question}
+                  <span>{curElem.question}</span>
                   <span>
-                    {isAnswerShowing === curElem.id ? <Minus /> : <Plus />}
+                    {answerShowing === curElem.id ? <Minus /> : <Plus />}
                   </span>
                 </div>
                 <div
                   className={`${
-                    isAnswerShowing === curElem.id
+                    answerShowing === curElem.id
                       ? "faq__answer active"
                       : "faq__answer"
                   } `}
