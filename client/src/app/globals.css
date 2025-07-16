@@ -91,11 +91,17 @@
 
 
 .heading {
-    font-size: 1.875rem;
     font-weight: 700;
     color: var(--black);
     text-transform: capitalize;
     letter-spacing: 1px;
+
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 1px;
+    margin-bottom: 20px;
+    display: inline-block;
+    border-radius: 10px;
+    font-size: 1.675rem;
 }
 
 
@@ -146,10 +152,7 @@
     }
 
     .heading {
-        font-size: 1.5625rem;
-        font-weight: 700;
-        color: var(--black);
-        text-transform: capitalize;
+        font-size: 1.5rem;
         letter-spacing: 0.5px;
     }
 }

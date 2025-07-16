@@ -11,8 +11,6 @@
 }
 
 
-
-
 /* ----right side---- */
 .right__container-book {
     position: relative;
@@ -25,8 +23,10 @@
 }
 
 .right__container-book .heading {
+    border-bottom: none;
     padding-bottom: 20px;
-    padding-top: 10px;
+    padding-top: 15px;
+    margin: 0;
 }
 
 /* ---top right ---  */
