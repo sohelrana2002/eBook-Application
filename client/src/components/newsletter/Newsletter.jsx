@@ -1,12 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import "./Newsletter.css";
+import { useState } from "react";
+import { newsletter } from "@/lib/api";
+import { useMutation } from "@tanstack/react-query";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {};
+  const mutation = useMutation({
+    mutationFn: (email) => newsletter(email),
+    onSuccess: (data) => {
+      alert(data.message);
+
+      setEmail("");
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message);
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    mutation.mutate(email);
+  };
+
   return (
     <div className="newsletter__coontainer">
       <div className="container">
