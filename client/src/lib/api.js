@@ -240,3 +240,10 @@ export async function featuredBook() {
     console.log(error);
   }
 }
+
+// newsletter
+export const newsletter = async (email) => {
+  const res = await api.post("/api/newsletter", { email });
+
+  return res.data;
+};
