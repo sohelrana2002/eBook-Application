@@ -2,6 +2,7 @@ import BannerSection from "@/components/bannerSection/BannerSection";
 import { featuredBook } from "@/lib/api";
 import FeaturedBook from "@/components/featuredBook/FeaturedBook";
 import FAQ from "@/components/FAQ/FAQ";
+import Newsletter from "../components/newsletter/Newsletter";
 
 export default async function Home() {
   const allFeaturedBook = await featuredBook();
@@ -10,6 +11,7 @@ export default async function Home() {
       <BannerSection />
       <FeaturedBook allFeaturedBook={allFeaturedBook} />
       <FAQ />
+      <Newsletter />
     </>
   );
 }
