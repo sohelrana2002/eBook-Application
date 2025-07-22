@@ -37,6 +37,7 @@
     background: var(--white);
     padding: 10px 20px;
     border-radius: 5px 0 0 5px;
+    outline: none;
 }
 
 .newsletter__coontainer form .btn {

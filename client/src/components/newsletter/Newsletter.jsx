@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import "./Newsletter.css";
 
 const Newsletter = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e) => {};
   return (
     <div className="newsletter__coontainer">
       <div className="container">
@@ -10,8 +16,14 @@ const Newsletter = () => {
             Subscribe to our newsletter and stay updated on the latest book!
           </h2>
 
-          <form>
-            <input type="text" placeholder="Enter your email" />
+          <form onSubmit={handleSubmit}>
+            <input
+              name="email"
+              value={email}
+              type="text"
+              placeholder="Enter your email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <button type="submit" className="btn">
               Subscribe
             </button>
