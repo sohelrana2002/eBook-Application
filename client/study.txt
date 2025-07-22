@@ -1,0 +1,18 @@
+Option 1 (pass object, keep destructuring):
+//call mutate
+mutation.mutate({ email });
+
+// mutationFn
+mutationFn: ({ email }) => newsletter(email)
+//api instance
+newsletter({email}) =>
+
+
+Option 2 (pass string, remove destructuring):
+// call mutate
+mutation.mutate(email);
+
+// mutationFn
+mutationFn: (email) => newsletter(email)
+//api instance
+newsletter(email) =>
