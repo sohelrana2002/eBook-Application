@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 
 const MainLayout = ({ children }) => {
   const pathname = usePathname();
-  const hideFooter =
+  const hideSection =
     pathname === "/books" ||
     pathname === "/profile" ||
     pathname === "/profile/requested-book";
@@ -20,8 +20,8 @@ const MainLayout = ({ children }) => {
         <TanstackProvider>
           <Navbar />
           <div className="pt-[3.8rem]">{children}</div>
-          {!hideFooter && <Footer />}
-          {!hideFooter && <CopyRight />}
+          {!hideSection && <Footer />}
+          {!hideSection && <CopyRight />}
         </TanstackProvider>
       </AuthProvider>
     </main>
