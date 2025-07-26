@@ -1,10 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/shared/navbar/Navbar";
-import { AuthProvider } from "@/context/authContext";
-import TanstackProvider from "@/provider/TanstackProvider";
-import Footer from "@/components/footer/Footer";
-import CopyRight from "@/shared/copyRight/CopyRight";
+import MainLayout from "@/shared/mainLayout/MainLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,14 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-arp="">
       <body data-new-gr-c-s-check-loaded="14.1233.0" data-gr-ext-installed="">
-        <AuthProvider>
-          <TanstackProvider>
-            <Navbar />
-            <div className="pt-[3.8rem]">{children}</div>
-            <Footer />
-            <CopyRight />
-          </TanstackProvider>
-        </AuthProvider>
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );
