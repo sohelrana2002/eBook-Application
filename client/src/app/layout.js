@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/shared/navbar/Navbar";
 import { AuthProvider } from "@/context/authContext";
 import TanstackProvider from "@/provider/TanstackProvider";
+import Footer from "@/components/footer/Footer";
+import CopyRight from "@/shared/copyRight/CopyRight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +29,8 @@ export default function RootLayout({ children }) {
           <TanstackProvider>
             <Navbar />
             <div className="pt-[3.8rem]">{children}</div>
+            <Footer />
+            <CopyRight />
           </TanstackProvider>
         </AuthProvider>
       </body>
