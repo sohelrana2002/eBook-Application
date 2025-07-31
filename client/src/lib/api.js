@@ -249,7 +249,7 @@ export const newsletter = async (email) => {
 };
 
 //conatct form
-export const createContact = async (email, messagee) => {
+export const createContact = async (email, message) => {
   const res = await api.post("api/contact", { email, message });
 
   return res.data;
