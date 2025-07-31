@@ -4,13 +4,18 @@ import "./ProfileLayout.css";
 import Link from "next/link";
 import { LayoutDashboard, SquareChevronRight, BookCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/authContext";
+import { LoaderCircle } from "lucide-react";
 
 const ProfileLayout = ({ children }) => {
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [title, setTitle] = useState("user dashboard");
   const [isMenuShowing, setIsMenuShowing] = useState(false);
   const menuRef = useRef();
   const pathname = usePathname();
+  const { isLoggedIn, isLoading } = useAuthContext();
+  const router = useRouter();
 
   const handleToggle = () => {
     setIsMenuShowing((prev) => !prev);
@@ -44,6 +49,24 @@ const ProfileLayout = ({ children }) => {
     const value = e.currentTarget.dataset.title;
     setTitle(value);
   };
+
+  //protected route
+  useEffect(() => {
+    if (isLoading && !isLoggedIn) {
+      setIsRedirecting(true);
+      router.replace("/login");
+    }
+  }, [isLoggedIn, router, isLoading]);
+
+  // protected route render
+  if (isLoading || isRedirecting) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <LoaderCircle className="animate-spin w-10 h-10 text-black" />
+        <span className="ml-2 text-gray-600">Redirecting...</span>
+      </div>
+    );
+  }
 
   return (
     <main>
