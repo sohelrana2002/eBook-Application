@@ -4,13 +4,12 @@ const createContact = async (req, res) => {
   const { message, email } = req.body;
 
   try {
-    if (!email) {
-      return res.status(404).json({
-        message: "Email is required!",
+    const emailExist = await contact.findOne({ email });
+
+    if (emailExist) {
+      return res.status(500).json({
+        message: "This email is already provide message!",
       });
-    }
-    if (!message) {
-      return res.status(400).json({ message: "Message is required" });
     }
 
     const contactData = new contact({
