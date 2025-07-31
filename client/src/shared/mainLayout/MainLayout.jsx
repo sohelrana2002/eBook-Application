@@ -12,7 +12,8 @@ const MainLayout = ({ children }) => {
   const hideSection =
     pathname === "/books" ||
     pathname === "/profile" ||
-    pathname === "/profile/requested-book";
+    pathname === "/profile/requested-book" ||
+    pathname === "/profile/edit-profile";
 
   return (
     <main>
