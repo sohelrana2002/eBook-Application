@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useAuthContext } from "@/context/authContext";
+import { useRouter } from "next/navigation";
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { logOutUser } = useAuthContext();
+  const router = useRouter();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -28,6 +30,7 @@ const ProfileDropdown = () => {
     if (confirmLogout) {
       logOutUser();
       alert("Logout successfully");
+      router.replace("/login");
     }
   };
 
