@@ -5,6 +5,8 @@ import Head from "next/head";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { createContact } from "@/lib/api";
+import { useAuthContext } from "@/context/authContext";
+import { LoaderCircle } from "lucide-react";
 
 const ContactPage = () => {
   const [form, setForm] = useState({
@@ -13,7 +15,7 @@ const ContactPage = () => {
     message: "",
   });
 
-  console.log("from", form);
+  const { isLoggedIn } = useAuthContext();
 
   useEffect(() => {
     const nameFromLocal = localStorage.getItem("name");
@@ -53,6 +55,11 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!isLoggedIn) {
+      alert("You must be logged in to submit a message");
+      return;
+    }
 
     mutation.mutate({
       email: form.email,
@@ -151,8 +158,10 @@ const ContactPage = () => {
 
             <button
               type="submit"
-              className="bg-black text-white px-6 py-2 rounded cursor-pointer"
+              disabled={mutation.isPending}
+              className="bg-black text-white px-6 py-2 rounded cursor-pointer flex items-center gap-2 justify-center"
             >
+              {mutation.isPending && <LoaderCircle className="animate-spin" />}
               Send Message
             </button>
           </form>
