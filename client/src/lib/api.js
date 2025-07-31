@@ -247,3 +247,10 @@ export const newsletter = async (email) => {
 
   return res.data;
 };
+
+//conatct form
+export const createContact = async (email, messagee) => {
+  const res = await api.post("api/contact", { email, message });
+
+  return res.data;
+};
