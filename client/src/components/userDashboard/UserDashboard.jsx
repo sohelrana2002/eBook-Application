@@ -37,8 +37,8 @@ const UserDashboard = () => {
 
   return (
     <main>
-      <div className="max-w-3xl mx-auto p-6 md:p-10">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-3xl mx-auto md:p-10">
+        <div className="flex items-center justify-between mb-4 md:mb-8">
           <h1 className="text-3xl font-semibold ">My Profile</h1>
           <Link
             href="/profile/edit-profile"
