@@ -52,7 +52,7 @@ const ProfileLayout = ({ children }) => {
 
   //protected route
   useEffect(() => {
-    if (isLoading && !isLoggedIn) {
+    if (!isLoading && !isLoggedIn) {
       setIsRedirecting(true);
       router.replace("/login");
     }
@@ -63,7 +63,7 @@ const ProfileLayout = ({ children }) => {
     return (
       <div className="h-screen flex items-center justify-center">
         <LoaderCircle className="animate-spin w-10 h-10 text-black" />
-        <span className="ml-2 text-gray-600">Redirecting...</span>
+        <span className="ml-2 text-gray-600">Loading profile...</span>
       </div>
     );
   }
