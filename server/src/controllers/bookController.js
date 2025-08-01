@@ -249,10 +249,12 @@ const listBook = async (req, res, next) => {
 // get single book information
 const getSingleBook = async (req, res, next) => {
   try {
-    const bookId = req.params.bookId;
+    const { slug } = req.params;
     // console.log("bookId", bookId);
 
-    const singleBook = await booksModel.find({ _id: bookId });
+    const singleBook = await booksModel.findOne({ slug });
+
+    // console.log("singleBook", singleBook);
 
     if (!singleBook) {
       res.status(404).json({
@@ -308,7 +310,7 @@ const recommendedBooks = async (req, res) => {
   const { bookId } = req.params;
 
   try {
-    const currentBook = await booksModel.findById({ _id: bookId });
+    const currentBook = await booksModel.findOne({ slug: bookId });
 
     if (!currentBook) {
       return res.status(404).json({
@@ -319,7 +321,7 @@ const recommendedBooks = async (req, res) => {
     // Find books with similar tags, excluding the current one
     const bookRecommentation = await booksModel
       .find({
-        _id: { $ne: bookId },
+        slug: { $ne: bookId },
         tags: { $in: currentBook.tags },
       })
       .limit(8);
@@ -339,6 +341,52 @@ const recommendedBooks = async (req, res) => {
   }
 };
 
+// controllers/bookController.js
+const getAllBooksWithJSONFormet = async (req, res) => {
+  try {
+    // Exclude _id, __v, created_at, updated_at
+    const allBooks = await booksModel.find(
+      {},
+      {
+        _id: 0,
+        __v: 0,
+        created_at: 0,
+        updated_at: 0,
+        coverImage: 0,
+        bookFile: 0,
+      }
+    );
+
+    res.status(200).json(allBooks);
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message || error,
+    });
+  }
+};
+
+// delete all book at once
+/*
+const deleteAllBooks = async (req, res) => {
+  try {
+    const result = await booksModel.deleteMany({}); // delete all documents
+
+    res.status(200).json({
+      message: "All books have been deleted.",
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    console.error("Error deleting books:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message || error,
+    });
+  }
+};
+*/
+
 export {
   createBook,
   updateBook,
@@ -346,4 +394,6 @@ export {
   getSingleBook,
   deleteBook,
   recommendedBooks,
+  getAllBooksWithJSONFormet,
+  // deleteAllBooks,
 };
