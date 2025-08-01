@@ -267,7 +267,7 @@ const BookPage = ({ allBooks }) => {
               {data?.books?.map((curElem) => (
                 <Link
                   key={curElem._id}
-                  href={`/books/${curElem._id}`} // Use proper href
+                  href={`/books/${curElem.slug}`} // Use proper href
                 >
                   <BookCard {...curElem} />
                 </Link>

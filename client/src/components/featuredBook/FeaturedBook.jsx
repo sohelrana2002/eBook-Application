@@ -42,7 +42,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.oscarBook?.map((curElem) => {
               return (
                 <SwiperSlide className="swiper_slide">
-                  <Link key={curElem._id} href={`/books/${curElem._id}`}>
+                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
                     <BookCard {...curElem} />
                   </Link>
                 </SwiperSlide>
@@ -74,7 +74,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.novelBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem._id}`}>
+                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
                     <BookCard {...curElem} />
                   </Link>
                 </SwiperSlide>
@@ -106,7 +106,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.shortStoryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem._id}`}>
+                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
                     <BookCard {...curElem} />
                   </Link>
                 </SwiperSlide>
@@ -138,7 +138,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.poetryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem._id}`}>
+                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
                     <BookCard {...curElem} />
                   </Link>
                 </SwiperSlide>
@@ -170,7 +170,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.kidsBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem._id}`}>
+                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
                     <BookCard {...curElem} />
                   </Link>
                 </SwiperSlide>
