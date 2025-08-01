@@ -42,7 +42,7 @@ const RequestedBookPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 md:p-6">
+    <div className="min-h-screen md:p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-x-auto">
         <div className="px-6 py-4 border-b">
           <h2 className="text-xl font-semibold text-gray-800">Books Table</h2>
