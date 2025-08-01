@@ -1,4 +1,5 @@
-// routes/uploadBooks.js
+// upload pure json file in database
+
 import express from "express";
 const JSONrouter = express.Router();
 import fs from "fs";
