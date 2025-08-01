@@ -120,7 +120,7 @@ const UpdateBook = () => {
 
   useEffect(() => {
     if (bookData) {
-      singleBookData = bookData.singeBook[0];
+      singleBookData = bookData.singeBook;
       //   console.log("singleBookData:", singleBookData);
 
       setFormData({ ...singleBookData });
