@@ -1,7 +1,13 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const bookSchema = new mongoose.Schema(
   {
+    slug: {
+      type: String,
+      unique: true,
+    },
+
     title: {
       type: String,
       required: true,
@@ -92,6 +98,28 @@ const bookSchema = new mongoose.Schema(
     },
   }
 );
+
+bookSchema.pre("validate", async function (next) {
+  if (this.title && !this.slug) {
+    const baseSlug = slugify(this.title, {
+      lower: true,
+      locale: "bn", // keep Bengali characters
+      remove: /[*+~.()'"!:@?`#$%^&={}<>[\]\\\/,_|]/g,
+      trim: true,
+    });
+
+    let slug = baseSlug;
+    let counter = 1;
+
+    while (await mongoose.models.book.findOne({ slug })) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    this.slug = slug;
+  }
+  next();
+});
 
 const booksModel = new mongoose.model("book", bookSchema);
 
