@@ -77,19 +77,19 @@ const RequestedBookPage = () => {
                 key={book._id}
                 className="hover:bg-gray-50 transition duration-150"
               >
-                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm font-medium text-gray-800">
+                <td className="capitalize text-[12px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm font-medium text-gray-800">
                   {book.bookName}
                 </td>
-                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-700">
+                <td className="capitalize text-[12px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-700">
                   {book.authorName}
                 </td>
-                <td className=" text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
+                <td className=" text-[12px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
                   {new Date(book.publicationDate).toLocaleDateString()}
                 </td>
-                <td className="capitalize px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="capitalize px-6 py-4 whitespace-nowrap text-[12px] md:text-sm text-gray-500">
                   {book.language}
                 </td>
-                <td className=" text-[10px] px-2 md:x-6 py-4 whitespace-nowrap tmd:ext-sm">
+                <td className="text-[12px] px-2 md:x-6 py-4 whitespace-nowrap md:text-sm">
                   <span
                     className={`capitalize inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                       book.status === "available"
@@ -100,7 +100,7 @@ const RequestedBookPage = () => {
                     {book.status}
                   </span>
                 </td>
-                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
+                <td className="capitalize text-[12px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
                   <button
                     onClick={() => handleDelete(book._id)}
                     className="rounded-full bg-red-600 px-2 py-1 text-white cursor-pointer"
