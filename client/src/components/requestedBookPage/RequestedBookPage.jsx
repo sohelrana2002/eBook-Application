@@ -42,7 +42,7 @@ const RequestedBookPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 md:p-6">
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-x-auto">
         <div className="px-6 py-4 border-b">
           <h2 className="text-xl font-semibold text-gray-800">Books Table</h2>
@@ -51,22 +51,22 @@ const RequestedBookPage = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Book Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Author Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Publication Date
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Pub. Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Language
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Action
               </th>
             </tr>
@@ -77,19 +77,19 @@ const RequestedBookPage = () => {
                 key={book._id}
                 className="hover:bg-gray-50 transition duration-150"
               >
-                <td className="capitalize px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm font-medium text-gray-800">
                   {book.bookName}
                 </td>
-                <td className="capitalize px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-700">
                   {book.authorName}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className=" text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
                   {new Date(book.publicationDate).toLocaleDateString()}
                 </td>
                 <td className="capitalize px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {book.language}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <td className=" text-[10px] px-2 md:x-6 py-4 whitespace-nowrap tmd:ext-sm">
                   <span
                     className={`capitalize inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                       book.status === "available"
@@ -100,7 +100,7 @@ const RequestedBookPage = () => {
                     {book.status}
                   </span>
                 </td>
-                <td className="capitalize px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="capitalize text-[10px] px-2 md:px-6 py-4 whitespace-nowrap md:text-sm text-gray-500">
                   <button
                     onClick={() => handleDelete(book._id)}
                     className="rounded-full bg-red-600 px-2 py-1 text-white cursor-pointer"
