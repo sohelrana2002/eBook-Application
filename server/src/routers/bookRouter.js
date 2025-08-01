@@ -7,6 +7,8 @@ import {
   getSingleBook,
   deleteBook,
   recommendedBooks,
+  getAllBooksWithJSONFormet,
+  // deleteAllBooks,
 } from "../controllers/bookController.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
@@ -47,7 +49,7 @@ bookRouter.route("/:bookId").patch(
 bookRouter.route("/").get(listBook);
 
 // ===details of individual book===
-bookRouter.route("/:bookId").get(getSingleBook);
+bookRouter.route("/:slug").get(getSingleBook);
 
 bookRouter
   .route("/:bookId")
@@ -55,5 +57,13 @@ bookRouter
 
 // recommeneded book
 bookRouter.route("/by-tags/:bookId").get(recommendedBooks);
+
+// delete all books router
+// bookRouter.route("/delete/allbooks").delete(deleteAllBooks);
+
+// get all books as json formet
+bookRouter
+  .route("/json/allBooks")
+  .get(jwtAuthMiddleware, authorizedRoles("admin"), getAllBooksWithJSONFormet);
 
 export default bookRouter;
