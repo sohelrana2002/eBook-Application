@@ -7,6 +7,7 @@ import { useAuthContext } from "@/context/authContext";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { login } from "@/lib/api";
+import GoogleButton from "react-google-button";
 
 const Login = () => {
   const router = useRouter();
@@ -70,6 +71,11 @@ const Login = () => {
     });
 
     // console.log("Submitted data:", userLogin);
+  };
+
+  const handleGoogleLogin = () => {
+    // ✅ Backend on port 3000
+    window.location.href = "http://localhost:3000/api/auth/google";
   };
 
   if (isLoading || isRedirecting) {
@@ -156,6 +162,10 @@ const Login = () => {
               Register
             </Link>
           </p>
+
+          <div className="pt-3 flex justify-center items-center">
+            <GoogleButton onClick={handleGoogleLogin} />
+          </div>
         </div>
       </div>
     </div>
