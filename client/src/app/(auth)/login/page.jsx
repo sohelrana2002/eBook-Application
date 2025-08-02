@@ -75,7 +75,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     // ✅ Backend on port 3000
-    window.location.href = "http://localhost:3000/api/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/google`;
   };
 
   if (isLoading || isRedirecting) {
