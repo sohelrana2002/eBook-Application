@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import "../config/passport.js";
+import { config } from "../config/config.js";
 
 const googleRouter = express.Router();
 
@@ -25,7 +26,7 @@ googleRouter.get(
       const token = await user.generateToken();
 
       // You can redirect or respond with the token
-      res.redirect(`http://localhost:3001/google?token=${token}`);
+      res.redirect(`${config.frontEndBaseURL}/google?token=${token}`);
     } catch (err) {
       console.error("Google Auth Error:", err);
       res.status(500).json({ message: "Google Auth Error" });

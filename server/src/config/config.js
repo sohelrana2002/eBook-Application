@@ -9,6 +9,7 @@ const _config = {
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   googleCallBackURL: process.env.GOOGLE_CALLBACK_URL,
+  frontEndBaseURL: process.env.FRONTEND_BASE_URL,
 };
 
 // ---freeze method used for only read purpose----
