@@ -1,6 +1,8 @@
 import booksModel from "../models/bookModel.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import cloudinary from "../config/cloudinary.js";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +31,38 @@ const createBook = async (req, res, next) => {
     // console.log("coverImage", coverImage);
     // console.log("bookFile path:", bookFile[0].path);
 
+    const coverImageMimeType = req?.files?.coverImage?.[0]?.mimetype
+      .split("/")
+      .at(-1);
+
+    const fileName = req?.files?.coverImage?.[0]?.filename;
+
+    const filePath = path.resolve(__dirname, "../../public/uploads", fileName);
+
+    const coverImageUpload = await cloudinary.uploader.upload(filePath, {
+      public_id: path.parse(fileName).name,
+      overwrite: true,
+      folder: "cover-image",
+      format: coverImageMimeType,
+    });
+
+    // console.log("coverImageUpload", coverImageUpload);
+
+    const bookFileName = req?.files?.bookFile?.[0]?.filename;
+    const bookFilePath = path.resolve(
+      __dirname,
+      "../../public/uploads",
+      bookFileName
+    );
+
+    const bookFilesUpload = await cloudinary.uploader.upload(bookFilePath, {
+      public_id: path.parse(bookFileName).name,
+      overwrite: true,
+      resource_type: "raw",
+      folder: "book-pdfs",
+      format: "pdf",
+    });
+
     const registerBook = await booksModel.create({
       title,
       author,
@@ -43,9 +77,12 @@ const createBook = async (req, res, next) => {
       isShortStory,
       isPoetry,
       isKidsBook,
-      coverImage: coverImage?.[0]?.path,
-      bookFile: bookFile?.[0]?.path,
+      coverImage: coverImageUpload?.secure_url,
+      bookFile: bookFilesUpload?.secure_url,
     });
+
+    await fs.promises.unlink(filePath);
+    await fs.promises.unlink(bookFilePath);
 
     res.status(201).json({
       message: "Create new book successfully!",
