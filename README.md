@@ -18,6 +18,7 @@ Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Query](https://tanstack.com/query/latest)
 - [Axios](https://axios-http.com/)
+- [React.js](https://react.dev)
 
 ### **Backend**
 - [Node.js](https://nodejs.org/)
