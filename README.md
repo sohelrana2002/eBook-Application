@@ -7,7 +7,7 @@ Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
 
 ## 🌐 Live Demo
 
-- **Website (User Side)**: [View Live Website](https://your-website-link.com)  
+- **Website (User Side)**: [View Live Website](https://e-book-application-five.vercel.app)  
 - **Admin Dashboard**: [View Admin Panel](https://your-admin-link.com)  
 
 
@@ -24,4 +24,4 @@ Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
 - [Express.js](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
 - [Mongoose](https://mongoosejs.com/)
-- [Cloudinary](https://cloudinary.com/) for file storage
+- [Cloudinary](https://cloudinary.com/)
