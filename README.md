@@ -8,7 +8,7 @@ Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
 ## 🌐 Live Demo
 
 - **Website (User Side)**: [View Live Website](https://e-book-application-five.vercel.app)  
-- **Admin Dashboard**: [View Admin Panel](https://your-admin-link.com)  
+- **Admin Dashboard**: [View Admin Panel](https://e-book-application-admin.vercel.app)  
 
 
 ## 🛠️ Tech Stack
