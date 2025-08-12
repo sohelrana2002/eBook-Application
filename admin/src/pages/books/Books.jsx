@@ -8,6 +8,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteBook } from "@/http/api";
+import defaultImage from "/book.jpg";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -160,7 +161,11 @@ const Books = () => {
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <img
-                          src="/book.jpg"
+                          src={`${
+                            curElem.coverImage
+                              ? curElem.coverImage
+                              : defaultImage
+                          }`}
                           alt="books images"
                           className="h-10 w-10 rounded-md object-cover"
                         />
