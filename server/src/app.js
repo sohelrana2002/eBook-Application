@@ -18,6 +18,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3001",
   "https://e-book-application-five.vercel.app",
+  "https://e-book-application-admin.vercel.app",
 ];
 
 // var corsOptions = {
