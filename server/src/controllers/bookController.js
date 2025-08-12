@@ -31,11 +31,9 @@ const createBook = async (req, res, next) => {
     // console.log("coverImage", coverImage);
     // console.log("bookFile path:", bookFile[0].path);
 
-    const coverImageMimeType = req?.files?.coverImage?.[0]?.mimetype
-      .split("/")
-      .at(-1);
+    const coverImageMimeType = coverImage?.[0]?.mimetype.split("/").at(-1);
 
-    const fileName = req?.files?.coverImage?.[0]?.filename;
+    const fileName = coverImage?.[0]?.filename;
 
     const filePath = path.resolve(__dirname, "../../public/uploads", fileName);
 
@@ -48,7 +46,7 @@ const createBook = async (req, res, next) => {
 
     // console.log("coverImageUpload", coverImageUpload);
 
-    const bookFileName = req?.files?.bookFile?.[0]?.filename;
+    const bookFileName = bookFile?.[0]?.filename;
     const bookFilePath = path.resolve(
       __dirname,
       "../../public/uploads",
@@ -128,16 +126,17 @@ const updateBook = async (req, res, next) => {
       });
     }
 
-    // if (coverImage) {
-    //   const oldCoverImage = coverImage;
-    //   const coverImagePath = path.join(
-    //     __dirname,
-    //     "../../public/uploads/",
-    //     oldCoverImage.originalname
-    //   );
-    //   await oldCoverImage.mv(coverImagePath);
-    //   coverImage.oldCoverImage = `../../public/uploads/${oldCoverImage.originalname}`;
-    // }
+    let completeCoverImage = "";
+    if (coverImage) {
+      const oldCoverImage = coverImage;
+      const coverImagePath = path.join(
+        __dirname,
+        "../../public/uploads/",
+        oldCoverImage.originalname
+      );
+      await oldCoverImage.mv(coverImagePath);
+      coverImage.oldCoverImage = `../../public/uploads/${oldCoverImage.originalname}`;
+    }
 
     const updatedBook = await booksModel.findByIdAndUpdate(
       { _id: bookId },
