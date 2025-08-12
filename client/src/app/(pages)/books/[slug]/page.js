@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import Loading from "@/app/loading";
 import Link from "next/link";
 import BookCard from "@/components/bookCard/BookCard";
+const defaultImage = "/book.jpg";
 
 const SingleBookPage = async ({ params }) => {
   const { slug } = await params;
@@ -29,9 +30,9 @@ const SingleBookPage = async ({ params }) => {
             <div className="md:col-span-1 flex justify-center items-center">
               <div className="relative w-64 h-96 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/book.jpg"
+                  src={bookDetails.coverImage || defaultImage}
                   alt={bookDetails?.title}
-                  layout="fill"
+                  fill
                   objectFit="contain"
                   className="hover:scale-105 transition-transform duration-300"
                 />

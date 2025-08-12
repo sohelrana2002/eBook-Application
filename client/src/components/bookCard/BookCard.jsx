@@ -1,9 +1,21 @@
 import { renderRatingStars } from "@/lib/renderRatingStars";
+import Image from "next/image";
+const defaultImage = "/book.jpg";
 
 const BookCard = ({ coverImage, title, averageRating, price, author }) => {
   return (
     <div className="w-full  md:max-w-xs bg-white shadow-lg rounded-2xl  hover:shadow-xl transition-shadow duration-300 border border-[var(--border)] overflow-auto">
-      <img src="/book.jpg" alt={title} className="w-full h-60 object-cover" />
+      {/* Image wrapper */}
+      <div className="relative w-full h-60">
+        <Image
+          src={coverImage || defaultImage}
+          alt={title}
+          fill
+          style={{ objectFit: "cover" }}
+          className="rounded-t-2xl"
+        />
+      </div>
+
       <div className="p-4 space-y-2 border-t-2 border-[var(--border)] flex items-start justify-between">
         <div>
           <h2 className="text-[17px] font-semibold text-gray-800 line-clamp-2 capitalize max-w-[200px] text-left">
