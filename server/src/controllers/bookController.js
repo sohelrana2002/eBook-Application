@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
+import mongoose from "mongoose";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,9 +33,7 @@ const createBook = async (req, res, next) => {
     // console.log("bookFile path:", bookFile[0].path);
 
     const coverImageMimeType = coverImage?.[0]?.mimetype.split("/").at(-1);
-
     const fileName = coverImage?.[0]?.filename;
-
     const filePath = path.resolve(__dirname, "../../public/uploads", fileName);
 
     const coverImageUpload = await cloudinary.uploader.upload(filePath, {
@@ -128,14 +127,46 @@ const updateBook = async (req, res, next) => {
 
     let completeCoverImage = "";
     if (coverImage) {
-      const oldCoverImage = coverImage;
-      const coverImagePath = path.join(
+      const coverImageMimeType = coverImage?.[0]?.mimetype.split("/").at(-1);
+      const fileName = coverImage?.[0]?.filename;
+      const filePath = path.resolve(
         __dirname,
-        "../../public/uploads/",
-        oldCoverImage.originalname
+        "../../public/uploads",
+        fileName
       );
-      await oldCoverImage.mv(coverImagePath);
-      coverImage.oldCoverImage = `../../public/uploads/${oldCoverImage.originalname}`;
+
+      completeCoverImage = fileName;
+      const coverImageUpload = await cloudinary.uploader.upload(filePath, {
+        public_id: path.parse(completeCoverImage).name,
+        overwrite: true,
+        folder: "cover-image",
+        format: coverImageMimeType,
+      });
+
+      completeCoverImage = coverImageUpload.secure_url;
+      await fs.promises.unlink(filePath);
+    }
+
+    let completeBookFile = "";
+    if (bookFile) {
+      const bookFileName = bookFile?.[0]?.filename;
+      const bookFilePath = path.resolve(
+        __dirname,
+        "../../public/uploads",
+        bookFileName
+      );
+
+      completeBookFile = bookFileName;
+      const bookFilesUpload = await cloudinary.uploader.upload(bookFilePath, {
+        public_id: path.parse(completeBookFile).name,
+        overwrite: true,
+        resource_type: "raw",
+        folder: "book-pdfs",
+        format: "pdf",
+      });
+
+      completeBookFile = bookFilesUpload.secure_url;
+      await fs.promises.unlink(bookFilePath);
     }
 
     const updatedBook = await booksModel.findByIdAndUpdate(
@@ -154,8 +185,8 @@ const updateBook = async (req, res, next) => {
         isShortStory,
         isPoetry,
         isKidsBook,
-        coverImage: coverImage?.[0]?.path,
-        bookFile: bookFile?.[0]?.path,
+        coverImage: completeCoverImage ? completeCoverImage : book.coverImage,
+        bookFile: completeBookFile ? completeBookFile : book.bookFile,
       },
       {
         new: true,
@@ -287,8 +318,11 @@ const getSingleBook = async (req, res, next) => {
   try {
     const { slug } = req.params;
     // console.log("bookId", bookId);
+    const isObjectId = mongoose.Types.ObjectId.isValid(slug);
 
-    const singleBook = await booksModel.findOne({ slug });
+    const singleBook = await booksModel.findOne(
+      isObjectId ? { $or: [{ _id: slug }, { slug: slug }] } : { slug: slug }
+    );
 
     // console.log("singleBook", singleBook);
 
