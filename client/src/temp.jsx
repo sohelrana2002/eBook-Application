@@ -55,3 +55,34 @@ const UserProfilePage = () => {
 };
 
 export default UserProfilePage;
+
+const sendMessage = async () => {
+  if (!input.trim()) return;
+
+  const userMessage = { role: "user", text: input };
+  setMessages((prev) => [...prev, userMessage]);
+  setInput("");
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/assistant`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      }
+    );
+    const data = await res.json();
+
+    const assistantMessage = {
+      role: "assistant",
+      text: data.reply || "Sorry, I cannot respond.",
+    };
+    setMessages((prev) => [...prev, assistantMessage]);
+  } catch (error) {
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", text: "Error connecting to server." },
+    ]);
+  }
+};
