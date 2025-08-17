@@ -4,20 +4,23 @@ const createBookAssistant = async (req, res) => {
   const { message } = req.body;
 
   // Call OpenAI (or other LLM) with message
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${config.openAPIKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are a helpful book assistant." },
-        { role: "user", content: message },
-      ],
-    }),
-  });
+  const response = await fetch(
+    "https://api.groq.com/openai/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${config.groqAPIKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3-8b-8192", // free Groq model
+        messages: [
+          { role: "system", content: "You are a helpful book assistant." },
+          { role: "user", content: message },
+        ],
+      }),
+    }
+  );
 
   const data = await response.json();
   console.log("OpenAI API Response:", data); // 🔎 DEBUGGING

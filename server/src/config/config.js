@@ -13,7 +13,7 @@ const _config = {
   cloudinaryCloud: process.env.CLOUDINARY_CLOUD,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
-  openAPIKey: process.env.OPENAI_API_KEY,
+  groqAPIKey: process.env.GROQ_API_KEY,
 };
 
 // ---freeze method used for only read purpose----
