@@ -29,6 +29,11 @@ export const navMenu = [
     path: "/request-book",
     title: "Request a Book",
   },
+  {
+    id: 7,
+    path: "/book-assistant",
+    title: "Book Assistant",
+  },
 ];
 
 export const FAQData = [
