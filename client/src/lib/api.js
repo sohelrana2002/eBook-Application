@@ -254,3 +254,10 @@ export const createContact = async (email, message) => {
 
   return res.data;
 };
+
+// book assistant
+export const createBookAssistant = async (message) => {
+  const res = await api.post("api/assistant", { message });
+
+  return res.data;
+};
