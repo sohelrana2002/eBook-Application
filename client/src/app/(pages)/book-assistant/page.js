@@ -38,8 +38,6 @@ export default function ChatInterface() {
       mutation.mutate({
         message: input,
       });
-
-      console.log("input2", input);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -56,7 +54,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[80vh] w-full max-w-md mx-auto border rounded-2xl shadow-lg overflow-hidden bg-white">
+    <div className="flex flex-col h-[80vh] w-full max-w-md mx-auto border border-[var(--border) rounded-2xl shadow-lg overflow-hidden bg-white">
       {/* Header */}
       <div className="bg-[var(--blue)] text-white px-4 py-3 font-semibold text-lg">
         Book Assistant
