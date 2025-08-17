@@ -12,6 +12,7 @@ import newsletterRouter from "./routers/newsletterRouter.js";
 import contactRouter from "./routers/contactRouter.js";
 import { JSONrouter } from "./controllers/jsonController.js";
 import googleRouter from "./routers/googleRouter.js";
+import bookAssistantRouter from "./routers/bookAssistantRouter.js";
 
 const app = express();
 const allowedOrigins = [
@@ -56,6 +57,7 @@ app.use("/api/newsletter", newsletterRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/json", JSONrouter);
 app.use("/api/auth", googleRouter);
+app.use("/api/assistant", bookAssistantRouter);
 
 app.get("/", (req, res) => {
   res.json({
