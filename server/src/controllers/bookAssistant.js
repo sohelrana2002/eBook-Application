@@ -23,7 +23,7 @@ const createBookAssistant = async (req, res) => {
   );
 
   const data = await response.json();
-  console.log("OpenAI API Response:", data); // 🔎 DEBUGGING
+  //   console.log("OpenAI API Response:", data);
 
   if (!data.choices) {
     return res
