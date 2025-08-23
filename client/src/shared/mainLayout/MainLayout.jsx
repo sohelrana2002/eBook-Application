@@ -6,6 +6,7 @@ import TanstackProvider from "@/provider/TanstackProvider";
 import Footer from "@/components/footer/Footer";
 import CopyRight from "../copyRight/CopyRight";
 import { usePathname } from "next/navigation";
+import { NotificationProvider } from "@/context/notificationContext";
 
 const MainLayout = ({ children }) => {
   const pathname = usePathname();
@@ -19,10 +20,12 @@ const MainLayout = ({ children }) => {
     <main>
       <AuthProvider>
         <TanstackProvider>
-          <Navbar />
-          <div className="pt-[3.8rem]">{children}</div>
-          {!hideSection && <Footer />}
-          {!hideSection && <CopyRight />}
+          <NotificationProvider>
+            <Navbar />
+            <div className="pt-[3.8rem]">{children}</div>
+            {!hideSection && <Footer />}
+            {!hideSection && <CopyRight />}
+          </NotificationProvider>
         </TanstackProvider>
       </AuthProvider>
     </main>
