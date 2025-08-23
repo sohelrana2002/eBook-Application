@@ -32,11 +32,11 @@ const createBook = async (req, res, next) => {
     // console.log("coverImage", coverImage);
     // console.log("bookFile path:", bookFile[0].path);
 
-    const coverImageMimeType = coverImage?.[0]?.mimetype.split("/").at(-1);
+    const coverImageMimeType = coverImage?.[0]?.mimetype?.split("/")?.at(-1);
     const fileName = coverImage?.[0]?.filename;
-    const filePath = path.resolve(__dirname, "../../public/uploads", fileName);
+    const filePath = path?.resolve(__dirname, "../../public/uploads", fileName);
 
-    const coverImageUpload = await cloudinary.uploader.upload(filePath, {
+    const coverImageUpload = await cloudinary?.uploader?.upload(filePath, {
       public_id: path.parse(fileName).name,
       overwrite: true,
       folder: "cover-image",
@@ -46,13 +46,13 @@ const createBook = async (req, res, next) => {
     // console.log("coverImageUpload", coverImageUpload);
 
     const bookFileName = bookFile?.[0]?.filename;
-    const bookFilePath = path.resolve(
+    const bookFilePath = path?.resolve(
       __dirname,
       "../../public/uploads",
       bookFileName
     );
 
-    const bookFilesUpload = await cloudinary.uploader.upload(bookFilePath, {
+    const bookFilesUpload = await cloudinary?.uploader?.upload(bookFilePath, {
       public_id: path.parse(bookFileName).name,
       overwrite: true,
       resource_type: "raw",
@@ -80,6 +80,15 @@ const createBook = async (req, res, next) => {
 
     await fs.promises.unlink(filePath);
     await fs.promises.unlink(bookFilePath);
+
+    // WebSocket: emit event after book is created
+    const io = req.app.get("io");
+    io.emit("new_book", {
+      id: registerBook._id,
+      title: registerBook.title,
+      author: registerBook.author,
+      createdAt: new Date(),
+    });
 
     res.status(201).json({
       message: "Create new book successfully!",
