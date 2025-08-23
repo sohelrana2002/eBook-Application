@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { login } from "@/lib/api";
 import GoogleButton from "react-google-button";
+import { connectSocket } from "@/helper/socket";
 
 const Login = () => {
   const router = useRouter();
@@ -45,6 +46,7 @@ const Login = () => {
       alert("Login successful!");
       //   console.log("Logged in user:", data);
       storeTokenInLS(data.token, data.name);
+      connectSocket(data.token);
 
       setUserLogin((prev) => ({
         ...prev,
