@@ -47,6 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
+// all route
 app.use("/api/auth", authRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/filter", filterRouter);
