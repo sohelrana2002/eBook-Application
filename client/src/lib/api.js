@@ -250,14 +250,14 @@ export const newsletter = async (email) => {
 
 //conatct form
 export const createContact = async (email, message) => {
-  const res = await api.post("api/contact", { email, message });
+  const res = await api.post("/api/contact", { email, message });
 
   return res.data;
 };
 
-// book assistant
+// book assistant assistant
 export const createBookAssistant = async (message) => {
-  const res = await api.post("api/assistant", { message });
+  const res = await api.post("/api/assistant", { message });
 
   return res.data;
 };
