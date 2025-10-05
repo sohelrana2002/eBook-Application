@@ -13,7 +13,7 @@ const createBookAssistant = async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192", // free Groq model
+        model: "llama-3.1-8b-instant", // free Groq model
         messages: [
           { role: "system", content: "You are a helpful book assistant." },
           { role: "user", content: message },
@@ -23,7 +23,7 @@ const createBookAssistant = async (req, res) => {
   );
 
   const data = await response.json();
-  //   console.log("OpenAI API Response:", data);
+  console.log("OpenAI API Response:", data);
 
   if (!data.choices) {
     return res
