@@ -28,12 +28,11 @@ const bookRequest = async (req, res) => {
       message: "Added book request successfully",
       id: newRequest._id,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Book requedted error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -76,12 +75,11 @@ const getBookRequest = async (req, res) => {
       userData: userExist,
       allBookRequest: requests,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Get book requested error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -102,12 +100,11 @@ const updateBookStatus = async (req, res) => {
       message: "Book status updated successfully!",
       bookId: updated._id,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Update book requested error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -131,12 +128,11 @@ const deleteRequestedBook = async (req, res) => {
       message: "Requested book deleted successfully!",
       id: bookId,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Delete book request error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -153,12 +149,11 @@ const allRequestedBook = async (req, res) => {
       length: allRequest.length,
       requestedBook: allRequest,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("All requested book error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -175,12 +170,11 @@ const singleRequestedBook = async (req, res) => {
       message: "success",
       singleRequestBook: singleRequest,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Single requested error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -193,12 +187,11 @@ const newRequestCount = async (req, res) => {
       message: "success",
       count: count,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("New book requested book error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -224,12 +217,11 @@ const markRequestSeen = async (req, res) => {
       message: existingRequest.isSeen ? "Already seen" : "Marked as seen",
       id: bookId,
     });
-  } catch (err) {
-    console.log("error from server", err);
+  } catch (error) {
+    console.error("Mark book request seen error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
