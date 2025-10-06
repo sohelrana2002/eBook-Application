@@ -22,12 +22,11 @@ const createNewsletter = async (req, res) => {
     res.status(201).json({
       message: "Subscribed successfully!",
     });
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Newsleter creation error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
