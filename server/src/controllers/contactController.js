@@ -22,12 +22,11 @@ const createContact = async (req, res) => {
     await contactData.save();
 
     res.status(201).json({ message: "Message submitted successfully" });
-  } catch (err) {
-    console.log(err, "error from server");
+  } catch (error) {
+    console.error("Create contact info error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
