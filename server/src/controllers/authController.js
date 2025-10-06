@@ -226,7 +226,7 @@ const forgotPassword = async (req, res, next) => {
     expiresIn: "15m",
   });
 
-  const resetLink = `http://localhost:3000/api/auth/reset-password/${token}`;
+  const resetLink = `${config.backEndBaseURL}/api/auth/reset-password/${token}`;
 
   // In real life: send email with resetLink
   console.log("Password reset link:", resetLink);
@@ -241,7 +241,7 @@ const resetPassword = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, config.jwtSecretKey);
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
 
     const userExist = await user.findById(decoded.userId);
 
@@ -261,9 +261,9 @@ export {
   login,
   getUserInfo,
   userProfile,
+  updateProfile,
   getAdminInfo,
   deleteUser,
   forgotPassword,
   resetPassword,
-  updateProfile,
 };
