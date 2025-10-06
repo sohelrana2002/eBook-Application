@@ -10,6 +10,7 @@ const _config = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   googleCallBackURL: process.env.GOOGLE_CALLBACK_URL,
   frontEndBaseURL: process.env.FRONTEND_BASE_URL,
+  backEndBaseURL: process.env.BACKEND_BASE_URL,
   cloudinaryCloud: process.env.CLOUDINARY_CLOUD,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
