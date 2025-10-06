@@ -27,10 +27,11 @@ const register = async (req, res) => {
       token: await createUser.generateToken(),
       userId: createUser._id.toString(),
     });
-  } catch (err) {
+  } catch (error) {
+    console.error("Registration error.", error.message);
+
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -63,10 +64,11 @@ const login = async (req, res, next) => {
         message: "Invalid email or password",
       });
     }
-  } catch (err) {
+  } catch (error) {
+    console.error("Login error.", error.message);
+
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -95,12 +97,11 @@ const updateProfile = async (req, res) => {
       message: "User information updated successfully!",
       id: request._id,
     });
-  } catch (err) {
-    console.log("Internal server error", err);
+  } catch (error) {
+    console.error("Profile update error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -121,10 +122,11 @@ const getUserInfo = async (req, res, next) => {
         users: userInfo,
       });
     }
-  } catch (err) {
+  } catch (error) {
+    console.error("Get user info error.", error.message);
+
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -145,10 +147,11 @@ const getAdminInfo = async (req, res, next) => {
         users: adminInfo,
       });
     }
-  } catch (err) {
+  } catch (error) {
+    console.error("Get admin info error.", error.message);
+
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -175,12 +178,11 @@ const userProfile = async (req, res, next) => {
         error: "invalid token",
       });
     }
-  } catch (err) {
-    console.error("Internal server error.");
+  } catch (error) {
+    console.error("Individual profile info error.", error.message);
 
     res.status(500).json({
-      message: "Internal server error.",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -205,12 +207,11 @@ const deleteUser = async (req, res, next) => {
         id: userId,
       });
     }
-  } catch (err) {
-    console.log("Internal server error", err);
+  } catch (error) {
+    console.error("User delete error.", error.message);
 
     res.status(500).json({
-      message: "Internal server error.",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -251,8 +252,12 @@ const resetPassword = async (req, res) => {
     await userExist.save();
 
     res.json({ message: "Password reset successful" });
-  } catch (err) {
-    res.status(400).json({ message: "Invalid or expired token" });
+  } catch (error) {
+    console.error("Reset password error.", error.message);
+
+    res.status(500).json({
+      message: "Internal server error",
+    });
   }
 };
 
