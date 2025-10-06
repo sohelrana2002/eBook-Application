@@ -94,12 +94,11 @@ const createBook = async (req, res, next) => {
       message: "Create new book successfully!",
       id: registerBook._id,
     });
-  } catch (err) {
-    console.log(err, "error from server");
+  } catch (error) {
+    console.error("Book creation error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -210,12 +209,11 @@ const updateBook = async (req, res, next) => {
       message: "Book update successfully!",
       id: updatedBook._id,
     });
-  } catch (err) {
-    console.log(err, "error from server");
+  } catch (error) {
+    console.error("Update book error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
@@ -312,12 +310,11 @@ const listBook = async (req, res, next) => {
       currentLength: books.length,
       books: books,
     });
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("List all book error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -345,12 +342,11 @@ const getSingleBook = async (req, res, next) => {
         singeBook: singleBook,
       });
     }
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Single book details error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -374,12 +370,11 @@ const deleteBook = async (req, res, next) => {
         id: bookId,
       });
     }
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Deleted book error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -410,12 +405,11 @@ const recommendedBooks = async (req, res) => {
       length: bookRecommentation.length,
       recommendations: bookRecommentation,
     });
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Recommended book error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -438,10 +432,10 @@ const getAllBooksWithJSONFormet = async (req, res) => {
 
     res.status(200).json(allBooks);
   } catch (error) {
-    console.error("Error fetching books:", error);
+    console.error("Get All Books WithJ SONFormet error.", error.message);
+
     res.status(500).json({
       message: "Internal server error",
-      error: error.message || error,
     });
   }
 };
