@@ -46,12 +46,11 @@ const addReview = async (req, res, next) => {
       message: "Review added successfully",
       review_Id: review._id,
     });
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Add review error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -74,12 +73,11 @@ const allReview = async (req, res, next) => {
         review: reviews,
       });
     }
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Get all review error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -118,12 +116,11 @@ const updateReview = async (req, res, next) => {
       message: "Review updated successfully",
       review: review,
     });
-  } catch (err) {
-    console.error("Internal server error", err);
+  } catch (error) {
+    console.error("Update review error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
@@ -161,12 +158,11 @@ const deleteReview = async (req, res, next) => {
       message: "Review delete successfully",
       reviewId: reviewId,
     });
-  } catch (err) {
-    console.log("Internal server error", err);
+  } catch (error) {
+    console.error("Delete review error error.", error.message);
 
     res.status(500).json({
       message: "Internal server error",
-      error: err,
     });
   }
 };
