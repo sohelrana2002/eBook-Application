@@ -8,9 +8,10 @@ const allAuthor = async (req, res) => {
       allAuthorName: authors,
     });
   } catch (error) {
+    console.error("All author count error.", error.message);
+
     res.status(500).json({
-      message: "failed",
-      error: error.message,
+      message: "Internal server error",
     });
   }
 };
@@ -23,9 +24,10 @@ const allLanguage = async (req, res) => {
       allLanguageName: languages,
     });
   } catch (error) {
+    console.error("All language count error.", error.message);
+
     res.status(500).json({
-      message: "failed",
-      error: error.message,
+      message: "Internal server error",
     });
   }
 };
@@ -39,9 +41,10 @@ const allGenre = async (req, res) => {
       allGenreName: genres,
     });
   } catch (error) {
+    console.error("All genre error.", error.message);
+
     res.status(500).json({
-      message: "failed",
-      error: error.message,
+      message: "Internal server error",
     });
   }
 };
