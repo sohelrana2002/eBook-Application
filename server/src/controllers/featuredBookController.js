@@ -39,12 +39,11 @@ const featuredBook = async (req, res) => {
       .exec();
 
     res.status(200).json({ message: "success", ...result });
-  } catch (err) {
-    console.log(err, "error from server");
+  } catch (error) {
+    console.error("Featured book creation error.", error.message);
 
     res.status(500).json({
-      message: "internal server error",
-      error: err,
+      message: "Internal server error",
     });
   }
 };
