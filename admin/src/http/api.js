@@ -101,7 +101,7 @@ export const deleteUser = async (id) => {
 };
 
 // ---get all admins---
-export const allAsmins = async () => {
+export const allAdmins = async () => {
   const res = await api.get("/api/auth/admin-info");
   return res.data;
 };
