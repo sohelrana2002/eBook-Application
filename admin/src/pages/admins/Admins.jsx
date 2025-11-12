@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { allAdmins } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
+import { capitalizedWords } from "@/helpers/stringUtils";
 import {
   LockKeyhole,
   FileSpreadsheet,
@@ -10,7 +12,6 @@ import {
   Printer,
 } from "lucide-react";
 import DataTable from "react-data-table-component";
-import { useState } from "react";
 
 // Import your export utilities
 import {
@@ -40,9 +41,13 @@ const Admins = () => {
   );
 
   const columns = [
-    { name: "Name", selector: (row) => row.name, sortable: true },
+    {
+      name: "Name",
+      selector: (row) => capitalizedWords(row.name),
+      sortable: true,
+    },
     { name: "Email", selector: (row) => row.email },
-    { name: "Role", selector: (row) => row.role },
+    { name: "Role", selector: (row) => capitalizedWords(row.role) },
     {
       name: "Created At",
       selector: (row) => new Date(row.created_at).toLocaleDateString(),
