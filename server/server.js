@@ -49,6 +49,16 @@ const startServer = async () => {
     });
   });
 
+  // When a new book is added anywhere
+  const sendNewBookNotification = (book) => {
+    io.emit("new_book", book); // send to ALL connected users
+  };
+
+  // When a book is deleted
+  const sendDeletedBookNotification = (bookId) => {
+    io.emit("delete_book", bookId); // remove from ALL connected users
+  };
+
   app.set("io", io);
 
   httpServer.listen(port, () => {
