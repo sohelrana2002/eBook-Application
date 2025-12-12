@@ -14,7 +14,7 @@ const SingleBookPage = async ({ params }) => {
   const singleBookData = await singleBook(slug);
   const bookDetails = singleBookData?.singeBook;
 
-  const bookReview = await reviewEachBook(bookDetails._id);
+  const bookReview = await reviewEachBook(bookDetails?._id);
   const allRecommentedBook = await recommentedBook(slug);
 
   // console.log("bookReview", bookReview);
@@ -30,7 +30,7 @@ const SingleBookPage = async ({ params }) => {
             <div className="md:col-span-1 flex justify-center items-center">
               <div className="relative w-64 h-96 rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src={bookDetails.coverImage || defaultImage}
+                  src={bookDetails?.coverImage || defaultImage}
                   alt={bookDetails?.title}
                   fill
                   objectFit="contain"
