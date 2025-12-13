@@ -18,6 +18,25 @@ if (typeof window !== "undefined") {
   });
 }
 
+// Auto logout when JWT expires
+if (typeof window !== "undefined") {
+  api.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      if (error.res?.status === 401) {
+        // token expired or invalid
+        localStorage.removeItem("token");
+        localStorage.removeItem("name");
+
+        // clear user state, notifications, socket, etc.
+        window.location.href("/login");
+      }
+
+      return Promise.reject(error);
+    }
+  );
+}
+
 // ----for login---
 export const login = async (email, password) => {
   // console.log("user data", { email, password });
