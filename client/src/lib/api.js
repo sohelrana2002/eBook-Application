@@ -21,15 +21,14 @@ if (typeof window !== "undefined") {
 // Auto logout when JWT expires
 if (typeof window !== "undefined") {
   api.interceptors.response.use(
-    (res) => res,
+    (response) => response,
     (error) => {
-      if (error.res?.status === 401) {
-        // token expired or invalid
+      if (error.response?.status === 401) {
+        //token expired
         localStorage.removeItem("token");
         localStorage.removeItem("name");
 
-        // clear user state, notifications, socket, etc.
-        window.location.href("/login");
+        window.location.href = "/login";
       }
 
       return Promise.reject(error);
