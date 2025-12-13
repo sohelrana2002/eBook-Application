@@ -96,7 +96,7 @@ userSchema.methods.generateToken = async function () {
       },
       config.jwtSecretKey,
       {
-        expiresIn: "30d",
+        expiresIn: config.jwtExpiresIn,
       }
     );
   } catch (error) {
