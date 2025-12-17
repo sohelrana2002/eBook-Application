@@ -3,6 +3,7 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 import authReducer from "@/reducer/authReducer";
 import { isTokenExpired } from "@/helper/checkTokenExpiry/checkTokenExpiry";
+import { jwtDecode } from "jwt-decode";
 
 const initialState = {
   token: "",
@@ -57,6 +58,35 @@ const AuthProvider = ({ children }) => {
 
     initializeAuth();
   }, []);
+
+  useEffect(() => {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : "";
+
+    if (!token) return;
+
+    try {
+      const decoded = jwtDecode(token);
+      const expireAt = decoded.exp * 1000;
+      const timeLeft = expireAt - Date.now();
+
+      if (timeLeft < 0) {
+        logOutUser();
+        window.location.replace("/login");
+        return;
+      }
+
+      const timeOut = setTimeout(() => {
+        logOutUser();
+        window.location.replace("/login");
+      }, timeLeft);
+
+      return () => clearTimeout(timeOut);
+    } catch (error) {
+      logOutUser();
+      window.location.replace("/login");
+    }
+  }, [state.token]);
 
   // Store token in local storage
   const storeTokenInLS = (serverToken, name) => {
