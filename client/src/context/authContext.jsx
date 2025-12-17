@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useReducer, useEffect } from "react";
 import authReducer from "@/reducer/authReducer";
+import { isTokenExpired } from "@/helper/checkTokenExpiry/checkTokenExpiry";
 
 const initialState = {
   token: "",
@@ -15,6 +16,20 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  // User log out
+  const logOutUser = () => {
+    try {
+      dispatch({ type: "LOGOUT_START" });
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+
+      dispatch({ type: "LOGOUT_SUCCESS" });
+    } catch (error) {
+      dispatch({ type: "LOGOUT_FAILURE", payload: error.message });
+    }
+  };
+
   // Initialize auth state (runs once on mount)
   useEffect(() => {
     const initializeAuth = () => {
@@ -26,13 +41,14 @@ const AuthProvider = ({ children }) => {
         const name =
           typeof window !== "undefined" ? localStorage.getItem("name") : "";
 
-        if (token) {
+        if (token && !isTokenExpired(token)) {
           dispatch({
             type: "LOAD_TOKEN_SUCCESS",
             payload: { token, name },
           });
         } else {
           dispatch({ type: "LOAD_TOKEN_FAILURE" });
+          logOutUser();
         }
       } catch (error) {
         dispatch({ type: "LOAD_TOKEN_FAILURE", payload: error.message });
@@ -56,20 +72,6 @@ const AuthProvider = ({ children }) => {
       });
     } catch (error) {
       dispatch({ type: "STORE_TOKEN_FAILURE", payload: error.message });
-    }
-  };
-
-  // User log out
-  const logOutUser = () => {
-    try {
-      dispatch({ type: "LOGOUT_START" });
-
-      localStorage.removeItem("token");
-      localStorage.removeItem("name");
-
-      dispatch({ type: "LOGOUT_SUCCESS" });
-    } catch (error) {
-      dispatch({ type: "LOGOUT_FAILURE", payload: error.message });
     }
   };
 
