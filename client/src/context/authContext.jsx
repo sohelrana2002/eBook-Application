@@ -106,6 +106,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const isLoggedIn = !!state.token;
+  //if token have then isLoggedIn true if token don't have the isLoggedIn false
 
   const value = {
     ...state,
