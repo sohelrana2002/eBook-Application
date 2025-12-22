@@ -8,8 +8,8 @@ import { jwtDecode } from "jwt-decode";
 const initialState = {
   token: "",
   name: "",
-  isLoading: true, // Added loading state
-  error: null, // Optional: for error handling
+  isLoading: true,
+  error: null,
 };
 
 const AuthContext = createContext();
@@ -17,8 +17,8 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // User log out
-  const logOutUser = () => {
+  // User log out with redirect
+  const logOutUser = (redirect = true) => {
     try {
       dispatch({ type: "LOGOUT_START" });
 
@@ -26,6 +26,11 @@ const AuthProvider = ({ children }) => {
       localStorage.removeItem("name");
 
       dispatch({ type: "LOGOUT_SUCCESS" });
+
+      // Redirect to login page after logout
+      if (redirect && typeof window !== "undefined") {
+        window.location.replace("/login");
+      }
     } catch (error) {
       dispatch({ type: "LOGOUT_FAILURE", payload: error.message });
     }
@@ -42,56 +47,82 @@ const AuthProvider = ({ children }) => {
         const name =
           typeof window !== "undefined" ? localStorage.getItem("name") : "";
 
-        if (token && !isTokenExpired(token)) {
-          dispatch({
-            type: "LOAD_TOKEN_SUCCESS",
-            payload: { token, name },
-          });
+        if (token) {
+          // Check if token is expired during initialization
+          if (isTokenExpired(token)) {
+            // Token is expired, log out and redirect
+            dispatch({ type: "LOAD_TOKEN_FAILURE", payload: "Token expired" });
+            logOutUser();
+          } else {
+            // Token is valid, load it
+            dispatch({
+              type: "LOAD_TOKEN_SUCCESS",
+              payload: { token, name },
+            });
+          }
         } else {
+          // No token found
           dispatch({ type: "LOAD_TOKEN_FAILURE" });
-          logOutUser();
         }
       } catch (error) {
         dispatch({ type: "LOAD_TOKEN_FAILURE", payload: error.message });
+        logOutUser(false);
       }
     };
 
     initializeAuth();
   }, []);
 
+  // Handle token expiration with timeout
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : "";
+    if (!state.token) return;
 
-    if (!token) return;
+    let timeoutId;
 
-    try {
-      const decoded = jwtDecode(token);
-      const expireAt = decoded.exp * 1000;
-      const timeLeft = expireAt - Date.now();
+    const setupTokenExpirationCheck = () => {
+      try {
+        const decoded = jwtDecode(state.token);
+        const expireAt = decoded.exp * 1000; // Convert to milliseconds
+        const timeLeft = expireAt - Date.now();
 
-      if (timeLeft < 0) {
+        // If token is already expired
+        if (timeLeft <= 0) {
+          logOutUser();
+          return;
+        }
+
+        // Set timeout for when token will expire
+        timeoutId = setTimeout(() => {
+          logOutUser();
+        }, timeLeft);
+      } catch (error) {
+        // If token is invalid, log out
         logOutUser();
-        window.location.replace("/login");
-        return;
       }
+    };
 
-      const timeOut = setTimeout(() => {
-        logOutUser();
-        window.location.replace("/login");
-      }, timeLeft);
+    setupTokenExpirationCheck();
 
-      return () => clearTimeout(timeOut);
-    } catch (error) {
-      logOutUser();
-      window.location.replace("/login");
-    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [state.token]);
 
   // Store token in local storage
   const storeTokenInLS = (serverToken, name) => {
     try {
       dispatch({ type: "STORE_TOKEN_START" });
+
+      // Check if new token is valid before storing
+      if (isTokenExpired(serverToken)) {
+        throw new Error("Token is expired");
+      }
+
+      // Validate token structure
+      const decoded = jwtDecode(serverToken);
+      if (!decoded.exp) {
+        throw new Error("Invalid token structure");
+      }
 
       localStorage.setItem("name", name);
       localStorage.setItem("token", serverToken);
@@ -102,11 +133,25 @@ const AuthProvider = ({ children }) => {
       });
     } catch (error) {
       dispatch({ type: "STORE_TOKEN_FAILURE", payload: error.message });
+      logOutUser(false); // Log out but don't redirect
+      throw error; // Re-throw to handle in calling component
     }
   };
 
-  const isLoggedIn = !!state.token;
-  //if token have then isLoggedIn true if token don't have the isLoggedIn false
+  // Periodic token check (optional, handles system time changes)
+  useEffect(() => {
+    if (!state.token) return;
+
+    const checkInterval = setInterval(() => {
+      if (isTokenExpired(state.token)) {
+        logOutUser();
+      }
+    }, 60000); // Check every minute
+
+    return () => clearInterval(checkInterval);
+  }, [state.token]);
+
+  const isLoggedIn = !!state.token && !state.isLoading;
 
   const value = {
     ...state,
