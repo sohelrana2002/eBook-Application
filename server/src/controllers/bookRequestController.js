@@ -45,40 +45,31 @@ const getBookRequest = async (req, res) => {
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({
+        success: false,
         message: "Invalid user ID",
       });
     }
 
-    const userExist = await userModel
-      .findOne({ _id: userId })
-      .select("name email");
-
-    if (!userExist) {
-      return res.status(400).json({
-        message: "User not found",
-      });
-    }
-
     const requests = await bookRequestModel
-      .find({ userId: userId })
-      .sort({ createdAt: -1 });
+      .find({ userId })
+      .sort({ createdAt: -1 })
+      .lean(); // improves performance
 
-    if (!requests || requests.length === 0) {
-      return res.status(404).json({
-        message: "There are no book requests!",
-      });
-    }
-
-    res.status(201).json({
-      message: "success",
+    // Always return array
+    return res.status(200).json({
+      success: true,
       totalRequest: requests.length,
-      userData: userExist,
       allBookRequest: requests,
+      message:
+        requests.length === 0
+          ? "There are no book requests"
+          : "Book requests fetched successfully",
     });
   } catch (error) {
-    console.error("Get book requested error.", error.message);
+    console.error("Get book requested error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }
