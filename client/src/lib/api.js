@@ -214,7 +214,7 @@ export const updateProfile = async ({
   return res.data;
 };
 
-// get indevidual requested book info
+// get individual requested book info
 export const getRequestedBook = async () => {
   const res = await api.get("/api/bookRequest/user");
 
