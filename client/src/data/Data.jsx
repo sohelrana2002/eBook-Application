@@ -39,9 +39,9 @@ export const navMenu = [
 export const FAQData = [
   {
     id: 1,
-    question: "What is this e-book platform about?",
+    question: "What is this Knowledgea about?",
     answer:
-      "Our e-book platform allows users to browse, purchase, and read digital books online. We offer a wide range of genres, smart recommendations, and personalized reading experiences.",
+      "Our Knowledgea allows users to browse, purchase, and read digital books online. We offer a wide range of genres, smart recommendations, and personalized reading experiences.",
   },
   {
     id: 2,
