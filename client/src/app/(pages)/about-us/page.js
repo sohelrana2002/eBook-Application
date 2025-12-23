@@ -42,7 +42,7 @@ const AboutPage = () => {
         <title>About Us | e-Book Application</title>
         <meta
           name="description"
-          content="Learn about the e-Book Application, our mission, and the team behind the platform."
+          content="Learn about the Knowledgea Application, our mission, and the team behind the platform."
         />
       </Head>
 
@@ -50,9 +50,9 @@ const AboutPage = () => {
         <section className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">About Us</h1>
           <p className="text-lg max-w-2xl mx-auto">
-            Welcome to <strong>e-Book Application</strong> — a digital platform
-            built to make reading, discovering, and enjoying books easier than
-            ever.
+            Welcome to <strong>Knowledgea Application</strong> — a digital
+            platform built to make reading, discovering, and enjoying books
+            easier than ever.
           </p>
         </section>
 
