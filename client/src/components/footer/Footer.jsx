@@ -22,8 +22,8 @@ const Footer = () => {
         </div>
 
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos quod,
-          modi dolorum aspernatur neque quae!
+          Read books that inspire learning, expand knowledge, and help you grow
+          smarter every single day
         </p>
 
         <div className="social__icon">
