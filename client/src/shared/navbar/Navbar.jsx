@@ -83,7 +83,7 @@ const Navbar = () => {
           <div>
             <NotebookText />
           </div>
-          <span>e-Book Platform</span>
+          <span>Knowledgea</span>
         </Link>
 
         <ul className={`menu__item ${isNavShowing && "active"}`} ref={navRef}>

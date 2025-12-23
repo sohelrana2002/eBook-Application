@@ -17,7 +17,7 @@ const Footer = () => {
             <div>
               <NotebookText />
             </div>
-            <span>e-Book Platform</span>
+            <span>Knowledgea</span>
           </Link>
         </div>
 
