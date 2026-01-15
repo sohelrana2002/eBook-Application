@@ -121,7 +121,7 @@ export const fetchBooks = async (filters = {}) => {
 export async function listBooks() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`, {
-      cache: "no-cache",
+      cache: "no-store",
     });
 
     if (!res.ok) {
