@@ -2,19 +2,36 @@
 
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const Decode = () => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const [decoded, setDecoded] = useState(null);
 
-  const decoded = jwtDecode(token);
-  //   console.log("decoded", decoded);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.warn("No token found");
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      setDecoded(decodedToken);
+    } catch (error) {
+      console.error("Invalid token", error);
+    }
+  }, []);
+
+  if (!decoded) {
+    return <p className="p-[5%]">Loading or invalid token...</p>;
+  }
 
   return (
     <div className="p-[5%]">
       <h1>Study about JWT decoding.</h1>
+
       <h3 className="mt-[30px]">Id: {decoded.userId}</h3>
       <h3>Name: {decoded.name}</h3>
       <h3>Role: {decoded.role}</h3>
