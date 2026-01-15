@@ -33,6 +33,7 @@ const GoogleAuth = () => {
       console.warn("No token in URL");
       router.replace("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
