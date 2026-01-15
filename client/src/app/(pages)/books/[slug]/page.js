@@ -8,6 +8,8 @@ import Link from "next/link";
 import BookCard from "@/components/bookCard/BookCard";
 const defaultImage = "/book.jpg";
 
+export const dynamic = "force-dynamic";
+
 const SingleBookPage = async ({ params }) => {
   const { slug } = await params;
 
