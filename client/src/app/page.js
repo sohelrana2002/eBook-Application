@@ -4,6 +4,8 @@ import FeaturedBook from "@/components/featuredBook/FeaturedBook";
 import FAQ from "@/components/FAQ/FAQ";
 import Newsletter from "../components/newsletter/Newsletter";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const allFeaturedBook = await featuredBook();
   return (
