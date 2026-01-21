@@ -16,6 +16,8 @@ const _config = {
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   groqAPIKey: process.env.GROQ_API_KEY,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN,
+  SSL_store_id: process.env.SSL_STORE_ID,
+  SSL_store_password: process.env.SSL_STORE_PASSWORD,
 };
 
 // ---freeze method used for only read purpose----
