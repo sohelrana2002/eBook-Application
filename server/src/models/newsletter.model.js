@@ -18,9 +18,9 @@ const newsletterSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
-const newsletterModel = new mongoose.model("newsletter", newsletterSchema);
+const newsletterModel = new mongoose.model("Newsletter", newsletterSchema);
 
 export default newsletterModel;

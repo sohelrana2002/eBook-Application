@@ -24,9 +24,9 @@ const contactSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
-const contact = new mongoose.model("contact", contactSchema);
+const contact = new mongoose.model("Contact", contactSchema);
 
 export default contact;

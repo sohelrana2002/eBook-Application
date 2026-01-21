@@ -96,7 +96,7 @@ const bookSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
 bookSchema.pre("validate", async function (next) {
@@ -121,6 +121,6 @@ bookSchema.pre("validate", async function (next) {
   next();
 });
 
-const booksModel = new mongoose.model("book", bookSchema);
+const booksModel = new mongoose.model("Book", bookSchema);
 
 export default booksModel;

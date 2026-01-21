@@ -2,17 +2,17 @@ import express from "express";
 import cors from "cors";
 import passport from "passport";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
-import authRouter from "./routers/authRouter.js";
-import bookRouter from "./routers/bookRouter.js";
-import reviewRouter from "./routers/reviewRouter.js";
-import filterRouter from "./routers/filterRouter.js";
-import bookRequestRouter from "./routers/bookRequestRouter.js";
-import featuredBookRouter from "./routers/featuredBookRouter.js";
-import newsletterRouter from "./routers/newsletterRouter.js";
-import contactRouter from "./routers/contactRouter.js";
-import { JSONrouter } from "./controllers/jsonController.js";
-import googleRouter from "./routers/googleRouter.js";
-import bookAssistantRouter from "./routers/bookAssistantRouter.js";
+import authRouter from "./routers/auth.router.js";
+import bookRouter from "./routers/book.router.js";
+import reviewRouter from "./routers/review.router.js";
+import filterRouter from "./routers/filter.router.js";
+import bookRequestRouter from "./routers/bookRequest.router.js";
+import featuredBookRouter from "./routers/featuredBook.router.js";
+import newsletterRouter from "./routers/newsletter.router.js";
+import contactRouter from "./routers/contact.router.js";
+import { JSONrouter } from "./controllers/json.controller.js";
+import googleRouter from "./routers/google.router.js";
+import bookAssistantRouter from "./routers/bookAssistant.router.js";
 
 const app = express();
 const allowedOrigins = [

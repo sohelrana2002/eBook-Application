@@ -1,4 +1,4 @@
-import booksModel from "../models/bookModel.js";
+import booksModel from "../models/book.model.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import cloudinary from "../config/cloudinary.js";
@@ -49,7 +49,7 @@ const createBook = async (req, res, next) => {
     const bookFilePath = path?.resolve(
       __dirname,
       "../../public/uploads",
-      bookFileName
+      bookFileName,
     );
 
     const bookFilesUpload = await cloudinary?.uploader?.upload(bookFilePath, {
@@ -140,7 +140,7 @@ const updateBook = async (req, res, next) => {
       const filePath = path.resolve(
         __dirname,
         "../../public/uploads",
-        fileName
+        fileName,
       );
 
       completeCoverImage = fileName;
@@ -161,7 +161,7 @@ const updateBook = async (req, res, next) => {
       const bookFilePath = path.resolve(
         __dirname,
         "../../public/uploads",
-        bookFileName
+        bookFileName,
       );
 
       completeBookFile = bookFileName;
@@ -198,7 +198,7 @@ const updateBook = async (req, res, next) => {
       },
       {
         new: true,
-      }
+      },
     );
 
     if (!updatedBook) {
@@ -327,7 +327,7 @@ const getSingleBook = async (req, res, next) => {
     const isObjectId = mongoose.Types.ObjectId.isValid(slug);
 
     const singleBook = await booksModel.findOne(
-      isObjectId ? { $or: [{ _id: slug }, { slug: slug }] } : { slug: slug }
+      isObjectId ? { $or: [{ _id: slug }, { slug: slug }] } : { slug: slug },
     );
 
     // console.log("singleBook", singleBook);
@@ -430,7 +430,7 @@ const getAllBooksWithJSONFormet = async (req, res) => {
         updated_at: 0,
         coverImage: 0,
         bookFile: 0,
-      }
+      },
     );
 
     res.status(200).json(allBooks);

@@ -1,4 +1,4 @@
-import booksModel from "../models/bookModel.js";
+import booksModel from "../models/book.model.js";
 
 const featuredBook = async (req, res) => {
   try {

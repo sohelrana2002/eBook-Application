@@ -38,9 +38,9 @@ const bookRequestSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
-const bookRequestModel = new mongoose.model("bookrequest", bookRequestSchema);
+const bookRequestModel = new mongoose.model("Bookrequest", bookRequestSchema);
 
 export default bookRequestModel;

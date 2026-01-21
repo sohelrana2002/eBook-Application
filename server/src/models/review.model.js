@@ -1,17 +1,15 @@
 import mongoose from "mongoose";
-import booksModel from "./bookModel.js";
-import authModel from "./authModel.js";
 
 const reviewSchema = new mongoose.Schema(
   {
     bookId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: booksModel,
+      ref: "Book",
       required: true,
     },
     reviewerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: authModel,
+      ref: "User",
       required: true,
     },
 
@@ -24,9 +22,9 @@ const reviewSchema = new mongoose.Schema(
       createdAt: "created_at",
       updatedAt: "updated_at",
     },
-  }
+  },
 );
 
-const reviewsModel = new mongoose.model("review", reviewSchema);
+const reviewsModel = new mongoose.model("Review", reviewSchema);
 
 export default reviewsModel;

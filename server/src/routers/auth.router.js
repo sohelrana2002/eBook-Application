@@ -11,7 +11,7 @@ import {
   deleteUser,
   forgotPassword,
   resetPassword,
-} from "../controllers/authController.js";
+} from "../controllers/auth.controller.js";
 import validate from "../middlewares/validateMiddleware.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRole from "../middlewares/authorizedRole.js";

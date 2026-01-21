@@ -16,7 +16,7 @@ import {
   singleRequestedBook,
   newRequestCount,
   markRequestSeen,
-} from "../controllers/bookRequestController.js";
+} from "../controllers/bookRequest.controller.js";
 
 // Create a book request
 bookRequestRouter
@@ -25,7 +25,7 @@ bookRequestRouter
     validate(bookRequestValidatorSchema),
     jwtAuthMiddleware,
     authorizedRoles("admin", "user"),
-    bookRequest
+    bookRequest,
   );
 
 // get all request
@@ -40,7 +40,7 @@ bookRequestRouter
     validate(bookRequestUpdateSchema),
     jwtAuthMiddleware,
     authorizedRoles("admin"),
-    updateBookStatus
+    updateBookStatus,
   );
 
 // delete book requested

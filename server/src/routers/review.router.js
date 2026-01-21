@@ -5,7 +5,7 @@ import {
   allReview,
   updateReview,
   deleteReview,
-} from "../controllers/reviewController.js";
+} from "../controllers/review.controller.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 
 // ----add review router----

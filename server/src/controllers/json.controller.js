@@ -4,7 +4,7 @@ import express from "express";
 const JSONrouter = express.Router();
 import fs from "fs";
 import path from "path";
-import booksModel from "../models/bookModel.js";
+import booksModel from "../models/book.model.js";
 
 JSONrouter.post("/import-books", async (req, res) => {
   try {

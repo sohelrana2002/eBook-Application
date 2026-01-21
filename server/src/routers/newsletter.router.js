@@ -1,5 +1,5 @@
 import express from "express";
-import { createNewsletter } from "../controllers/newsletterController.js";
+import { createNewsletter } from "../controllers/newsletter.controller.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRoles from "../middlewares/authorizedRole.js";
 

@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import userModel from "../models/authModel.js";
+import userModel from "../models/auth.model.js";
 import { config } from "./config.js";
 
 passport.use(
@@ -31,6 +31,6 @@ passport.use(
       } catch (err) {
         done(err, null);
       }
-    }
-  )
+    },
+  ),
 );

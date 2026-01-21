@@ -9,7 +9,7 @@ import {
   recommendedBooks,
   getAllBooksWithJSONFormet,
   // deleteAllBooks,
-} from "../controllers/bookController.js";
+} from "../controllers/book.controller.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
 import { upload } from "../middlewares/multerMiddleware.js";
@@ -25,7 +25,7 @@ bookRouter.route("/").post(
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
-  createBook
+  createBook,
 );
 
 // =====update book =====
@@ -37,7 +37,7 @@ bookRouter.route("/:bookId").patch(
     { name: "bookFile", maxCount: 1 },
   ]),
   validate(booksValidatorSchema),
-  updateBook
+  updateBook,
 );
 
 // =====list of all books (for user plan)====

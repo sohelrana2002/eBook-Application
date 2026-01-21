@@ -4,7 +4,7 @@ import {
   allAuthor,
   allLanguage,
   allGenre,
-} from "../controllers/filterController.js";
+} from "../controllers/filter.controller.js";
 
 filterRouter.route("/genres").get(allGenre);
 filterRouter.route("/authors").get(allAuthor);

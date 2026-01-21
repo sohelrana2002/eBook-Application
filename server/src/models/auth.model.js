@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema(
       createdAt: "created_at", // Use `created_at` to store the created date
       updatedAt: "updated_at", // and `updated_at` to store the last updated date
     },
-  }
+  },
 );
 
 // ====secure pasword using bcrypt====
@@ -97,13 +97,13 @@ userSchema.methods.generateToken = async function () {
       config.jwtSecretKey,
       {
         expiresIn: config.jwtExpiresIn,
-      }
+      },
     );
   } catch (error) {
     console.error("JWT token generate error.", error);
   }
 };
 
-const user = new mongoose.model("user", userSchema);
+const user = new mongoose.model("User", userSchema);
 
 export default user;

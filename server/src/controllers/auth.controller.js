@@ -1,4 +1,4 @@
-import user from "../models/authModel.js";
+import user from "../models/auth.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../config/config.js";
 
@@ -82,7 +82,7 @@ const updateProfile = async (req, res) => {
     const request = await user.findByIdAndUpdate(
       userId,
       { name, phoneNumber, bio, location, language },
-      { new: true }
+      { new: true },
     );
 
     if (!request) {

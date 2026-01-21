@@ -1,5 +1,5 @@
-import booksModel from "../models/bookModel.js";
-import reviewsModel from "../models/reviewModel.js";
+import booksModel from "../models/book.model.js";
+import reviewsModel from "../models/review.model.js";
 
 // -----Add a Review-----
 const addReview = async (req, res, next) => {
@@ -94,7 +94,7 @@ const updateReview = async (req, res, next) => {
         rating,
         comment,
       },
-      { new: true }
+      { new: true },
     );
 
     if (!review) {

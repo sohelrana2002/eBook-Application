@@ -1,5 +1,5 @@
-import bookRequestModel from "../models/bookRequestModel.js";
-import userModel from "../models/authModel.js";
+import bookRequestModel from "../models/bookRequest.model.js";
+import userModel from "../models/auth.model.js";
 import mongoose from "mongoose";
 
 // Create a book request
@@ -84,7 +84,7 @@ const updateBookStatus = async (req, res) => {
     const updated = await bookRequestModel.findByIdAndUpdate(
       { _id: bookId },
       { status },
-      { new: true }
+      { new: true },
     );
 
     res.status(201).json({

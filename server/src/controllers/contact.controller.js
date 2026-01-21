@@ -1,4 +1,4 @@
-import contact from "../models/contactModel.js";
+import contact from "../models/contact.model.js";
 
 const createContact = async (req, res) => {
   const { message, email } = req.body;

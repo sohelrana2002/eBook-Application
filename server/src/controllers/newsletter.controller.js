@@ -1,4 +1,4 @@
-import newsletterModel from "../models/newsletterModel.js";
+import newsletterModel from "../models/newsletter.model.js";
 
 const createNewsletter = async (req, res) => {
   const { email } = req.body;
