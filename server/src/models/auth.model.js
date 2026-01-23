@@ -54,6 +54,8 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+
+    purchasedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
   },
   {
     timestamps: {
@@ -93,6 +95,8 @@ userSchema.methods.generateToken = async function () {
         userId: this._id.toString(),
         role: this.role,
         name: this.name,
+        email: this.email,
+        phone: this.phoneNumber,
       },
       config.jwtSecretKey,
       {
