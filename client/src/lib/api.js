@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -32,7 +32,7 @@ if (typeof window !== "undefined") {
       }
 
       return Promise.reject(error);
-    }
+    },
   );
 }
 
@@ -141,7 +141,7 @@ export async function singleBook(bookId) {
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/books/${bookId}`,
       {
         cache: "no-store",
-      }
+      },
     );
 
     if (!res.ok) {
