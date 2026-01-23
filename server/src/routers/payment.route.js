@@ -1,13 +1,22 @@
 import express from "express";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRoles from "../middlewares/authorizedRole.js";
-import { createOrder } from "../controllers/order.controller.js";
+import {
+  initiatePayment,
+  paymentSuccess,
+} from "../controllers/payment.controller.js";
 
 const router = new express.Router();
 
+// initiate payment method
 router.post(
   "/initiate",
   jwtAuthMiddleware,
   authorizedRoles("admin", "user"),
-  createOrder,
+  initiatePayment,
 );
+
+// success payment method
+router.post("/success", paymentSuccess);
+
+export default router;
