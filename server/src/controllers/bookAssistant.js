@@ -19,11 +19,11 @@ const createBookAssistant = async (req, res) => {
           { role: "user", content: message },
         ],
       }),
-    }
+    },
   );
 
   const data = await response.json();
-  console.log("OpenAI API Response:", data);
+  // console.log("OpenAI API Response:", data);
 
   if (!data.choices) {
     return res
