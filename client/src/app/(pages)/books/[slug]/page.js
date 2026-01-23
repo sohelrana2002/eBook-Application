@@ -7,6 +7,7 @@ import Loading from "@/app/loading";
 import Link from "next/link";
 import BookCard from "@/components/bookCard/BookCard";
 const defaultImage = "/book.jpg";
+import HasAccess from "@/components/hasAccess/HasAccess";
 
 export const dynamic = "force-dynamic";
 
@@ -111,13 +112,7 @@ const SingleBookPage = async ({ params }) => {
               </div>
 
               {/* Download Button */}
-              <a
-                href={bookDetails?.bookFile}
-                download
-                className="inline-block px-6 py-3 bg-black text-white rounded-lg hover:bg-[#000000d8] transition-colors duration-300 font-semibold cursor-pointer"
-              >
-                Download eBook
-              </a>
+              <HasAccess bookDetails={bookDetails} />
             </div>
           </div>
         </div>
@@ -126,7 +121,10 @@ const SingleBookPage = async ({ params }) => {
       {/* ---review section---- */}
       <main className="max-w-2xl mx-auto mt-10">
         <Suspense fallback={<Loading />}>
-          <ReviewSection initialReviews={bookReview} bookId={bookDetails._id} />
+          <ReviewSection
+            initialReviews={bookReview}
+            bookId={bookDetails?._id}
+          />
         </Suspense>
       </main>
 
