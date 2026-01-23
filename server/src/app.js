@@ -13,13 +13,18 @@ import contactRouter from "./routers/contact.router.js";
 import { JSONrouter } from "./controllers/json.controller.js";
 import googleRouter from "./routers/google.router.js";
 import bookAssistantRouter from "./routers/bookAssistant.router.js";
+import paymentRouter from "./routers/payment.route.js";
+import bookAccessRouter from "./routers/bookAccess.router.js";
 
 const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3001",
+  "http://localhost:3000",
   "https://e-book-application-five.vercel.app",
   "https://e-book-application-admin.vercel.app",
+  "https://sandbox.sslcommerz.com",
+  "https://securepay.sslcommerz.com",
 ];
 
 // var corsOptions = {
@@ -39,7 +44,7 @@ var corsOptions = {
   },
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
-  // optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
@@ -59,6 +64,8 @@ app.use("/api/contact", contactRouter);
 app.use("/api/json", JSONrouter);
 app.use("/api/auth", googleRouter);
 app.use("/api/assistant", bookAssistantRouter);
+app.use("/api/payment", paymentRouter);
+app.use("/api/book-access", bookAccessRouter);
 
 app.get("/", (req, res) => {
   res.json({
