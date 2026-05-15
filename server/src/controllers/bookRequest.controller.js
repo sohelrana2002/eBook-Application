@@ -133,7 +133,8 @@ const allRequestedBook = async (req, res) => {
   try {
     const allRequest = await bookRequestModel
       .find()
-      .populate("userId", "name email");
+      .populate("userId", "name email")
+      .sort({ created_at: -1 });
 
     res.status(200).json({
       message: "success",
@@ -141,7 +142,7 @@ const allRequestedBook = async (req, res) => {
       requestedBook: allRequest,
     });
   } catch (error) {
-    console.error("All requested book error.", error.message);
+    console.error("All requested book error: ", error);
 
     res.status(500).json({
       message: "Internal server error",
