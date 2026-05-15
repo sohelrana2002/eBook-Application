@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -7,14 +8,63 @@ const api = axios.create({
   },
 });
 
-// Add token to headers for every request
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// flag to prevent multiple redirects
+let isRedirecting = false;
+
+// helper to clear session and redirect to login
+const logoutAndRedirect = () => {
+  if (isRedirecting || typeof window == "undefined") return;
+  isRedirecting = true;
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("name");
+
+  // avoid redirect loop, only redirect if not alreday on login page
+  if (!window.location.pathname.startsWith("/login")) {
+    window.location.href = "/login";
   }
+};
+
+api.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      // check if token expire locally
+      try {
+        const { exp } = jwtDecode(token);
+
+        if (Date.now() >= exp * 1000) {
+          // token expired, logout immediately
+          logoutAndRedirect();
+
+          return Promise.reject(new Error("Token expired"));
+        }
+      } catch (error) {
+        // invalid token, treat as expired
+        logoutAndRedirect();
+
+        return Promise.reject(new Error("Invalid token" + error));
+      }
+
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
   return config;
 });
+
+// handle 401 from server
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
+      logoutAndRedirect();
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 // ----for login---
 export const login = async (email, password) => {
