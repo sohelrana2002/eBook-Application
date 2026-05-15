@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -7,34 +8,63 @@ export const api = axios.create({
   },
 });
 
-// Add token to headers for every request
-if (typeof window !== "undefined") {
-  api.interceptors.request.use((config) => {
+// flag to prevent multiple redirects
+let isRedirecting = false;
+
+// helper to clear session and redirect to login
+const logoutAndRedirect = () => {
+  if (isRedirecting || typeof window == "undefined") return;
+  isRedirecting = true;
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("name");
+
+  // avoid redirect loop, only redirect if not alreday on login page
+  if (!window.location.pathname.startsWith("/login")) {
+    window.location.href = "/login";
+  }
+};
+
+api.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
+
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
-}
+      // check if token expire locally
+      try {
+        const { exp } = jwtDecode(token);
 
-// Auto logout when JWT expires
-if (typeof window !== "undefined") {
-  api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response?.status === 401) {
-        //token expired
-        localStorage.removeItem("token");
-        localStorage.removeItem("name");
+        if (Date.now() >= exp * 1000) {
+          // token expired, logout immediately
+          logoutAndRedirect();
 
-        window.location.href = "/login";
+          return Promise.reject(new Error("Token expired"));
+        }
+      } catch (error) {
+        // invalid token, treat as expired
+        logoutAndRedirect();
+
+        return Promise.reject(new Error("Invalid token"));
       }
 
-      return Promise.reject(error);
-    },
-  );
-}
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  return config;
+});
+
+// handle 401 from server
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
+      logoutAndRedirect();
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 // ----for login---
 export const login = async (email, password) => {
