@@ -20,8 +20,8 @@ const logoutAndRedirect = () => {
   localStorage.removeItem("name");
 
   // avoid redirect loop, only redirect if not alreday on login page
-  if (!window.location.pathname.startsWith("/login")) {
-    window.location.href = "/login";
+  if (!window.location.pathname.startsWith("/auth/login")) {
+    window.location.href = "/auth/login";
   }
 };
 
