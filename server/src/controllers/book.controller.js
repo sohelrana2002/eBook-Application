@@ -95,7 +95,7 @@ const createBook = async (req, res, next) => {
       id: registerBook._id,
     });
   } catch (error) {
-    console.error("Book creation error.", error.message);
+    console.error("Book creation error: ", error);
 
     res.status(500).json({
       message: "Internal server error",
