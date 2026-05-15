@@ -111,7 +111,7 @@ bookSchema.pre("validate", async function (next) {
     let slug = baseSlug;
     let counter = 1;
 
-    while (await mongoose.models.book.findOne({ slug })) {
+    while (await mongoose.models.Book.findOne({ slug })) {
       slug = `${baseSlug}-${counter}`;
       counter++;
     }
