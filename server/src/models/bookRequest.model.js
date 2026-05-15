@@ -4,7 +4,7 @@ const bookRequestSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user", //model name(auth model name) as string
+      ref: "User", //model name(auth model name) as string
       required: true,
     },
     bookName: {
