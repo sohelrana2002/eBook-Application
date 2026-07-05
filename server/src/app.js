@@ -21,8 +21,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3001",
   "http://localhost:3000",
-  "https://e-book-application-five.vercel.app",
-  "https://e-book-application-admin.vercel.app",
+  "https://knowledgea-ebook.vercel.app",
+  "https://knowledgea-ebook-admin.vercel.app",
   "https://sandbox.sslcommerz.com",
   "https://securepay.sslcommerz.com",
 ];
