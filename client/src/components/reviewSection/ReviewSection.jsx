@@ -6,7 +6,7 @@ import { renderRatingStars } from "@/lib/renderRatingStars";
 import { FaStar } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { addReview } from "@/lib/api";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const ReviewSection = ({ initialReviews, bookId }) => {
   const [reviews, setReviews] = useState(initialReviews?.review || []);

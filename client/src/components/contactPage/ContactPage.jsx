@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { createContact } from "@/lib/api";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "@/context/AuthContext";
 import { LoaderCircle } from "lucide-react";
 
 const ContactPage = () => {

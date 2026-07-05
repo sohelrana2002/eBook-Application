@@ -1,12 +1,12 @@
 "use client";
 
-import { AuthProvider } from "@/context/authContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "../navbar/Navbar";
 import TanstackProvider from "@/provider/TanstackProvider";
 import Footer from "@/components/footer/Footer";
 import CopyRight from "../copyRight/CopyRight";
 import { usePathname } from "next/navigation";
-import { NotificationProvider } from "@/context/notificationContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 const MainLayout = ({ children }) => {
   const pathname = usePathname();

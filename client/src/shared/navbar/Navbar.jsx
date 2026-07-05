@@ -7,10 +7,10 @@ import { NotebookText, X, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "@/context/AuthContext";
 import { LoaderCircle } from "lucide-react";
 import { MdNotificationAdd } from "react-icons/md";
-import { useNotificationContext } from "@/context/notificationContext";
+import { useNotificationContext } from "@/context/NotificationContext";
 import { formatDistanceToNow } from "date-fns";
 
 const Navbar = () => {
@@ -67,7 +67,7 @@ const Navbar = () => {
   const handleClick = (alert) => {
     // Mark the clicked notification as read
     const updatedAlerts = alerts.map((a) =>
-      a.id === alert.id ? { ...a, read: true } : a
+      a.id === alert.id ? { ...a, read: true } : a,
     );
     setAlerts(updatedAlerts);
     localStorage.setItem("notifications", JSON.stringify(updatedAlerts));

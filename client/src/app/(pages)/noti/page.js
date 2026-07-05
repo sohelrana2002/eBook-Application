@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import { useNotificationContext } from "@/context/notificationContext";
+import { useNotificationContext } from "@/context/NotificationContext";
 
 export default function Notifications() {
   const { alerts, setAlerts } = useNotificationContext();
@@ -9,7 +9,7 @@ export default function Notifications() {
   const handleClick = (alert) => {
     // Mark the clicked notification as read
     const updatedAlerts = alerts.map((a) =>
-      a.id === alert.id ? { ...a, read: true } : a
+      a.id === alert.id ? { ...a, read: true } : a,
     );
     setAlerts(updatedAlerts);
     localStorage.setItem("notifications", JSON.stringify(updatedAlerts));

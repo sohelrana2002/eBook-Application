@@ -4,7 +4,7 @@ import "./UserProfilePage.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "@/context/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -70,7 +70,7 @@ const sendMessage = async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
-      }
+      },
     );
     const data = await res.json();
 

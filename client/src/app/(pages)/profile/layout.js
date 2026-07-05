@@ -5,7 +5,7 @@ import Link from "next/link";
 import { LayoutDashboard, SquareChevronRight, BookCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/authContext";
+import { useAuthContext } from "@/context/AuthContext";
 import { LoaderCircle } from "lucide-react";
 
 const ProfileLayout = ({ children }) => {
