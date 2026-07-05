@@ -8,6 +8,10 @@
     --Accent: #6366F1;
     --border: oklch(0.922 0 0);
 
+    --light-gray: #F8F9FA;
+    --dark: #1A1A2E;
+    --medium-gray: #6C757D;
+
     --width-lg-screen: 91%;
     --width-md-screen: 90%;
     --width-sm-screen: 93%;
