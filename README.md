@@ -156,5 +156,5 @@ npm run dev
 
 ---
 
-Made with ❤️ by [Sohel Rana]
+Made with ❤️ by Sohel Rana
 For any queries, feel free to open an issue or contact sohelrana110979@gmail.com.
