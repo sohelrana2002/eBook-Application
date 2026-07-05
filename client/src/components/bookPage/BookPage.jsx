@@ -265,12 +265,7 @@ const BookPage = ({ allBooks }) => {
           ) : (
             <Suspense fallback={<Loading />}>
               {data?.books?.map((curElem) => (
-                <Link
-                  key={curElem._id}
-                  href={`/books/${curElem.slug}`} // Use proper href
-                >
-                  <BookCard {...curElem} />
-                </Link>
+                <BookCard key={curElem._id} {...curElem} />
               ))}
             </Suspense>
           )}
