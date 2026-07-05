@@ -2,6 +2,7 @@
 
 A modern full-stack eBook platform where users can browse, search, and purchase books online, while admins can manage books, genres, tags, and orders.  
 Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
+<img width="1920" height="1037" alt="home" src="https://github.com/user-attachments/assets/8c207aea-e14c-45ca-98c1-df4e833a65ce" />
 
 ---
 
