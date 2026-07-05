@@ -90,7 +90,7 @@ Before getting started, make sure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/eBook-Application.git
+git clone https://github.com/sohelrana2002/eBook-Application.git
 cd eBook-Application
 ```
 
@@ -156,5 +156,5 @@ npm run dev
 
 ---
 
-Made with ❤️ by Sohel Rana
+Made with by Sohel Rana
 For any queries, feel free to open an issue or contact sohelrana110979@gmail.com.
