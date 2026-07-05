@@ -39,7 +39,7 @@ const RequestedBookPage = () => {
 
   return (
     <div className="max-w-6xl w-full mx-auto bg-[var(--border)] shadow-lg rounded-lg">
-      <div className="p-5">
+      <div className="p-3 md:p-5">
         <div className="py-4">
           <h2 className="text-xl font-semibold text-[var(--black)]">
             Requested Books
@@ -88,21 +88,21 @@ const RequestedBookPage = () => {
                     key={book._id}
                     className="hover:bg-gray-100 transition whitespace-nowrap"
                   >
-                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[8px] md:text-sm font-medium text-[var(--black)]">
+                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[9px] md:text-sm font-medium text-[var(--black)]">
                       {book.bookName}
                     </td>
-                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[8px] md:text-sm text-[var(--black)]">
+                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[9px] md:text-sm text-[var(--black)]">
                       {book.authorName}
                     </td>
-                    <td className="px-3 md:px-6 py-2 md:py-4 text-[8px] md:text-sm text-[var(--black)]">
+                    <td className="px-3 md:px-6 py-2 md:py-4 text-[9px] md:text-sm text-[var(--black)]">
                       {new Date(book.publicationDate).toLocaleDateString()}
                     </td>
-                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[8px] md:text-sm text-[var(--black)]">
+                    <td className="capitalize px-3 md:px-6 py-2 md:py-4 text-[9px] md:text-sm text-[var(--black)]">
                       {book.language}
                     </td>
                     <td className="px-3 md:px-6 py-2 md:py-4">
                       <span
-                        className={`capitalize inline-block px-2 py-1 rounded-full text-[8px] md:text-xs font-semibold ${
+                        className={`capitalize inline-block px-2 py-1 rounded-full text-[9px] md:text-xs font-semibold ${
                           book.status === "available"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
@@ -114,7 +114,7 @@ const RequestedBookPage = () => {
                     <td className="px-3 md:px-6 py-2 md:py-4">
                       <button
                         onClick={() => handleDelete(book._id)}
-                        className="rounded  cursor-pointer bg-red-600 px-3 py-1 text-white  text-[8px] md:text-sm hover:bg-red-700"
+                        className="rounded  cursor-pointer bg-red-600 px-3 py-1 text-white  text-[9px] md:text-sm hover:bg-red-700"
                       >
                         Delete
                       </button>
