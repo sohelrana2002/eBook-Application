@@ -1,7 +1,6 @@
 "use client";
 
 import "./FeaturedBook.css";
-import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -33,7 +32,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             320: { slidesPerView: 1 },
             671: { slidesPerView: 2 },
             890: { slidesPerView: 3 },
-            1300: { slidesPerView: 4 },
+            1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -42,9 +41,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.oscarBook?.map((curElem) => {
               return (
                 <SwiperSlide className="swiper_slide">
-                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
-                    <BookCard {...curElem} />
-                  </Link>
+                  <BookCard key={curElem._id} {...curElem} />
                 </SwiperSlide>
               );
             })}
@@ -65,7 +62,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             320: { slidesPerView: 1 },
             671: { slidesPerView: 2 },
             890: { slidesPerView: 3 },
-            1300: { slidesPerView: 4 },
+            1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -74,9 +71,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.novelBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
-                    <BookCard {...curElem} />
-                  </Link>
+                  <BookCard key={curElem._id} {...curElem} />
                 </SwiperSlide>
               );
             })}
@@ -97,7 +92,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             320: { slidesPerView: 1 },
             671: { slidesPerView: 2 },
             890: { slidesPerView: 3 },
-            1300: { slidesPerView: 4 },
+            1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -106,9 +101,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.shortStoryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
-                    <BookCard {...curElem} />
-                  </Link>
+                  <BookCard key={curElem._id} {...curElem} />
                 </SwiperSlide>
               );
             })}
@@ -129,7 +122,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             320: { slidesPerView: 1 },
             671: { slidesPerView: 2 },
             890: { slidesPerView: 3 },
-            1300: { slidesPerView: 4 },
+            1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -138,9 +131,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.poetryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
-                    <BookCard {...curElem} />
-                  </Link>
+                  <BookCard key={curElem._id} {...curElem} />
                 </SwiperSlide>
               );
             })}
@@ -161,7 +152,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             320: { slidesPerView: 1 },
             671: { slidesPerView: 2 },
             890: { slidesPerView: 3 },
-            1300: { slidesPerView: 4 },
+            1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
           className="mySwiper"
@@ -170,9 +161,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.kidsBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <Link key={curElem._id} href={`/books/${curElem.slug}`}>
-                    <BookCard {...curElem} />
-                  </Link>
+                  <BookCard key={curElem._id} {...curElem} />
                 </SwiperSlide>
               );
             })}
