@@ -2,11 +2,10 @@
 
 import { FaHeart } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
+import { useCartContext } from "@/context/CartContext";
 
 const CardButton = ({ books }) => {
-  const addToCart = (books) => {
-    console.log("Id: ", books._id);
-  };
+  const { addToCart } = useCartContext();
 
   const handleWishList = (books) => {
     console.log("Wish Id: ", books._id);
