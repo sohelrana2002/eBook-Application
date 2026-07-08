@@ -77,11 +77,6 @@
 }
 
 
-
-
-
-
-
 /* ---------------media query(mediam screen)------------- */
 @media screen and (max-width: 1024px) {
     .left__conatiner-book {
@@ -107,7 +102,7 @@
 @media screen and (max-width: 850px) {
 
     .right__book__content {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .search__book input {
@@ -127,7 +122,7 @@
 
     .right__book__content {
         width: 100%;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .search__book input {
