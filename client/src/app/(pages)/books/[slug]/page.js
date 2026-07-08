@@ -137,7 +137,7 @@ const SingleBookPage = async ({ params }) => {
           ) : (
             <Suspense fallback={<Loading />}>
               {allRecommentedBook?.recommendations?.map((curElem) => (
-                <BookCard key={curElem._id} {...curElem} />
+                <BookCard key={curElem._id} books={curElem} />
               ))}
             </Suspense>
           )}

@@ -29,9 +29,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             clickable: true,
           }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            671: { slidesPerView: 2 },
-            890: { slidesPerView: 3 },
+            320: { slidesPerView: 2 },
+            671: { slidesPerView: 3 },
+            890: { slidesPerView: 4 },
             1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
@@ -41,7 +41,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.oscarBook?.map((curElem) => {
               return (
                 <SwiperSlide className="swiper_slide">
-                  <BookCard key={curElem._id} {...curElem} />
+                  <BookCard key={curElem._id} books={curElem} />
                 </SwiperSlide>
               );
             })}
@@ -59,9 +59,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             clickable: true,
           }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            671: { slidesPerView: 2 },
-            890: { slidesPerView: 3 },
+            320: { slidesPerView: 2 },
+            671: { slidesPerView: 3 },
+            890: { slidesPerView: 4 },
             1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
@@ -71,7 +71,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.novelBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <BookCard key={curElem._id} {...curElem} />
+                  <BookCard key={curElem._id} books={curElem} />
                 </SwiperSlide>
               );
             })}
@@ -89,9 +89,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             clickable: true,
           }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            671: { slidesPerView: 2 },
-            890: { slidesPerView: 3 },
+            320: { slidesPerView: 2 },
+            671: { slidesPerView: 3 },
+            890: { slidesPerView: 4 },
             1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
@@ -101,7 +101,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.shortStoryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <BookCard key={curElem._id} {...curElem} />
+                  <BookCard key={curElem._id} books={curElem} />
                 </SwiperSlide>
               );
             })}
@@ -119,9 +119,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             clickable: true,
           }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            671: { slidesPerView: 2 },
-            890: { slidesPerView: 3 },
+            320: { slidesPerView: 2 },
+            671: { slidesPerView: 3 },
+            890: { slidesPerView: 4 },
             1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
@@ -131,7 +131,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.poetryBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <BookCard key={curElem._id} {...curElem} />
+                  <BookCard key={curElem._id} books={curElem} />
                 </SwiperSlide>
               );
             })}
@@ -149,9 +149,9 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             clickable: true,
           }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            671: { slidesPerView: 2 },
-            890: { slidesPerView: 3 },
+            320: { slidesPerView: 2 },
+            671: { slidesPerView: 3 },
+            890: { slidesPerView: 4 },
             1300: { slidesPerView: 5 },
           }}
           modules={[Pagination]}
@@ -161,7 +161,7 @@ const FeaturedBook = ({ allFeaturedBook }) => {
             allFeaturedBook?.kidsBook?.map((curElem) => {
               return (
                 <SwiperSlide>
-                  <BookCard key={curElem._id} {...curElem} />
+                  <BookCard key={curElem._id} books={curElem} />
                 </SwiperSlide>
               );
             })}

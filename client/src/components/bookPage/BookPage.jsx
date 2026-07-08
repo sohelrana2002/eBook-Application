@@ -265,7 +265,7 @@ const BookPage = ({ allBooks }) => {
           ) : (
             <Suspense fallback={<Loading />}>
               {data?.books?.map((curElem) => (
-                <BookCard key={curElem._id} {...curElem} />
+                <BookCard key={curElem._id} books={curElem} />
               ))}
             </Suspense>
           )}
