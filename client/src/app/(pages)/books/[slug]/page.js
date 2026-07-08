@@ -131,7 +131,7 @@ const SingleBookPage = async ({ params }) => {
       {/* smart book recommendation  */}
       <main className="mt-15">
         <h1 className="heading">Recommented Book</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-5 mt-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-5 mt-4">
           {allRecommentedBook?.length === 0 ? (
             <h1>There are no recommendation book available</h1>
           ) : (
