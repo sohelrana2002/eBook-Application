@@ -6,6 +6,14 @@ import Link from "next/link";
 import CardButton from "../cardButton/CardButton";
 
 const BookCard = ({ books }) => {
+  const bookCartInfo = {
+    _id: books?._id,
+    title: books?.title,
+    author: books?.author,
+    coverImage: books?.coverImage,
+    price: books?.price,
+  };
+
   return (
     <div className="w-full  md:max-w-xs bg-[var(--light-gray)] shadow-lg rounded-lg  hover:shadow-xl transition-shadow duration-300 border-2 border-[var(--border)] overflow-hidden flex flex-col justify-between">
       <Link href={`/books/${books?.slug}`} className="block flex-1">
@@ -45,7 +53,7 @@ const BookCard = ({ books }) => {
       </Link>
 
       {/* bottom section  */}
-      <CardButton books={books} />
+      <CardButton books={bookCartInfo} />
     </div>
   );
 };
