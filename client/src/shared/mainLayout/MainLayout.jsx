@@ -7,6 +7,7 @@ import Footer from "@/components/footer/Footer";
 import CopyRight from "../copyRight/CopyRight";
 import { usePathname } from "next/navigation";
 import { NotificationProvider } from "@/context/NotificationContext";
+import { CartProvide } from "@/context/CartContext";
 
 const MainLayout = ({ children }) => {
   const pathname = usePathname();
@@ -21,10 +22,12 @@ const MainLayout = ({ children }) => {
       <AuthProvider>
         <TanstackProvider>
           <NotificationProvider>
-            <Navbar />
-            <div className="pt-[3.8rem]">{children}</div>
-            {!hideSection && <Footer />}
-            {!hideSection && <CopyRight />}
+            <CartProvide>
+              <Navbar />
+              <div className="pt-[3.8rem]">{children}</div>
+              {!hideSection && <Footer />}
+              {!hideSection && <CopyRight />}
+            </CartProvide>
           </NotificationProvider>
         </TanstackProvider>
       </AuthProvider>
