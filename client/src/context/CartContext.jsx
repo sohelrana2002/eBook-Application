@@ -1,6 +1,6 @@
 "use client";
 
-import CartReducer from "@/reducer/cartReducer";
+import cartReducer from "@/reducer/CartReducer";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 const CartContext = createContext();
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 const CartProvide = ({ children }) => {
-  const [state, dispatch] = useReducer(CartReducer, initialState);
+  const [state, dispatch] = useReducer(cartReducer, initialState);
 
   // addToCart function
   const addToCart = (books) => {
