@@ -1,6 +1,6 @@
 "use client";
 
-import CartReducer from "@/reducer/CartReducer";
+import CartReducer from "@/reducer/cartReducer";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 const CartContext = createContext();
