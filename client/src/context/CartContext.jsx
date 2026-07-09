@@ -70,8 +70,4 @@ const CartProvide = ({ children }) => {
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
-const useCartContext = () => {
-  return useContext(CartContext);
-};
-
-export { CartProvide, useCartContext };
+export { CartProvide, CartContext };
