@@ -17,7 +17,6 @@ const BookPage = ({ initialBookData, serverParams }) => {
   const filterMenuRef = useRef();
   const searchParams = useSearchParams();
   const router = useRouter();
-  // const hasInitialized = useRef(false);
 
   const [selectedFilters, setSelectedFilters] = useState({
     genre: serverParams.genre,
@@ -34,7 +33,8 @@ const BookPage = ({ initialBookData, serverParams }) => {
 
   // console.log("selectedFilters", selectedFilters);
 
-  const genre = searchParams.getAll("genre");
+  const genreParams = searchParams.get("genre");
+  const genre = genreParams ? genreParams.split(",") : [];
   const author = searchParams.get("author");
   const language = searchParams.get("language");
   const minPrice = searchParams.get("minPrice");
@@ -63,33 +63,14 @@ const BookPage = ({ initialBookData, serverParams }) => {
     };
   }, []);
 
-  // // -------Initialize state from URL params
-  // useEffect(() => {
-  //   if (!hasInitialized.current) {
-  //     const params = {
-  //       genre: searchParams.getAll("genre") || [],
-  //       author: searchParams.get("author") || null,
-  //       language: searchParams.get("language") || null,
-  //       minPrice: searchParams.get("minPrice") || null,
-  //       maxPrice: searchParams.get("maxPrice") || null,
-  //       search: searchParams.get("search") || "",
-  //       sortBy: searchParams.get("sortBy") || "",
-  //       order: searchParams.get("order") || "",
-  //       isOscar: searchParams.get("isOscar") === "true" ? true : null,
-  //     };
-  //     setSelectedFilters(params);
-  //     hasInitialized.current = true;
-  //   }
-  // }, []);
-
   // ---Update URL with current filters
   const updateUrl = (newFilters) => {
     const params = new URLSearchParams();
 
     // Add genre filters
-    newFilters.genre.forEach((genre) => {
-      params.append("genre", genre);
-    });
+    if (newFilters.genre && newFilters.genre.length > 0) {
+      params.set("genre", newFilters.genre.join(","));
+    }
 
     // Add author filter if not "none"
     if (newFilters.author && newFilters.author !== "none") {
