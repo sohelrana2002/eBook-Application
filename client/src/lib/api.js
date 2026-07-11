@@ -118,21 +118,31 @@ export const fetchBooks = async (filters = {}) => {
     sortBy,
     order,
     isOscar,
+    page,
     limit,
   } = filters;
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`);
 
   const params = new URLSearchParams();
 
-  if (genre) params.append("genre", genre);
-  if (author) params.append("author", author);
-  if (language) params.append("language", language);
+  if (genre) {
+    if (Array.isArray(genre) && genre.length > 0) {
+      params.append("genre", genre.join(","));
+    }
+  } else if (typeof genre === "string" && genre.trim() !== "") {
+    params.append("genre", genre);
+  }
+
+  if (author && author !== "none") params.append("author", author);
+  if (language && language !== "none") params.append("language", language);
   if (minPrice) params.append("minPrice", minPrice);
   if (maxPrice) params.append("maxPrice", maxPrice);
-  if (search) params.append("search", search);
+  if (search && search.trim() !== "") params.append("search", search);
   if (sortBy) params.append("sortBy", sortBy);
   if (order) params.append("order", order);
-  if (isOscar) params.append("isOscar", isOscar);
+  if (isOscar !== undefined && isOscar !== null)
+    params.append("isOscar", isOscar);
+  if (page) params.append("page", page);
   if (limit) params.append("limit", limit);
 
   url.search = params.toString();
@@ -142,27 +152,10 @@ export const fetchBooks = async (filters = {}) => {
     if (!res.ok) throw new Error("Failed to fetch books");
     return await res.json();
   } catch (error) {
-    console.error("API Error:", error);
+    console.error("API fetch boos Error:", error);
     throw error; // Rethrow to let React Query handle it
   }
 };
-
-// ----------list of books-------
-export async function listBooks() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/books`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("Response is not ok");
-    }
-
-    return res.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 // -----singe book page ---
 export async function singleBook(bookId) {
