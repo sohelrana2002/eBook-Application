@@ -1,13 +1,34 @@
-.newsletter__coontainer {
+.newsletter__container {
     width: 100%;
     height: 60vh;
+    margin-top: 4rem;
+    position: relative;
+
+    /* 1. This creates a "window" that clips everything outside of it */
+    clip-path: inset(0);
+    overflow: hidden;
+}
+
+.newsletter__container::before {
+    content: "";
+    /* 2. Fix the element relative to the viewport, not the container */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* 3. Standard background (NO 'fixed' property used here) */
     background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)), url("/newsletter.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
-    background-attachment: fixed;
-    margin-top: 4rem;
+
+    /* 4. Force GPU Layer Rendering */
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+
+    z-index: -1;
 }
 
 .newsletter__content {
@@ -21,26 +42,26 @@
     color: var(--white);
 }
 
-.newsletter__coontainer .heading {
+.newsletter__container .heading {
     color: var(--white);
     margin-top: 2rem;
 }
 
-.newsletter__coontainer form {
+.newsletter__container form {
     max-width: 380px;
     width: 100%;
     display: flex;
     align-items: center;
 }
 
-.newsletter__coontainer form input {
+.newsletter__container form input {
     background: var(--white);
     padding: 10px 20px;
     border-radius: 5px 0 0 5px;
     outline: none;
 }
 
-.newsletter__coontainer form .btn {
+.newsletter__container form .btn {
     border-radius: 0 5px 5px 0;
     padding: 10px 30px;
 }
@@ -48,7 +69,7 @@
 
 /*---------------media query(mediam screen)------------- */
 @media screen and (max-width: 700px) {
-    .newsletter__coontainer {
+    .newsletter__container {
         height: 40vh;
     }
 
@@ -59,7 +80,7 @@
 }
 
 @media screen and (max-width: 350px) {
-    .newsletter__coontainer form {
+    .newsletter__container form {
         max-width: 380px;
         width: 100%;
         display: flex;

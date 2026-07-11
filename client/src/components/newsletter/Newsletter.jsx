@@ -27,7 +27,7 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="newsletter__coontainer">
+    <div className="newsletter__container">
       <div className="container">
         <h1 className="heading">Newsletter</h1>
         <div className="newsletter__content">
