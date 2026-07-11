@@ -6,17 +6,14 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Discover your next read | e-Book application",
   description:
-    "Browse and filter through our expensive collection of amazing books.s",
+    "Browse and filter through our expensive collection of amazing books.",
 };
 
 const Books = async ({ searchParams }) => {
   const params = await searchParams;
 
-  const genre = params.genre
-    ? Array.isArray(params.genre)
-      ? params.genre
-      : [params.genre]
-    : [];
+  const genreParams = params.genre || "";
+  const genre = genreParams ? genreParams.split(",") : [];
   const author = params.author || null;
   const language = params.language || null;
   const minPrice = params.minPrice || "";
