@@ -12,28 +12,29 @@ import { Suspense } from "react";
 import Loading from "@/app/loading";
 import { fetchBooks } from "@/lib/api";
 
-const BookPage = ({ allBooks }) => {
+const BookPage = ({ initialBookData, serverParams }) => {
   const [isFilterMenuShowing, setIsFilterMenuShowing] = useState(false);
   const filterMenuRef = useRef();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const hasInitialized = useRef(false);
+  // const hasInitialized = useRef(false);
 
   const [selectedFilters, setSelectedFilters] = useState({
-    genre: [],
-    author: null,
-    language: null,
-    minPrice: "",
-    maxPrice: "",
-    search: "",
-    sortBy: "",
-    order: "",
-    isOscar: null,
+    genre: serverParams.genre,
+    author: serverParams.author,
+    language: serverParams.language,
+    minPrice: serverParams.minPrice,
+    maxPrice: serverParams.maxPrice,
+    search: serverParams.search,
+    sortBy: serverParams.sortBy,
+    order: serverParams.order,
+    isOscar: serverParams.isOscar,
+    page: serverParams.page,
   });
 
   // console.log("selectedFilters", selectedFilters);
 
-  const genre = searchParams.get("genre");
+  const genre = searchParams.getAll("genre");
   const author = searchParams.get("author");
   const language = searchParams.get("language");
   const minPrice = searchParams.get("minPrice");
@@ -42,6 +43,7 @@ const BookPage = ({ allBooks }) => {
   const sortBy = searchParams.get("sortBy");
   const order = searchParams.get("order");
   const isOscar = searchParams.get("isOscar");
+  const page = parseInt(searchParams.get("page") || "1");
 
   const handleMenuButton = () => {
     setIsFilterMenuShowing((prev) => !prev);
@@ -61,24 +63,24 @@ const BookPage = ({ allBooks }) => {
     };
   }, []);
 
-  // -------Initialize state from URL params
-  useEffect(() => {
-    if (!hasInitialized.current) {
-      const params = {
-        genre: searchParams.getAll("genre") || [],
-        author: searchParams.get("author") || null,
-        language: searchParams.get("language") || null,
-        minPrice: searchParams.get("minPrice") || null,
-        maxPrice: searchParams.get("maxPrice") || null,
-        search: searchParams.get("search") || "",
-        sortBy: searchParams.get("sortBy") || "",
-        order: searchParams.get("order") || "",
-        isOscar: searchParams.get("isOscar") === "true" ? true : null,
-      };
-      setSelectedFilters(params);
-      hasInitialized.current = true;
-    }
-  }, []);
+  // // -------Initialize state from URL params
+  // useEffect(() => {
+  //   if (!hasInitialized.current) {
+  //     const params = {
+  //       genre: searchParams.getAll("genre") || [],
+  //       author: searchParams.get("author") || null,
+  //       language: searchParams.get("language") || null,
+  //       minPrice: searchParams.get("minPrice") || null,
+  //       maxPrice: searchParams.get("maxPrice") || null,
+  //       search: searchParams.get("search") || "",
+  //       sortBy: searchParams.get("sortBy") || "",
+  //       order: searchParams.get("order") || "",
+  //       isOscar: searchParams.get("isOscar") === "true" ? true : null,
+  //     };
+  //     setSelectedFilters(params);
+  //     hasInitialized.current = true;
+  //   }
+  // }, []);
 
   // ---Update URL with current filters
   const updateUrl = (newFilters) => {
@@ -123,6 +125,11 @@ const BookPage = ({ allBooks }) => {
       params.set("isOscar", newFilters.isOscar);
     }
 
+    // Add page for pagination
+    if (newFilters.page && newFilters.page !== 1) {
+      params.set("page", String(newFilters.page));
+    }
+
     const queryString = params.toString();
     // console.log("queryString", queryString);
 
@@ -131,7 +138,7 @@ const BookPage = ({ allBooks }) => {
     });
   };
 
-  const limit = 50;
+  const limit = 20;
   const { data, isLoading } = useQuery({
     queryKey: [
       "books",
@@ -144,6 +151,7 @@ const BookPage = ({ allBooks }) => {
       sortBy,
       order,
       isOscar,
+      page,
       limit,
     ],
     queryFn: () =>
@@ -157,10 +165,11 @@ const BookPage = ({ allBooks }) => {
         sortBy,
         order,
         isOscar,
+        page,
         limit,
       }),
     placeholderData: keepPreviousData,
-    initialData: allBooks,
+    initialData: initialBookData,
   });
 
   // -------Handle search input changes-----------
