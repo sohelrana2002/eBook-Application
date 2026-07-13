@@ -1,12 +1,18 @@
 .banner__section {
     width: 100%;
     height: calc(100vh - 3.75rem);
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)),
-        url("/book-library.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     position: relative;
+    overflow: hidden;
+}
+
+.banner__section__overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+    z-index: 1;
 }
 
 .banner__section-content {
@@ -21,6 +27,7 @@
     gap: 1rem;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
 .banner__section-content h1 {
