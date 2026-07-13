@@ -55,6 +55,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
     const newFilters = {
       ...selectedFilters,
       genre: selectedOptions.map((opt) => opt.value),
+      page: 1,
     };
 
     // console.log("newFilters", newFilters);
@@ -68,6 +69,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
     const newFilters = {
       ...selectedFilters,
       author: selectedOption?.value || null,
+      page: 1,
     };
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -78,6 +80,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
     const newFilters = {
       ...selectedFilters,
       language: selectedOption?.value || null,
+      page: 1,
     };
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -104,6 +107,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
     setSelectedFilters((prev) => ({
       ...prev,
       [type]: newValue,
+      page: 1,
     }));
   };
 
@@ -112,6 +116,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
     const newFilters = {
       ...selectedFilters,
       isOscar: e.target.checked ? true : null,
+      page: 1,
     };
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
@@ -129,7 +134,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
           styles={selectStyle}
           isMulti
           value={genreOptions?.filter((opt) =>
-            selectedFilters.genre.includes(opt.value)
+            selectedFilters.genre.includes(opt.value),
           )}
         />
       </div>
@@ -143,7 +148,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
           value={authorOptions?.find(
             (opt) =>
               opt.value === selectedFilters.author ||
-              (selectedFilters.author === null && opt.value === "none")
+              (selectedFilters.author === null && opt.value === "none"),
           )}
         />
       </div>
@@ -157,7 +162,7 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
           value={languageOptions?.find(
             (opt) =>
               opt.value === selectedFilters.language ||
-              (selectedFilters.language === null && opt.value === "none")
+              (selectedFilters.language === null && opt.value === "none"),
           )}
         />
       </div>

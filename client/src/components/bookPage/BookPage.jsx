@@ -3,13 +3,12 @@
 import "./BooksPage.css";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import BookCard from "../bookCard/BookCard";
-import Link from "next/link";
 import { SquareChevronLeft } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import FilterBook from "../filterBook/FilterBook";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
-import Loading from "@/app/loading";
+import CustomLoading from "@/shared/customLoading/CustomLoading";
 import { fetchBooks } from "@/lib/api";
 
 const BookPage = ({ initialBookData, serverParams }) => {
@@ -30,7 +29,6 @@ const BookPage = ({ initialBookData, serverParams }) => {
     isOscar: serverParams.isOscar,
     page: serverParams.page,
   });
-
   // console.log("selectedFilters", selectedFilters);
 
   const genreParams = searchParams.get("genre");
@@ -119,7 +117,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
     });
   };
 
-  const limit = 5;
+  const limit = 20;
   const { data, isLoading, isFetching } = useQuery({
     queryKey: [
       "books",
@@ -151,7 +149,6 @@ const BookPage = ({ initialBookData, serverParams }) => {
       }),
     placeholderData: keepPreviousData,
     initialData: initialBookData,
-    scroll: false,
   });
 
   // -------Handle search input changes-----------
@@ -159,6 +156,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
     setSelectedFilters((prev) => ({
       ...prev,
       [type]: value,
+      page: 1,
     }));
   };
 
@@ -171,6 +169,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
         ...selectedFilters,
         sortBy: "",
         order: "",
+        page: 1,
       };
       setSelectedFilters(newFilters);
       updateUrl(newFilters);
@@ -178,7 +177,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
     }
 
     const [sortBy, order] = value.split("_");
-    const newFilters = { ...selectedFilters, sortBy, order };
+    const newFilters = { ...selectedFilters, sortBy, order, page: 1 };
     setSelectedFilters(newFilters);
     updateUrl(newFilters);
   };
@@ -195,8 +194,6 @@ const BookPage = ({ initialBookData, serverParams }) => {
     selectedFilters.minPrice,
     selectedFilters.maxPrice,
   ]);
-
-  console.log("data: ", data);
 
   // handle pagination
   const handlePagination = (pageNumber) => {
@@ -261,10 +258,14 @@ const BookPage = ({ initialBookData, serverParams }) => {
 
         {/* ----right cntent ----  */}
         <div className="right__book__content">
-          {!isFetching && data?.books?.length === 0 ? (
+          {isFetching ? (
+            <div className="col-span-full">
+              <CustomLoading />
+            </div>
+          ) : !isFetching && data?.books?.length === 0 ? (
             <h1>There are no books available</h1>
           ) : (
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<CustomLoading />}>
               {data?.books?.map((curElem) => (
                 <BookCard key={curElem._id} books={curElem} />
               ))}
