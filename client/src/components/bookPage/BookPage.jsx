@@ -119,8 +119,8 @@ const BookPage = ({ initialBookData, serverParams }) => {
     });
   };
 
-  const limit = 20;
-  const { data, isLoading } = useQuery({
+  const limit = 5;
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: [
       "books",
       genre,
@@ -151,6 +151,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
       }),
     placeholderData: keepPreviousData,
     initialData: initialBookData,
+    scroll: false,
   });
 
   // -------Handle search input changes-----------
@@ -194,6 +195,16 @@ const BookPage = ({ initialBookData, serverParams }) => {
     selectedFilters.minPrice,
     selectedFilters.maxPrice,
   ]);
+
+  console.log("data: ", data);
+
+  // handle pagination
+  const handlePagination = (pageNumber) => {
+    const newFilters = { ...selectedFilters, page: pageNumber };
+
+    setSelectedFilters(newFilters);
+    updateUrl(newFilters);
+  };
 
   return (
     <div className="book__conatiner">
@@ -250,7 +261,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
 
         {/* ----right cntent ----  */}
         <div className="right__book__content">
-          {data?.books?.length === 0 ? (
+          {!isFetching && data?.books?.length === 0 ? (
             <h1>There are no books available</h1>
           ) : (
             <Suspense fallback={<Loading />}>
@@ -259,6 +270,28 @@ const BookPage = ({ initialBookData, serverParams }) => {
               ))}
             </Suspense>
           )}
+        </div>
+
+        {/* Pagination  */}
+        <div className="my-7 md:my-10 flex items-center justify-center gap-3 flex-wrap md:gap-5">
+          <button
+            disabled={page <= 1}
+            className={`text-sm md:text-md px-3 md:px-4 py-1 md:py-2 rounded-md ${page <= 1 ? "border-1 border-[var(--border)] bg-white text-black" : "bg-black text-white cursor-pointer"}`}
+            onClick={() => handlePagination(page - 1)}
+          >
+            Prev
+          </button>
+          <span className="text-sm md:text-md">
+            Page {data?.currentPage} of {data?.totalPages} | {data?.totalBooks}{" "}
+            books
+          </span>
+          <button
+            disabled={page >= data?.totalPages}
+            className={`text-sm md:text-md px-3 md:px-4 py-1 md:py-2 rounded-md ${page >= data?.totalPages ? "border-1 border-[var(--border)] bg-white text-black" : "bg-black text-white cursor-pointer"}`}
+            onClick={() => handlePagination(page + 1)}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
