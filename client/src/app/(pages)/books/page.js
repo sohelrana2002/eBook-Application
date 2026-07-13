@@ -1,5 +1,5 @@
 import BookPage from "@/components/bookPage/BookPage";
-import { fetchBooks, listBooks } from "@/lib/api";
+import { fetchBooks } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
