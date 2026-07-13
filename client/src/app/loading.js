@@ -1,7 +1,11 @@
-export default function Loading({ width = "96vw" }) {
+import CustomLoading from "@/shared/customLoading/CustomLoading";
+
+const Loading = () => {
   return (
-    <div className={`loading__container w-[${width}]`}>
-      <span className="loader"></span>
+    <div>
+      <CustomLoading />
     </div>
   );
-}
+};
+
+export default Loading;
