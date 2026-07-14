@@ -23,8 +23,11 @@ const BookCard = ({ books }) => {
             src={books?.coverImage || defaultImage}
             alt={books?.title || "Book card image"}
             fill
-            style={{ objectFit: "cover" }}
-            className="rounded-t-lg"
+            sizes="(max-width: 640px) 100vw,
+                   (max-width: 768px) 50vw,
+                   (max-width: 1024px) 33vw,
+                   25vw"
+            className="rounded-t-lg object-cover"
           />
         </div>
 
