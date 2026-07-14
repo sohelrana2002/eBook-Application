@@ -3,7 +3,7 @@
 import "./Navbar.css";
 import { navMenu } from "@/data/Data";
 import Link from "next/link";
-import { NotebookText, X, Menu } from "lucide-react";
+import { NotebookText, X, Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
@@ -12,6 +12,7 @@ import { LoaderCircle } from "lucide-react";
 import { MdNotificationAdd } from "react-icons/md";
 import { useNotificationContext } from "@/context/NotificationContext";
 import { formatDistanceToNow } from "date-fns";
+import { useCart } from "@/hooks/useCart";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -21,6 +22,8 @@ const Navbar = () => {
   const { isLoggedIn, isLoading } = useAuthContext();
   const { alerts, setAlerts } = useNotificationContext();
   const [showNotificaion, setShowNotification] = useState(false);
+  const { state } = useCart();
+  const { totalQuantity } = state;
 
   const handleToggle = () => {
     setIsNavShowing((prev) => !prev);
@@ -106,6 +109,19 @@ const Navbar = () => {
         </ul>
 
         <div className="user">
+          {/* handle cart  */}
+          <Link href="/cart" className="notifications">
+            <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
+              <ShoppingCart size={20} />{" "}
+              <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
+                <span className="text-white grid place-items-center text-sm">
+                  {totalQuantity}
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          {/* handle notification  */}
           <div className="notifications" onClick={handleNotification}>
             <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
               <MdNotificationAdd size={20} />{" "}
