@@ -19,8 +19,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-arp="">
-      <body data-new-gr-c-s-check-loaded="14.1233.0" data-gr-ext-installed="">
+    <html lang="en">
+      <body>
         <MainLayout>{children}</MainLayout>
       </body>
     </html>
