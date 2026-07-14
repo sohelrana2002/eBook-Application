@@ -265,11 +265,9 @@ const BookPage = ({ initialBookData, serverParams }) => {
           ) : !isFetching && data?.books?.length === 0 ? (
             <h1>There are no books available</h1>
           ) : (
-            <Suspense fallback={<CustomLoading />}>
-              {data?.books?.map((curElem) => (
-                <BookCard key={curElem._id} books={curElem} />
-              ))}
-            </Suspense>
+            data?.books?.map((curElem) => (
+              <BookCard key={curElem._id} books={curElem} />
+            ))
           )}
         </div>
 
