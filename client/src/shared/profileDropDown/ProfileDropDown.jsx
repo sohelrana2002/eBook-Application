@@ -5,12 +5,22 @@ import { useRouter } from "next/navigation";
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState("");
   const dropdownRef = useRef(null);
-  const { logOutUser } = useAuthContext();
+  const { state, logOutUser } = useAuthContext();
   const router = useRouter();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
+  // set name from local storage
+  (useEffect(() => {
+    const getName = localStorage.getItem("name");
+
+    if (getName) {
+      setName(getName);
+    }
+  }),
+    []);
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -38,9 +48,9 @@ const ProfileDropdown = () => {
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="flex items-center gap-2 rounded-full bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
+        className="flex items-center justify-center rounded-full bg-[#000] w-[35px] h-[35px] text-md font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
       >
-        {localStorage.getItem("name")}
+        {name?.charAt(0)?.toUpperCase()}
       </button>
 
       {isOpen && (

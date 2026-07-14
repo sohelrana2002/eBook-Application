@@ -157,7 +157,7 @@ const Navbar = () => {
         {showNotificaion && (
           <div
             ref={notifacationRef}
-            className="absolute top-full right-5 mt-2 w-80 max-h-96 overflow-auto bg-white border shadow-lg rounded"
+            className="absolute top-full right-5 mt-2 w-75 max-h-96 overflow-auto bg-white border shadow-lg rounded"
           >
             {alerts.length === 0 && (
               <p className="p-2 text-gray-500">No notifications</p>
@@ -169,18 +169,18 @@ const Navbar = () => {
                 <div
                   key={index}
                   onClick={() => handleClick(alert)}
-                  className={`cursor-pointer hover:bg-gray-100 p-2 flex justify-between ${
+                  className={`cursor-pointer hover:bg-gray-100 p-2 flex justify-between items-center ${
                     alert.read ? "bg-gray-50" : "bg-white font-medium"
                   }`}
                 >
-                  <div>
+                  <p className="capitalize text-sm line-clamp-1">
                     {alert.title} by {alert.author}
-                  </div>
-                  <div className="text-xs text-gray-400">
+                  </p>
+                  <p className="text-xs text-gray-400">
                     {formatDistanceToNow(new Date(alert.createdAt), {
                       addSuffix: true,
                     })}
-                  </div>
+                  </p>
                 </div>
               ))}
           </div>
