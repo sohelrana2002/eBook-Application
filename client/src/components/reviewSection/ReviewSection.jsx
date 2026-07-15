@@ -6,14 +6,14 @@ import { renderRatingStars } from "@/lib/renderRatingStars";
 import { FaStar } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { addReview } from "@/lib/api";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const ReviewSection = ({ initialReviews, bookId }) => {
   const [reviews, setReviews] = useState(initialReviews?.review || []);
   const [sortOrder, setSortOrder] = useState("newest");
   const [showReview, setShowReview] = useState(true);
 
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn } = useAuth();
 
   const [newReview, setNewReview] = useState({
     reviewerName: "",

@@ -4,13 +4,14 @@ import "./UserProfilePage.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/api";
 import Loading from "@/app/loading";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "./hooks/useAuth";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const UserProfilePage = () => {
   const router = useRouter();
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn } = useAuth();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userProfile"],

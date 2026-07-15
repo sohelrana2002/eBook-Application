@@ -5,7 +5,7 @@ import Link from "next/link";
 import { LayoutDashboard, SquareChevronRight, BookCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { LoaderCircle } from "lucide-react";
 
 const ProfileLayout = ({ children }) => {
@@ -14,7 +14,7 @@ const ProfileLayout = ({ children }) => {
   const [isMenuShowing, setIsMenuShowing] = useState(false);
   const menuRef = useRef();
   const pathname = usePathname();
-  const { isLoggedIn, isLoading } = useAuthContext();
+  const { isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
 
   const handleToggle = () => {

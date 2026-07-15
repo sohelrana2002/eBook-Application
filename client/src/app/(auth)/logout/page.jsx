@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const Logout = () => {
-  const { logOutUser, isLoggedIn } = useAuthContext();
+  const { logOutUser, isLoggedIn } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

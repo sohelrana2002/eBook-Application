@@ -1,10 +1,10 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import { useNotificationContext } from "@/context/NotificationContext";
+import { useNotification } from "@/hooks/useNotification";
 
 export default function Notifications() {
-  const { alerts, setAlerts } = useNotificationContext();
+  const { alerts, setAlerts } = useNotification();
 
   const handleClick = (alert) => {
     // Mark the clicked notification as read

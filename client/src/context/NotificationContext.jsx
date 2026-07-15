@@ -17,7 +17,7 @@ const NotificationProvider = ({ children }) => {
     }
 
     const savedAlerts = JSON.parse(
-      localStorage.getItem("notifications") || "[]"
+      localStorage.getItem("notifications") || "[]",
     );
     setAlerts(savedAlerts);
   }, [token]);
@@ -66,8 +66,4 @@ const NotificationProvider = ({ children }) => {
   );
 };
 
-const useNotificationContext = () => {
-  return useContext(NotificationContext);
-};
-
-export { NotificationProvider, useNotificationContext };
+export { NotificationProvider, NotificationContext };

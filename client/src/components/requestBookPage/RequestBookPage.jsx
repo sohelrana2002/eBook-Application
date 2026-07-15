@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { requestBook } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 
 const RequestBookPage = () => {
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn } = useAuth();
 
   const [form, setForm] = useState({
     bookName: "",

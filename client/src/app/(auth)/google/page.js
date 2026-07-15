@@ -2,12 +2,12 @@
 
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const GoogleAuth = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { storeTokenInLS } = useAuthContext();
+  const { storeTokenInLS } = useAuth();
 
   useEffect(() => {
     const token = searchParams.get("token");

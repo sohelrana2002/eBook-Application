@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { login } from "@/lib/api";
@@ -18,10 +18,9 @@ const Login = () => {
     password: "",
     error: null,
   });
-
   //   console.log("userLogin", userLogin);
 
-  const { storeTokenInLS, isLoggedIn, isLoading } = useAuthContext();
+  const { storeTokenInLS, isLoggedIn, isLoading } = useAuth();
 
   useEffect(() => {
     if (!isLoading && isLoggedIn) {
