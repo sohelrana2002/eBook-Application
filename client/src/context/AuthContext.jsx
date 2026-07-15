@@ -153,8 +153,12 @@ const AuthProvider = ({ children }) => {
 
   const isLoggedIn = !!state.token && !state.isLoading;
 
+  const { token, name, isLoading, error } = state;
   const value = {
-    ...state,
+    token,
+    name,
+    isLoading,
+    error,
     storeTokenInLS,
     logOutUser,
     isLoggedIn,
@@ -163,8 +167,4 @@ const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-const useAuthContext = () => {
-  return useContext(AuthContext);
-};
-
-export { AuthProvider, useAuthContext };
+export { AuthProvider, AuthContext };
