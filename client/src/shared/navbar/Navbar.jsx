@@ -7,10 +7,10 @@ import { NotebookText, X, Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { LoaderCircle } from "lucide-react";
 import { MdNotificationAdd } from "react-icons/md";
-import { useNotificationContext } from "@/context/NotificationContext";
+import { useNotification } from "@/hooks/useNotification";
 import { formatDistanceToNow } from "date-fns";
 import { useCart } from "@/hooks/useCart";
 
@@ -19,8 +19,8 @@ const Navbar = () => {
   const [isNavShowing, setIsNavShowing] = useState(false);
   const navRef = useRef();
   const notifacationRef = useRef();
-  const { isLoggedIn, isLoading } = useAuthContext();
-  const { alerts, setAlerts } = useNotificationContext();
+  const { isLoggedIn, isLoading } = useAuth();
+  const { alerts, setAlerts } = useNotification();
   const [showNotificaion, setShowNotification] = useState(false);
   const { state } = useCart();
   const { totalQuantity } = state;
@@ -122,16 +122,19 @@ const Navbar = () => {
           </Link>
 
           {/* handle notification  */}
-          <div className="notifications" onClick={handleNotification}>
-            <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
-              <MdNotificationAdd size={20} />{" "}
-              <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
-                <span className="text-white grid place-items-center text-sm">
-                  {unreadCount}
-                </span>
+          {isLoggedIn && (
+            <div className="notifications" onClick={handleNotification}>
+              <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
+                <MdNotificationAdd size={20} />{" "}
+                <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
+                  <span className="text-white grid place-items-center text-sm">
+                    {unreadCount}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
           <div>
             {isLoading ? (
               <div className="profile">
@@ -154,7 +157,7 @@ const Navbar = () => {
         </div>
 
         {/*notification  */}
-        {showNotificaion && (
+        {isLoggedIn && showNotificaion && (
           <div
             ref={notifacationRef}
             className="absolute top-full right-5 mt-2 w-75 max-h-96 overflow-auto bg-white border shadow-lg rounded"
