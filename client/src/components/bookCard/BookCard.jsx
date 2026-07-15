@@ -8,6 +8,7 @@ import CardButton from "../cardButton/CardButton";
 const BookCard = ({ books }) => {
   const bookCartInfo = {
     _id: books?._id,
+    slug: books?.slug,
     title: books?.title,
     author: books?.author,
     coverImage: books?.coverImage,

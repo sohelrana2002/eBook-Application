@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Trash2, ShieldCheck, BookOpen } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 const defaultImage = "/book.jpg";
+import Link from "next/link";
 
 export default function CartPage() {
   const { state, removeFromCart, clearCart } = useCart();
@@ -64,9 +65,12 @@ export default function CartPage() {
               {/* Book Info */}
               <div className="flex-1 flex flex-col justify-between">
                 <div>
-                  <h2 className="text-[16px] md:text-xl font-semibold line-clamp-1 capitalize">
+                  <Link
+                    href={`/books/${book?.slug}`}
+                    className="text-[16px] md:text-xl font-semibold line-clamp-1 capitalize"
+                  >
                     {book?.title}
-                  </h2>
+                  </Link>
 
                   <p className="text-[10px] md:text-[16px] mt-[2px] md:mt-1 text-gray-500 capitalize">
                     by <span className="font-medium">{book?.author}</span>
