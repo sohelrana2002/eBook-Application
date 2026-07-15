@@ -1,26 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
   const dropdownRef = useRef(null);
-  const { state, logOutUser } = useAuthContext();
+  const { name, logOutUser } = useAuth();
   const router = useRouter();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  // set name from local storage
-  (useEffect(() => {
-    const getName = localStorage.getItem("name");
-
-    if (getName) {
-      setName(getName);
-    }
-  }),
-    []);
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
