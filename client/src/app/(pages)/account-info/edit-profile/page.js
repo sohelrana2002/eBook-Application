@@ -34,7 +34,7 @@ const EditProfile = () => {
     mutationFn: updateProfile,
     onSuccess: (data) => {
       alert(data.message);
-      router.push("/profile");
+      router.push("/account-info");
     },
 
     onError: (error) => {
@@ -61,7 +61,7 @@ const EditProfile = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center md:p-4">
-      <div className="w-full max-w-2xl bg-white shadow-xl  rounded-2xl p-5 md:p-8">
+      <div className="w-full max-w-2xl bg-gray-50 shadow-sm  rounded-2xl p-5 md:p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b border-[var(--border)] pb-2">
           Profile Information
         </h2>
@@ -76,7 +76,7 @@ const EditProfile = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
+              className="mt-1 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
               required
             />
           </div>
@@ -91,7 +91,7 @@ const EditProfile = () => {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
+              className="mt-1 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
               required
             />
           </div>
@@ -106,7 +106,7 @@ const EditProfile = () => {
               value={formData.bio}
               onChange={handleChange}
               rows="4"
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
+              className="mt-1 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
               placeholder="Tell us a bit about yourself..."
             />
           </div>
@@ -121,7 +121,7 @@ const EditProfile = () => {
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
+              className="mt-1 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
             />
           </div>
 
@@ -135,7 +135,7 @@ const EditProfile = () => {
               name="language"
               value={formData.language}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
+              className="mt-1 w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black-500"
             />
           </div>
 
