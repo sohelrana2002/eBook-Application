@@ -38,8 +38,8 @@ const RequestedBookPage = () => {
   const books = data?.allBookRequest || [];
 
   return (
-    <div className="max-w-6xl w-full mx-auto bg-gray-50 shadow-sm rounded-lg mt-5 h-[80vh]">
-      <div className="p-3 md:p-5">
+    <div className="mx-3">
+      <div className="p-3 md:p-5 max-w-6xl w-full mx-auto bg-gray-50 shadow-sm rounded-lg mt-5 h-[80vh]">
         <div className="py-4">
           <h2 className="text-xl font-semibold text-[var(--black)]">
             Requested Books

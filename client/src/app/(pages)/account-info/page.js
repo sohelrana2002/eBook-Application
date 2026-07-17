@@ -35,11 +35,11 @@ const AccountInfo = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-[90vh] w-full px-4">
+    <div className="flex items-center justify-center h-[90vh] w-full px-3 md:px-4">
       <main className="max-w-3xl w-full border border-gray-300 rounded-2xl bg-gray-50 shadow-sm">
         <div className="p-6 md:p-10 w-full">
           <div className="flex items-center justify-between mb-4 md:mb-8">
-            <h1 className="text-3xl font-semibold">Account Info</h1>
+            <h1 className="text-xl md:text-3xl font-semibold">Account Info</h1>
             <Link
               href="/account-info/edit-profile"
               className="bg-[var(--blue)] text-[#fff] rounded-md px-4 py-1"
