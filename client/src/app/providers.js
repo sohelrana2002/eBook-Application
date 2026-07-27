@@ -1,24 +1,26 @@
 "use client";
 
-import { AuthProvider } from "@/context/AuthContext";
-import Navbar from "../navbar/Navbar";
-import TanstackProvider from "@/provider/TanstackProvider";
 import Footer from "@/components/footer/Footer";
-import CopyRight from "../copyRight/CopyRight";
-import { usePathname } from "next/navigation";
-import { NotificationProvider } from "@/context/NotificationContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { CartProvide } from "@/context/CartContext";
+import { NotificationProvider } from "@/context/NotificationContext";
+import { ServerProvider } from "@/context/ServerContext";
+import TanstackProvider from "@/provider/TanstackProvider";
+import CopyRight from "@/shared/copyRight/CopyRight";
+import Navbar from "@/shared/navbar/Navbar";
+import { usePathname } from "next/navigation";
 
-const MainLayout = ({ children }) => {
+export const Providers = ({ children }) => {
   const pathname = usePathname();
   const hideSection =
     pathname === "/books" ||
-    pathname === "/profile" ||
-    pathname === "/profile/requested-book" ||
-    pathname === "/profile/edit-profile";
+    pathname === "/account-info" ||
+    pathname === "/account-info/edit-profile" ||
+    pathname === "/requested-book" ||
+    pathname === "/cart";
 
   return (
-    <main>
+    <ServerProvider>
       <AuthProvider>
         <TanstackProvider>
           <NotificationProvider>
@@ -31,8 +33,6 @@ const MainLayout = ({ children }) => {
           </NotificationProvider>
         </TanstackProvider>
       </AuthProvider>
-    </main>
+    </ServerProvider>
   );
 };
-
-export default MainLayout;
