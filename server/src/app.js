@@ -67,9 +67,19 @@ app.use("/api/assistant", bookAssistantRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/book-access", bookAccessRouter);
 
+// home route
 app.get("/", (req, res) => {
-  res.json({
-    message: "Backend is working",
+  res.status(200).json({
+    success: true,
+    message: "API is live!",
+  });
+});
+
+// health checker route
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running ",
   });
 });
 
