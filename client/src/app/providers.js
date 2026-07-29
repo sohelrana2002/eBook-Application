@@ -10,7 +10,7 @@ import CopyRight from "@/shared/copyRight/CopyRight";
 import Navbar from "@/shared/navbar/Navbar";
 import { usePathname } from "next/navigation";
 
-export const Providers = ({ children }) => {
+const Website = ({ children }) => {
   const pathname = usePathname();
   const hideSection =
     pathname === "/books" ||
@@ -20,19 +20,32 @@ export const Providers = ({ children }) => {
     pathname === "/cart";
 
   return (
+    <AuthProvider>
+      <TanstackProvider>
+        <NotificationProvider>
+          <CartProvide>
+            <Navbar />
+            <div className="pt-[3.8rem]">{children}</div>
+            {!hideSection && <Footer />}
+            {!hideSection && <CopyRight />}
+          </CartProvide>
+        </NotificationProvider>
+      </TanstackProvider>
+    </AuthProvider>
+  );
+};
+
+export const Providers = ({ children }) => {
+  const enableServerGate =
+    process.env.NEXT_PUBLIC_ENABLE_SERVER_GATE === "true";
+
+  if (!enableServerGate) {
+    return <Website>{children}</Website>;
+  }
+
+  return (
     <ServerProvider>
-      <AuthProvider>
-        <TanstackProvider>
-          <NotificationProvider>
-            <CartProvide>
-              <Navbar />
-              <div className="pt-[3.8rem]">{children}</div>
-              {!hideSection && <Footer />}
-              {!hideSection && <CopyRight />}
-            </CartProvide>
-          </NotificationProvider>
-        </TanstackProvider>
-      </AuthProvider>
+      <Website>{children}</Website>
     </ServerProvider>
   );
 };
