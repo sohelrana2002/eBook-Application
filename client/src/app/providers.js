@@ -9,6 +9,7 @@ import TanstackProvider from "@/provider/TanstackProvider";
 import CopyRight from "@/shared/copyRight/CopyRight";
 import Navbar from "@/shared/navbar/Navbar";
 import { usePathname } from "next/navigation";
+import ServerGate from "@/components/common/ServerGate";
 
 const Website = ({ children }) => {
   const pathname = usePathname();
@@ -45,7 +46,9 @@ export const Providers = ({ children }) => {
 
   return (
     <ServerProvider>
-      <Website>{children}</Website>
+      <ServerGate>
+        <Website>{children}</Website>
+      </ServerGate>
     </ServerProvider>
   );
 };
