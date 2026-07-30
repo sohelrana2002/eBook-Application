@@ -25,6 +25,7 @@ const allowedOrigins = [
   "https://knowledgea-ebook-admin.vercel.app",
   "https://sandbox.sslcommerz.com",
   "https://securepay.sslcommerz.com",
+  "https://knowledgea.netlify.app",
 ];
 
 // var corsOptions = {
