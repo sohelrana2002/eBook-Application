@@ -19,6 +19,7 @@ const startServer = async () => {
         "http://localhost:3001",
         "https://e-book-application-five.vercel.app",
         "https://e-book-application-admin.vercel.app",
+        "https://knowledgea.netlify.app",
       ],
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true,
