@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 let socketInstance = null;
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NEXT_PUBLIC_NODE_ENV === "development";
 
 export const connectSocket = (token) => {
   if (socketInstance) {
