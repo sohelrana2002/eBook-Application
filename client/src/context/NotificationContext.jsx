@@ -5,6 +5,7 @@ const NotificationContext = createContext();
 
 const NotificationProvider = ({ children }) => {
   const [alerts, setAlerts] = useState([]);
+  const [socket, setSocket] = useState(null);
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -23,12 +24,20 @@ const NotificationProvider = ({ children }) => {
   }, [token]);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
 
-    const socket = connectSocket(token);
+      return;
+    }
+
+    const newSocket = connectSocket(token);
+    setSocket(newSocket);
 
     // When new book is added
-    socket.on("new_book", (data) => {
+    newSocket.on("new_book", (data) => {
       if (!data.createdAt) data.createdAt = new Date().toISOString();
       data.read = false;
 
@@ -40,7 +49,7 @@ const NotificationProvider = ({ children }) => {
     });
 
     // When a book is deleted
-    socket.on("delete_book", (bookId) => {
+    newSocket.on("delete_book", (bookId) => {
       setAlerts((prev) => {
         const updated = prev.filter((a) => a.id !== bookId);
         localStorage.setItem("notifications", JSON.stringify(updated));
@@ -49,8 +58,10 @@ const NotificationProvider = ({ children }) => {
     });
 
     return () => {
-      socket.off("new_book");
-      socket.off("delete_book");
+      newSocket.off("new_book");
+      newSocket.off("delete_book");
+      newSocket.disconnect();
+      setSocket(null);
     };
   }, [token]);
 
