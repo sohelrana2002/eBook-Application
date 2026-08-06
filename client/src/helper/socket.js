@@ -2,48 +2,44 @@ import { io } from "socket.io-client";
 
 let socketInstance = null;
 
+const isDev = process.env.NODE_ENV === "development";
+
 export const connectSocket = (token) => {
-  // আগের সকেট থাকলে ডিসকানেক্ট করুন
   if (socketInstance) {
     socketInstance.disconnect();
     socketInstance = null;
   }
 
   const url = process.env.NEXT_PUBLIC_BASE_URL;
-  console.log("🟡 Connecting to Socket.IO at:", url);
 
-  // ✅ শুধু polling ব্যবহার করুন (WebSocket বাদ)
+  if (isDev) {
+    console.log("Connecting to Socket.IO at: ", url);
+  }
+
   socketInstance = io(url, {
     auth: { token },
-    transports: ["polling"], // শুধু polling
+    transports: ["polling", "websocket"],
+    timeout: 120000,
     reconnection: true,
     reconnectionAttempts: 10,
-    reconnectionDelay: 1000,
+    reconnectionDelay: 2000,
   });
 
-  // সাফল্য/ব্যর্থতা লগ
   socketInstance.on("connect", () => {
-    console.log("✅ Socket connected successfully via polling");
-  });
-
-  socketInstance.on("connect_error", (err) => {
-    console.error("❌ Socket connection error:", err.message);
-    // যদি Auth error হয়, তাহলে টোকেন সমস্যা
-    if (err.message === "Authentication error") {
-      console.warn("⚠️ Token invalid or missing. Please login again.");
+    if (isDev) {
+      console.log("Socket connected successfully!");
     }
   });
 
+  socketInstance.on("connect_error", (err) => {
+    console.error("Socket connection error: ", err.message);
+  });
+
   socketInstance.on("disconnect", (reason) => {
-    console.log("🔴 Socket disconnected:", reason);
+    if (isDev) {
+      console.log("Socket disconnected:", reason);
+    }
   });
 
   return socketInstance;
-};
-
-export const disconnectSocket = () => {
-  if (socketInstance) {
-    socketInstance.disconnect();
-    socketInstance = null;
-  }
 };
