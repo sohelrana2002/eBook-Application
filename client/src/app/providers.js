@@ -44,5 +44,11 @@ export const Providers = ({ children }) => {
     return <Website>{children}</Website>;
   }
 
-  return <Website>{children}</Website>;
+  return (
+    <ServerProvider>
+      <ServerGate>
+        <Website>{children}</Website>
+      </ServerGate>
+    </ServerProvider>
+  );
 };
