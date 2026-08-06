@@ -17,8 +17,11 @@ const startServer = async () => {
       origin: [
         "http://localhost:5173",
         "http://localhost:3001",
-        "https://e-book-application-five.vercel.app",
-        "https://e-book-application-admin.vercel.app",
+        "http://localhost:3000",
+        "https://knowledgea-ebook.vercel.app",
+        "https://knowledgea-ebook-admin.vercel.app",
+        "https://sandbox.sslcommerz.com",
+        "https://securepay.sslcommerz.com",
         "https://knowledgea.netlify.app",
       ],
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
