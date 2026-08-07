@@ -27,7 +27,7 @@ export const connectSocket = (token) => {
     reconnection: true,
     reconnectionAttempts: 20,
     reconnectionDelay: 3000,
-    autoConnect: true,
+    autoConnect: false,
   });
 
   socketInstance.on("connect", () => {
