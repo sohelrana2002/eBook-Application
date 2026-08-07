@@ -196,7 +196,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/login"
-                className="rounded-full flex items-center justify-center bg-[#000] px-3 py-[5px] pb-1 md:px-4 md:py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
+                className="rounded-full flex items-center justify-center bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
               >
                 Login
               </Link>
