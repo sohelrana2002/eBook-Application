@@ -23,9 +23,9 @@ export const connectSocket = (token) => {
   socketInstance = io(url, {
     auth: { token },
     transports: ["polling", "websocket"],
-    timeout: 120000,
+    timeout: 60000,
     reconnection: true,
-    reconnectionAttempts: 15,
+    reconnectionAttempts: 20,
     reconnectionDelay: 3000,
     autoConnect: true,
   });
@@ -37,12 +37,10 @@ export const connectSocket = (token) => {
   });
 
   socketInstance.on("connect_error", (err) => {
-    if (isDev) {
-      console.warn(
-        "Socket is trying to connect (Server may be cold-starting):",
-        err.message,
-      );
-    }
+    console.warn(
+      "Socket is trying to connect (Server may be cold-starting):",
+      err.message,
+    );
   });
 
   socketInstance.on("error", (err) => {
@@ -59,8 +57,6 @@ export const connectSocket = (token) => {
 
   return socketInstance;
 };
-
-export const getSocket = () => socketInstance;
 
 export const disconnectSocket = () => {
   if (socketInstance) {
