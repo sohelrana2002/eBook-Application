@@ -10,27 +10,33 @@ const NotificationProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [token, setToken] = useState(null);
 
+  // 1. Initial Load: Token and Notifications from LocalStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = localStorage.getItem("token");
       setToken(storedToken);
 
-      if (storedToken) {
-        const savedAlerts = JSON.parse(
-          localStorage.getItem("notifications") || "[]",
-        );
-        setAlerts(savedAlerts);
+      try {
+        const rawNotifications = localStorage.getItem("notifications");
+        // Fallback added: If null or invalid, default to empty array []
+        const savedAlerts = rawNotifications
+          ? JSON.parse(rawNotifications)
+          : [];
+        setAlerts(Array.isArray(savedAlerts) ? savedAlerts : []);
+      } catch (error) {
+        console.error("Error parsing notifications from localStorage:", error);
+        setAlerts([]);
       }
     }
   }, []);
 
+  // 2. Socket Connection & Event Handling
   useEffect(() => {
     if (!token) {
       if (socket) {
         socket.disconnect();
         setSocket(null);
       }
-      setAlerts([]);
       return;
     }
 
@@ -42,7 +48,9 @@ const NotificationProvider = ({ children }) => {
       data.read = false;
 
       setAlerts((prev) => {
-        const updated = [...prev, data];
+        // Safe check: Ensure prev is always an Array
+        const safePrev = Array.isArray(prev) ? prev : [];
+        const updated = [...safePrev, data];
         localStorage.setItem("notifications", JSON.stringify(updated));
         return updated;
       });
@@ -50,7 +58,8 @@ const NotificationProvider = ({ children }) => {
 
     const handleDeleteBook = (bookId) => {
       setAlerts((prev) => {
-        const updated = prev.filter((a) => a.id !== bookId);
+        const safePrev = Array.isArray(prev) ? prev : [];
+        const updated = safePrev.filter((a) => a.id !== bookId);
         localStorage.setItem("notifications", JSON.stringify(updated));
         return updated;
       });
