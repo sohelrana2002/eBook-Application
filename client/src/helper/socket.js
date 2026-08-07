@@ -5,12 +5,16 @@ let socketInstance = null;
 const isDev = process.env.NEXT_PUBLIC_NODE_ENV === "development";
 
 export const connectSocket = (token) => {
-  if (socketInstance) {
-    socketInstance.disconnect();
-    socketInstance = null;
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (socketInstance && socketInstance.connected) {
+    return socketInstance;
   }
 
-  const url = process.env.NEXT_PUBLIC_BASE_URL;
+  if (socketInstance) {
+    socketInstance.removeAllListeners();
+    socketInstance.disconnect();
+  }
 
   if (isDev) {
     console.log("Connecting to Socket.IO at: ", url);
@@ -21,8 +25,9 @@ export const connectSocket = (token) => {
     transports: ["polling", "websocket"],
     timeout: 120000,
     reconnection: true,
-    reconnectionAttempts: 10,
-    reconnectionDelay: 2000,
+    reconnectionAttempts: 15,
+    reconnectionDelay: 3000,
+    autoConnect: true,
   });
 
   socketInstance.on("connect", () => {
@@ -32,7 +37,18 @@ export const connectSocket = (token) => {
   });
 
   socketInstance.on("connect_error", (err) => {
-    console.error("Socket connection error: ", err.message);
+    if (isDev) {
+      console.warn(
+        "Socket is trying to connect (Server may be cold-starting):",
+        err.message,
+      );
+    }
+  });
+
+  socketInstance.on("error", (err) => {
+    if (isDev) {
+      console.error("Socket runtime error:", err);
+    }
   });
 
   socketInstance.on("disconnect", (reason) => {
@@ -42,4 +58,14 @@ export const connectSocket = (token) => {
   });
 
   return socketInstance;
+};
+
+export const getSocket = () => socketInstance;
+
+export const disconnectSocket = () => {
+  if (socketInstance) {
+    socketInstance.removeAllListeners();
+    socketInstance.disconnect();
+    socketInstance = null;
+  }
 };
