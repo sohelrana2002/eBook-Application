@@ -19,6 +19,7 @@
 .logo span {
     font-weight: 600;
     color: var(--black);
+    font-size: 1.3rem;
 }
 
 .menu__item {
@@ -103,6 +104,10 @@
 
 /*---------------media query(mediam screen)------------- */
 @media screen and (max-width: 700px) {
+    .user {
+        gap: 8px;
+    }
+
     .menu__item {
         width: 75%;
         padding: 0 1.25rem;
@@ -112,5 +117,7 @@
         width: 80%;
     }
 
-
+    .logo span {
+        font-size: 1rem;
+    }
 }

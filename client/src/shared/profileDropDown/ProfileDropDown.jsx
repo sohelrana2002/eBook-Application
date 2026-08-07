@@ -39,7 +39,7 @@ const ProfileDropdown = () => {
     <div ref={dropdownRef} className="relative inline-block text-left">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-full bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
+        className="flex items-center gap-2 rounded-full bg-[#000] px-3 py-[5px] md:px-4 md:py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
       >
         {firstWord}
         <ChevronDown

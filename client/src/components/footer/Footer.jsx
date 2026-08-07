@@ -14,9 +14,6 @@ const Footer = () => {
       <div className="logo__section">
         <div>
           <Link href={"/"} className="logo">
-            <div>
-              <NotebookText />
-            </div>
             <span>Knowledgea</span>
           </Link>
         </div>

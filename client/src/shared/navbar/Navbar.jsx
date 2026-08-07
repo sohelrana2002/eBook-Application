@@ -3,13 +3,7 @@
 import "./Navbar.css";
 import { navMenu } from "@/data/Data";
 import Link from "next/link";
-import {
-  NotebookText,
-  X,
-  Menu,
-  ShoppingCart,
-  LoaderCircle,
-} from "lucide-react";
+import { X, Menu, ShoppingCart, LoaderCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
@@ -125,10 +119,10 @@ const Navbar = () => {
         <div className="user">
           {/* Cart */}
           <Link href="/cart" className="notifications">
-            <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
-              <ShoppingCart size={20} />
-              <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
-                <span className="text-white grid place-items-center text-sm">
+            <div className="w-[30px] md:w-[35px] h-[30px] md:h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
+              <ShoppingCart className="w-[15px] h-[15px] md:w-[20px] md:h-[20px]" />
+              <div className="absolute right-[-12px] top-[-12px] w-[17px] h-[17px] md:w-[20px] md:h-[20px] rounded-full bg-black grid place-items-center">
+                <span className="text-white grid place-items-center text-[10px] md:text-sm">
                   {totalQuantity}
                 </span>
               </div>
@@ -137,12 +131,12 @@ const Navbar = () => {
 
           {/* Notifications */}
           {isLoggedIn && (
-            <div className="notifications relative" ref={notifacationRef}>
+            <div className="notifications" ref={notifacationRef}>
               <div
-                className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative"
+                className="w-[30px] md:w-[35px] h-[30px] md:h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative"
                 onClick={handleNotification}
               >
-                <MdNotificationAdd size={20} />
+                <MdNotificationAdd className="text-[15px] md:text-[20px]" />
                 {unreadCount > 0 && (
                   <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
                     <span className="text-white grid place-items-center text-sm">
@@ -154,7 +148,7 @@ const Navbar = () => {
 
               {/* Notification Dropdown */}
               {showNotification && (
-                <div className="absolute top-full right-0 mt-2 w-72 max-h-96 overflow-auto bg-white border shadow-lg rounded z-50">
+                <div className="absolute top-[85%] right-5  mt-2 w-72 max-h-96 overflow-auto bg-white border border-[var(--border)] shadow-lg rounded z-50">
                   {alerts.length === 0 ? (
                     <p className="p-3 text-gray-500 text-sm text-center">
                       No notifications
@@ -202,7 +196,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 rounded-full bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
+                className="rounded-full flex items-center justify-center bg-[#000] px-3 py-[5px] pb-1 md:px-4 md:py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
               >
                 Login
               </Link>
