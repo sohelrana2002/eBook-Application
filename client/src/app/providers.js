@@ -23,14 +23,14 @@ const Website = ({ children }) => {
   return (
     <AuthProvider>
       <TanstackProvider>
-        <NotificationProvider>
-          <CartProvide>
-            <Navbar />
-            <div className="pt-[3.8rem]">{children}</div>
-            {!hideSection && <Footer />}
-            {!hideSection && <CopyRight />}
-          </CartProvide>
-        </NotificationProvider>
+        {/* <NotificationProvider> */}
+        <CartProvide>
+          <Navbar />
+          <div className="pt-[3.8rem]">{children}</div>
+          {!hideSection && <Footer />}
+          {!hideSection && <CopyRight />}
+        </CartProvide>
+        {/* </NotificationProvider> */}
       </TanstackProvider>
     </AuthProvider>
   );
