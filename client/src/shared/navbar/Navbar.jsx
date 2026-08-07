@@ -8,9 +8,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../profileDropDown/ProfileDropDown";
 import { useAuth } from "@/hooks/useAuth";
-// import { MdNotificationAdd } from "react-icons/md";
-// import { useNotification } from "@/hooks/useNotification";
-// import { formatDistanceToNow } from "date-fns";
+import { MdNotificationAdd } from "react-icons/md";
+import { useNotification } from "@/hooks/useNotification";
+import { formatDistanceToNow } from "date-fns";
 import { useCart } from "@/hooks/useCart";
 
 const Navbar = () => {
@@ -21,8 +21,8 @@ const Navbar = () => {
   const notifacationRef = useRef();
 
   const { isLoggedIn, isLoading } = useAuth();
-  // const { alerts, setAlerts } = useNotification();
-  // const [showNotification, setShowNotification] = useState(false);
+  const { alerts, setAlerts } = useNotification();
+  const [showNotification, setShowNotification] = useState(false);
 
   const { state } = useCart();
   const { totalQuantity } = state || { totalQuantity: 0 };
@@ -68,23 +68,23 @@ const Navbar = () => {
   }, []);
 
   // Unread count
-  // const unreadCount = alerts ? alerts.filter((alert) => !alert.read).length : 0;
+  const unreadCount = alerts ? alerts.filter((alert) => !alert.read).length : 0;
 
   // Handle notification item click
-  // const handleClick = (alert) => {
-  //   //  Mark as read
-  //   const updatedAlerts = alerts.map((a) =>
-  //     a.id === alert.id ? { ...a, read: true } : a,
-  //   );
-  //   setAlerts(updatedAlerts);
-  //   localStorage.setItem("notifications", JSON.stringify(updatedAlerts));
+  const handleClick = (alert) => {
+    //  Mark as read
+    const updatedAlerts = alerts.map((a) =>
+      a.id === alert.id ? { ...a, read: true } : a,
+    );
+    setAlerts(updatedAlerts);
+    localStorage.setItem("notifications", JSON.stringify(updatedAlerts));
 
-  //   // Hide dropdown
-  //   setShowNotification(false);
+    // Hide dropdown
+    setShowNotification(false);
 
-  //   // Client-side Navigation
-  //   router.push(`/books/${alert.id}`);
-  // };
+    // Client-side Navigation
+    router.push(`/books/${alert.id}`);
+  };
 
   return (
     <nav className="nav relative">
@@ -130,7 +130,7 @@ const Navbar = () => {
           </Link>
 
           {/* Notifications */}
-          {/*{isLoggedIn && (
+          {isLoggedIn && (
             <div className="notifications" ref={notifacationRef}>
               <div
                 className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative"
@@ -146,7 +146,6 @@ const Navbar = () => {
                 )}
               </div>
 
-   
               {showNotification && (
                 <div className="absolute top-[85%] right-5  mt-2 w-72 max-h-96 overflow-auto bg-white border border-[var(--border)] shadow-lg rounded z-50">
                   {alerts.length === 0 ? (
@@ -183,7 +182,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-          )} */}
+          )}
 
           {/* Profile / Login */}
           <div>
