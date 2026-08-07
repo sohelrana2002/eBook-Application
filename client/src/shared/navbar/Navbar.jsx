@@ -119,8 +119,8 @@ const Navbar = () => {
         <div className="user">
           {/* Cart */}
           <Link href="/cart" className="notifications">
-            <div className="w-[30px] md:w-[35px] h-[30px] md:h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
-              <ShoppingCart className="w-[15px] h-[15px] md:w-[20px] md:h-[20px]" />
+            <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
+              <ShoppingCart size={20} />
               <div className="absolute right-[-12px] top-[-12px] w-[17px] h-[17px] md:w-[20px] md:h-[20px] rounded-full bg-black grid place-items-center">
                 <span className="text-white grid place-items-center text-[10px] md:text-sm">
                   {totalQuantity}
@@ -133,10 +133,10 @@ const Navbar = () => {
           {isLoggedIn && (
             <div className="notifications" ref={notifacationRef}>
               <div
-                className="w-[30px] md:w-[35px] h-[30px] md:h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative"
+                className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative"
                 onClick={handleNotification}
               >
-                <MdNotificationAdd className="text-[15px] md:text-[20px]" />
+                <MdNotificationAdd size={20} />
                 {unreadCount > 0 && (
                   <div className="absolute right-[-12px] top-[-12px] w-[20px] h-[20px] rounded-full bg-black grid place-items-center">
                     <span className="text-white grid place-items-center text-sm">
