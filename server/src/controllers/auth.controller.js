@@ -158,30 +158,30 @@ const getAdminInfo = async (req, res, next) => {
 // ===individual profile information===
 const userProfile = async (req, res, next) => {
   try {
-    const userData = req.jwtPayload;
-    // console.log(userData);
-
-    const userId = userData.userId;
+    const userId = req.jwtPayload?.userId;
 
     const profileDetails = await user.findById(userId);
     // console.log(profileDetails);
 
     if (profileDetails) {
       return res.status(200).json({
-        message: "success.",
+        success: true,
+        message: "Profile details fetch successfully.",
         userProfile: profileDetails,
       });
     } else {
       return res.status(401).json({
-        message: "failed.",
+        success: false,
+        message: "Failed to fetch profile details.",
         error: "invalid token",
       });
     }
   } catch (error) {
-    console.error("Individual profile info error.", error.message);
+    console.error("Individual profile info error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: "Internal server error.",
     });
   }
 };
@@ -189,27 +189,29 @@ const userProfile = async (req, res, next) => {
 // ===delete user from admin access====
 const deleteUser = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
-    console.log("userId", userId);
+    const userId = req.params?.userId;
 
     const userExist = await user.findOne({ _id: userId });
 
     if (!userExist) {
       return res.status(404).json({
+        success: false,
         message: "User not found!",
       });
     } else {
       await user.deleteOne({ _id: userId });
 
       res.status(200).json({
+        success: true,
         message: "User deleted succesfully.",
         id: userId,
       });
     }
   } catch (error) {
-    console.error("User delete error.", error.message);
+    console.error("User delete error: ", error.message);
 
     res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }
