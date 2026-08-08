@@ -93,10 +93,7 @@ userSchema.methods.generateToken = async function () {
     return jwt.sign(
       {
         userId: this._id.toString(),
-        role: this.role,
         name: this.name,
-        email: this.email,
-        phone: this.phoneNumber,
       },
       config.jwtSecretKey,
       {
