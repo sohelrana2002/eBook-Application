@@ -61,8 +61,6 @@ html {
 }
 
 
-
-
 .right__dashboardlayout {
     position: relative;
     width: calc(100vw - 260px);
@@ -140,7 +138,7 @@ html {
 
     .left__dashboardlayout {
         left: -265px;
-        transition: 0.7s ease-in-out;
+        transition: 0.4s ease-in-out;
     }
 
     .left__dashboardlayout.show {

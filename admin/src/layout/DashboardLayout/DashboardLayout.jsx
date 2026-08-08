@@ -54,7 +54,7 @@ const DashboardLayout = () => {
       <div className={`left__dashboardlayout ${isNavShowing && "show"}`}>
         <Link to="/" className="logo__dashboardlayout">
           <BookMarked />
-          <span>e-Book Platform</span>
+          <span>Knowledgea</span>
         </Link>
         <div className="dashboard__menu" ref={navRef}>
           {NavMenu &&
