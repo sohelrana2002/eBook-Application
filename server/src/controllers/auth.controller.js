@@ -24,7 +24,6 @@ const register = async (req, res) => {
     // console.log(createUser);
     res.status(201).json({
       message: "user register Successfull",
-      token: await createUser.generateToken(),
       userId: createUser._id.toString(),
     });
   } catch (error) {
@@ -191,7 +190,7 @@ const userProfile = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    // console.log("userId", userId);
+    console.log("userId", userId);
 
     const userExist = await user.findOne({ _id: userId });
 
