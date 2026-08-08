@@ -121,7 +121,7 @@ const Login = () => {
                       )}
                       <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full cursor-pointer"
                         disabled={mutation.isPending}
                       >
                         {mutation.isPending && (
@@ -134,6 +134,26 @@ const Login = () => {
                 </form>
               </CardContent>
             </Card>
+          </div>
+
+          <div className="bg-[var(--background)] p-4 rounded-lg flex flex-col gap-2">
+            <h1 className="text-sm md:text-md font-bold">Demo Credentials</h1>
+            <div className="flex items-center justify-between">
+              <p className="text-xs md:text-[15px]">
+                Admin: sohel@admin.com / admin123
+              </p>
+              <button
+                onClick={() =>
+                  setUserLogin({
+                    email: "sohel@admin.com",
+                    password: "admin123",
+                  })
+                }
+                className="bg-[var(--foreground)] text-white px-3 py-1 rounded-sm cursor-pointer text-xs md:text-sm"
+              >
+                Try This
+              </button>
+            </div>
           </div>
         </div>
       </div>
