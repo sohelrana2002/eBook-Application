@@ -23,6 +23,7 @@ const startServer = async () => {
         "https://sandbox.sslcommerz.com",
         "https://securepay.sslcommerz.com",
         "https://knowledgea.netlify.app",
+        "https://knowledgea-dashboard.netlify.app",
       ],
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true,
