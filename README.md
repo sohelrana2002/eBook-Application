@@ -30,7 +30,7 @@ Built with **Next.js**, **Express.js**, **MongoDB**, and **Cloudinary**.
 
 | **User Website** | **Admin Dashboard** |
 |:---:|:---:|
-| [Visit User Site](https://knowledgea-ebook.vercel.app) | [Visit Admin Panel](https://knowledgea-ebook-admin.vercel.app) |
+| [Visit User Site](https://knowledgea.netlify.app) | [Visit Admin Panel](https://knowledgea-dashboard.netlify.app) |
 
 ---
 
