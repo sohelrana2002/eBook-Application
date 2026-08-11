@@ -10,6 +10,7 @@ import {
   FileText,
   Copy,
   Printer,
+  Search,
 } from "lucide-react";
 import DataTable from "react-data-table-component";
 
@@ -21,6 +22,7 @@ import {
   copyToClipboard,
   printTable,
 } from "@/utlis/export/exportFile";
+import { Input } from "@/components/ui/input";
 
 const Admins = () => {
   const { data: adminData, isLoading } = useQuery({
@@ -29,15 +31,15 @@ const Admins = () => {
     staleTime: 10000,
   });
 
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const admins = adminData?.users || [];
 
   const filteredAdmins = admins.filter(
     (a) =>
-      a.name.toLowerCase().includes(search.toLowerCase()) ||
-      a.email.toLowerCase().includes(search.toLowerCase()) ||
-      a.role.toLowerCase().includes(search.toLowerCase())
+      a.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      a.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      a.role.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const columns = [
@@ -55,7 +57,7 @@ const Admins = () => {
     },
   ];
 
-  console.log("columns".columns);
+  // console.log("columns".columns);
 
   if (isLoading) return <Loading />;
 
@@ -73,44 +75,54 @@ const Admins = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          <button
-            onClick={() => exportToCSV(columns, filteredAdmins, "Admin List")}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded"
-          >
-            <FileSpreadsheet size={16} /> CSV
-          </button>
-          <button
-            onClick={() => exportToExcel(columns, filteredAdmins, "Admin List")}
-            className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded"
-          >
-            <FileSpreadsheet size={16} /> Excel
-          </button>
-          <button
-            onClick={() => exportToPDF(columns, filteredAdmins, "Admin List")}
-            className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white rounded"
-          >
-            <FileText size={16} /> PDF
-          </button>
-          <button
-            onClick={() => copyToClipboard(columns, filteredAdmins)}
-            className="flex items-center gap-2 px-3 py-1 bg-yellow-500 text-white rounded"
-          >
-            <Copy size={16} /> Copy
-          </button>
-          <button
-            onClick={() => printTable(columns, filteredAdmins)}
-            className="flex items-center gap-2 px-3 py-1 bg-gray-700 text-white rounded"
-          >
-            <Printer size={16} /> Print
-          </button>
-          <input
-            type="text"
-            placeholder="Search admin..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-1 ml-auto"
-          />
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2 ">
+            <button
+              onClick={() => exportToCSV(columns, filteredAdmins, "Admin List")}
+              className="flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
+            >
+              <FileSpreadsheet size={16} /> CSV
+            </button>
+            <button
+              onClick={() =>
+                exportToExcel(columns, filteredAdmins, "Admin List")
+              }
+              className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded cursor-pointer"
+            >
+              <FileSpreadsheet size={16} /> Excel
+            </button>
+            <button
+              onClick={() => exportToPDF(columns, filteredAdmins, "Admin List")}
+              className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
+            >
+              <FileText size={16} /> PDF
+            </button>
+            <button
+              onClick={() => copyToClipboard(columns, filteredAdmins)}
+              className="flex items-center gap-2 px-3 py-1 bg-yellow-500 text-white rounded cursor-pointer"
+            >
+              <Copy size={16} /> Copy
+            </button>
+            <button
+              onClick={() => printTable(columns, filteredAdmins, "Admin List")}
+              className="flex items-center gap-2 px-3 py-1 bg-gray-700 text-white rounded cursor-pointer"
+            >
+              <Printer size={16} /> Print
+            </button>
+          </div>
+
+          <div className="relative w-full md:w-72 mb-2">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by name, email, or role..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              className="pl-8 placeholder:text-sm"
+              disabled={isLoading}
+            />
+          </div>
         </div>
 
         {/* Table */}
