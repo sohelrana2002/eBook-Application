@@ -16,6 +16,7 @@ import AdminProfileLayout from "@/layout/AdminProfileLayout/AdminProfileLayout";
 import EditProfile from "@/pages/editProfile/EditProfile";
 import RequestedBook from "@/pages/requestedBook/RequestedBook";
 import UpdateRequest from "@/pages/updateRequest/UpdateRequest";
+import ViewUser from "@/pages/viewUser/ViewUser";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <Users />,
+      },
+      {
+        path: "users/view/:id",
+        element: <ViewUser />,
       },
       {
         path: "users/delete-user/:id",
