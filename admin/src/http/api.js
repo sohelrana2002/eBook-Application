@@ -80,6 +80,12 @@ export const fetchProfile = async () => {
   return res.data;
 };
 
+// get individual profile info by id
+export const fetchProfileById = async (id) => {
+  const res = await api.get(`/api/auth/user-profile/view/${id}`);
+  return res.data;
+};
+
 // update profile information
 export const updateProfile = async ({
   name,
