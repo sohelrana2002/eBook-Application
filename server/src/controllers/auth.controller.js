@@ -186,6 +186,37 @@ const userProfile = async (req, res, next) => {
   }
 };
 
+// get individual profile information by id
+const userProfileById = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const profileDetailsById = await user.findById(userId);
+    // console.log(profileDetailsById);
+
+    if (profileDetailsById) {
+      return res.status(200).json({
+        success: true,
+        message: "Profile details fetch successfully by ID.",
+        userProfile: profileDetailsById,
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Failed to fetch profile details.",
+        error: "invalid token",
+      });
+    }
+  } catch (error) {
+    console.error("Individual profile info error: ", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+    });
+  }
+};
+
 // ===delete user from admin access====
 const deleteUser = async (req, res, next) => {
   try {
@@ -267,6 +298,7 @@ export {
   login,
   getUserInfo,
   userProfile,
+  userProfileById,
   updateProfile,
   getAdminInfo,
   deleteUser,
