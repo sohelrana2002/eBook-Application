@@ -1,16 +1,20 @@
-import { allUsers } from "@/http/api";
+import { allUsers, deleteUser } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Copy,
   FileSpreadsheet,
   FileText,
   Printer,
   UsersRound,
+  Eye,
+  Trash2,
+  ArrowUp,
+  ArrowDown,
+  Search,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Trash2, ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -37,6 +41,7 @@ import {
 } from "@/utlis/export/exportFile.js";
 
 const Users = () => {
+  // fetch users
   const { data: UsersRes, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: allUsers,
@@ -52,6 +57,29 @@ const Users = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // delete users
+  const mutation = useMutation({
+    mutationFn: (id) => deleteUser(id),
+    onSuccess: (data) => {
+      alert(data.message);
+      queryClient.invalidateQueries(["users"]);
+      navigate("/users");
+    },
+    onError: (error) => {
+      alert(error?.response?.data?.message);
+    },
+  });
+
+  // handle user delete functionality
+  const handleUserDelete = (id) => {
+    if (window.confirm("Are you sure want to delete the user?")) {
+      mutation.mutate(id);
+    }
+  };
 
   // Initially store data in the state
   useEffect(() => {
@@ -284,7 +312,24 @@ const Users = () => {
                   <TableCell>
                     {new Date(user.created_at).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>Delete</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/users/view/${user._id}`}
+                        title="View"
+                        className="w-[35px] h-[35px] border-2 grid place-items-center rounded-sm cursor-pointer"
+                      >
+                        <Eye className="w-[16px] h-[20px]" />
+                      </Link>
+                      <button
+                        title="Delete"
+                        onClick={() => handleUserDelete(user._id)}
+                        className="w-[35px] h-[35px] bg-red-700 grid place-items-center rounded-sm cursor-pointer"
+                      >
+                        <Trash2 className="w-[16px] h-[20px] text-background" />
+                      </button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
