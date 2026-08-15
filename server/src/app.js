@@ -15,6 +15,7 @@ import googleRouter from "./routers/google.router.js";
 import bookAssistantRouter from "./routers/bookAssistant.router.js";
 import paymentRouter from "./routers/payment.route.js";
 import bookAccessRouter from "./routers/bookAccess.router.js";
+import orderRouter from "./routers/order.route.js";
 
 const app = express();
 const allowedOrigins = [
@@ -68,6 +69,7 @@ app.use("/api/auth", googleRouter);
 app.use("/api/assistant", bookAssistantRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/book-access", bookAccessRouter);
+app.use("/api/order", orderRouter);
 
 // home route
 app.get("/", (req, res) => {
