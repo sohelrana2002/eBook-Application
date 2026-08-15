@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Order from "../models/order.model.js";
 import { customMessage } from "../constants/customMessage.js";
 
-const orderInfoByIdOnlyAdmin = async (req, res) => {
+const orderInfoById = async (req, res) => {
   try {
     const orderId = req.params.id;
 
@@ -46,4 +46,4 @@ const orderInfoByIdOnlyAdmin = async (req, res) => {
   }
 };
 
-export { orderInfoByIdOnlyAdmin };
+export { orderInfoById };
