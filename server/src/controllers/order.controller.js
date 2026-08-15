@@ -84,16 +84,23 @@ const orderList = async (req, res) => {
     }
 
     // ADDED ALL PIPELINE MATCH CONDITIONS
-    if (Object.keys(matchConditions).length > 0) {
-      pipeline.push({ $match: matchConditions });
-    }
+    // if (Object.keys(matchConditions).length > 0) {
+    //   pipeline.push({ $match: matchConditions });
+    // }
     // console.log("matchConditions: ", matchConditions);
 
     //   PROJECTION
     pipeline.push({
       $facet: {
-        metadata: [{ $count: "total" }],
+        filteredMetadata: [
+          { $match: matchConditions },
+          { $count: "filteredTotal" },
+        ],
+
+        allMetadata: [{ $count: "total" }],
+
         data: [
+          { $match: matchConditions },
           { $sort: { createdAt: -1 } },
           { $skip: skip },
           { $limit: limitNumber },
@@ -132,7 +139,8 @@ const orderList = async (req, res) => {
     const result = await Order.aggregate(pipeline);
     const orders = result[0]?.data || 0;
     // console.log("orders: ", orders);
-    const totalOrders = result[0]?.metadata[0]?.total || 0;
+    const totalOrders = result[0]?.allMetadata[0]?.total || 0;
+    const filteredOrders = result[0]?.filteredMetadata[0]?.filteredTotal || 0;
 
     return res.status(200).json({
       success: true,
@@ -140,9 +148,10 @@ const orderList = async (req, res) => {
       data: {
         orders,
         pagination: {
+          filteredOrders,
           totalOrders,
           pageNumber,
-          totalPage: Math.ceil(totalOrders / limitNumber),
+          totalPage: Math.ceil(filteredOrders / limitNumber),
           limit: limitNumber,
         },
       },
@@ -202,4 +211,17 @@ const orderInfoById = async (req, res) => {
   }
 };
 
-export { orderList, orderInfoById };
+// INDIVIDUAL ORDER INFO FOR USERS
+const getMyOrders = async (req, res) => {
+  try {
+  } catch (error) {
+    console.error("Order info for users error: ", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: customMessage.serverError(),
+    });
+  }
+};
+
+export { orderList, orderInfoById, getMyOrders };
