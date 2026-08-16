@@ -1,4 +1,4 @@
-export const customMessage = {
+const customMessage = {
   created: (entity) => `${entity} created successfully.`,
 
   updated: (entity, id) =>
@@ -28,3 +28,5 @@ export const customMessage = {
   serverError: () =>
     `Something went wrong. Internal server error. Please try again later.`,
 };
+
+export { customMessage };
