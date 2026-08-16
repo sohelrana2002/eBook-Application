@@ -226,7 +226,7 @@ const Users = () => {
         </div>
 
         {/* search field  */}
-        <div className="pb-5 flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between">
+        <div className="pb-5 flex flex-col md:flex-row gap-y-5 md:gap-0 items-center justify-between">
           <div className="relative w-full md:w-72">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
