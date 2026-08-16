@@ -12,7 +12,7 @@ import {
 } from "../controllers/book.controller.js";
 import booksValidatorSchema from "../validator/bookValidator.js";
 import validate from "../middlewares/validateMiddleware.js";
-import { upload } from "../middlewares/multerMiddleware.js";
+import { upload } from "../config/multer.config.js";
 import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRoles from "../middlewares/authorizedRole.js";
 
