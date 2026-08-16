@@ -377,7 +377,10 @@ const listBook = async (req, res, next) => {
     // ---for search---
     if (search) {
       query = {
-        $or: [{ title: { $regex: search, $options: "i" } }],
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { author: { $regex: search, $options: "i" } },
+        ],
       };
     }
 
