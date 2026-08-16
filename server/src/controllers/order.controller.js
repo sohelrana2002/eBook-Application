@@ -62,7 +62,7 @@ const orderList = async (req, res) => {
       const searchRegex = { $regex: search, $options: "i" };
       const searchConditions = [];
 
-      // FINS BY ORDER BY
+      // FIND BY ORDER BY
       if (mongoose.Types.ObjectId.isValid(search)) {
         searchConditions.push({ _id: new mongoose.Types.ObjectId(search) });
       }
@@ -82,12 +82,6 @@ const orderList = async (req, res) => {
     if (userId && mongoose.Types.ObjectId.isValid(userId)) {
       matchConditions["userInfo._id"] = new mongoose.Types.ObjectId(userId);
     }
-
-    // ADDED ALL PIPELINE MATCH CONDITIONS
-    // if (Object.keys(matchConditions).length > 0) {
-    //   pipeline.push({ $match: matchConditions });
-    // }
-    // console.log("matchConditions: ", matchConditions);
 
     //   PROJECTION
     pipeline.push({
@@ -129,6 +123,8 @@ const orderList = async (req, res) => {
                 language: "$bookInfo.language",
                 publicationDate: "$bookInfo.publicationDate",
                 price: "$bookInfo.price",
+                coverImage: "$bookInfo.coverImage",
+                bookFile: "$bookInfo.bookFile",
               },
             },
           },
@@ -137,7 +133,7 @@ const orderList = async (req, res) => {
     });
 
     const result = await Order.aggregate(pipeline);
-    const orders = result[0]?.data || 0;
+    const orders = result[0]?.data || [];
     // console.log("orders: ", orders);
     const totalOrders = result[0]?.allMetadata[0]?.total || 0;
     const filteredOrders = result[0]?.filteredMetadata[0]?.filteredTotal || 0;
@@ -185,7 +181,8 @@ const orderInfoById = async (req, res) => {
       },
       {
         path: "book",
-        select: "title author description language publicationDate price -_id",
+        select:
+          "title author description language publicationDate price coverImage bookFile -_id",
       },
     ]);
 
@@ -214,6 +211,127 @@ const orderInfoById = async (req, res) => {
 // INDIVIDUAL ORDER INFO FOR USERS
 const getMyOrders = async (req, res) => {
   try {
+    const userId = req.jwtPayload.userId;
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+
+    const { search, status, fromDate, toDate, page, limit } = req.query;
+
+    // PAGINATION FUNCTIONALITY
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // INITIAL FILTER SETUP
+    const initialMatch = { user: userObjectId };
+
+    // STATUS FILTERING
+    if (status) {
+      const statusArray = status.split(",");
+      initialMatch.status = { $in: statusArray };
+    }
+
+    // DATE FILTERING
+    if (fromDate || toDate) {
+      initialMatch.createdAt = {};
+      if (fromDate) initialMatch.createdAt.$gte = new Date(fromDate);
+      if (toDate) {
+        const end = new Date(toDate);
+        end.setHours(23, 59, 59, 999);
+        initialMatch.createdAt.$lte = end;
+      }
+    }
+
+    // POST FILTERING FOR SEARCHING
+    const postLookupMatch = {};
+    if (search) {
+      const searchRegex = { $regex: search, $options: "i" };
+      postLookupMatch.$or = [
+        { "bookInfo.title": searchRegex },
+        { "bookInfo.author": searchRegex },
+      ];
+    }
+
+    // AGGREGATE PIPELINE
+    const pipeline = [
+      { $match: initialMatch },
+
+      //LOOKUP BOOK DETAILS
+      {
+        $lookup: {
+          from: "books",
+          localField: "book",
+          foreignField: "_id",
+          as: "bookInfo",
+        },
+      },
+      { $unwind: "$bookInfo" },
+
+      ...(search ? [{ $match: postLookupMatch }] : []),
+
+      {
+        $facet: {
+          filteredMetadata: [{ $count: "filteredTotal" }],
+
+          data: [
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limitNumber },
+            {
+              $project: {
+                _id: 1,
+                status: 1,
+                amount: 1,
+                currency: 1,
+                paymentGateway: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                book: {
+                  _id: "$bookInfo._id",
+                  title: "$bookInfo.title",
+                  author: "$bookInfo.author",
+                  description: "$bookInfo.description",
+                  language: "$bookInfo.language",
+                  publicationDate: "$bookInfo.publicationDate",
+                  price: "$bookInfo.price",
+                  coverImage: "$bookInfo.coverImage",
+                  bookFile: {
+                    $cond: {
+                      if: { $eq: ["$status", "PAID"] },
+                      then: "$bookInfo.bookFile",
+                      else: null,
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    ];
+
+    // RUN THE AGGREGATION QUERY
+    const result = await Order.aggregate(pipeline);
+
+    // TOTAL ORDERS USING USER OBJECT ID
+    const totalOrders = await Order.countDocuments({ user: userObjectId });
+
+    const orders = result[0]?.data || [];
+    const filteredOrders = result[0]?.filteredMetadata[0]?.filteredTotal || 0;
+
+    return res.status(200).json({
+      success: true,
+      message: customMessage.found("All orders", userId),
+      data: {
+        orders,
+        pagination: {
+          filteredOrders,
+          totalOrders,
+          pageNumber,
+          totalPage: Math.ceil(filteredOrders / limitNumber),
+          limit: limitNumber,
+        },
+      },
+    });
   } catch (error) {
     console.error("Order info for users error: ", error.message);
 
