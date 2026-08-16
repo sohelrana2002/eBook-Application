@@ -27,7 +27,7 @@ const booksValidatorSchema = z.object({
       })
       .min(1, "At least one genre is required")
       .max(5, "You can select up to 5 genres")
-      .nonempty({ message: "Genres cannot be empty." })
+      .nonempty({ message: "Genres cannot be empty." }),
   ),
 
   language: z
@@ -39,7 +39,7 @@ const booksValidatorSchema = z.object({
   publicationDate: z.preprocess(
     (arg) =>
       typeof arg === "string" || arg instanceof Date ? new Date(arg) : arg,
-    z.date({ invalid_type_error: "Publication date must be a valid date" })
+    z.date({ invalid_type_error: "Publication date must be a valid date" }),
   ),
 
   price: z
@@ -55,7 +55,7 @@ const booksValidatorSchema = z.object({
       .array(z.string().min(1), {
         required_error: "Tags must be required.",
       })
-      .nonempty("At least one tag is required")
+      .nonempty("At least one tag is required"),
   ),
 
   coverImage: z
@@ -66,33 +66,41 @@ const booksValidatorSchema = z.object({
     .string({ required_error: "bookFile URL must be required." })
     .optional(),
 
-  averageRating: z
-    .number({ required_error: "Calculate average rating" })
+  editorialRating: z.coerce
+    .number({ invalid_type_error: "Editorial rating must be a number" })
+    .min(0, "Rating cannot be less than 0")
+    .max(5, "Rating cannot be more than 5")
+    .optional(),
+
+  userAverageRating: z.coerce
+    .number({ invalid_type_error: "User rating must be a number" })
+    .min(0, "Rating cannot be less than 0")
+    .max(5, "Rating cannot be more than 5")
     .optional(),
 
   isOscar: z.preprocess(
     (val) => val === true || val === "true",
-    z.boolean().default(false)
+    z.boolean().default(false),
   ),
 
   isNovel: z.preprocess(
     (val) => val === true || val === "true",
-    z.boolean().default(false)
+    z.boolean().default(false),
   ),
 
   isShortStory: z.preprocess(
     (val) => val === true || val === "true",
-    z.boolean().default(false)
+    z.boolean().default(false),
   ),
 
   isPoetry: z.preprocess(
     (val) => val === true || val === "true",
-    z.boolean().default(false)
+    z.boolean().default(false),
   ),
 
   isKidsBook: z.preprocess(
     (val) => val === true || val === "true",
-    z.boolean().default(false)
+    z.boolean().default(false),
   ),
 });
 

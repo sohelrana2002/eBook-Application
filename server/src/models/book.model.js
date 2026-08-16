@@ -64,7 +64,21 @@ const bookSchema = new mongoose.Schema(
       required: false,
     },
 
-    averageRating: { type: Number, default: 0 },
+    // BOOK OFFICIAL RATING
+    editorialRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+
+    // REVIEWED BY USERS
+    userAverageRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
 
     isOscar: {
       type: Boolean,

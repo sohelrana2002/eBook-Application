@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+
 const validate = (schema) => async (req, res, next) => {
   try {
     if (
@@ -9,7 +11,7 @@ const validate = (schema) => async (req, res, next) => {
         Object.entries(req.body).map(([key, value]) => [
           key,
           Array.isArray(value) ? value : value.toString(),
-        ])
+        ]),
       );
     }
 
@@ -17,9 +19,32 @@ const validate = (schema) => async (req, res, next) => {
     req.body = parseBody;
     next();
   } catch (err) {
-    // console.log(err);
+    // WHEN MULTER UPLOAD FILE THEN IF VALIDATION FAIL THEN DELETE IT
+    if (req.files) {
+      const filesArray = Object.values(req.files).flat();
+      for (const file of filesArray) {
+        try {
+          await fs.unlink(file.path);
+        } catch (e) {
+          console.error("Cleanup error on validation failure: ", e.message);
+        }
+      }
+    }
+
+    // GET ERROR
+    if (err.issues && err.issues.length > 0) {
+      const firstIssue = err.issues[0];
+      const fieldName = firstIssue.path.join(".");
+
+      return res.status(400).json({
+        success: false,
+        field: fieldName,
+        message: `${fieldName}: ${firstIssue.message}`,
+      });
+    }
+
     res.status(400).json({
-      message: err?.issues?.[0]?.message,
+      message: err.message || "Validation Error",
     });
   }
 };

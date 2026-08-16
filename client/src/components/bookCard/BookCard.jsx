@@ -49,7 +49,7 @@ const BookCard = ({ books }) => {
             <div className="flex items-center gap-1 text-yellow-500">
               <FaStar className="text-yellow-500 text-[14px] md:text-[17px]" />
               <span className="text-[14px] md:text-[17px] font-medium">
-                {books?.averageRating}
+                {books?.editorialRating}
               </span>
             </div>
           </div>

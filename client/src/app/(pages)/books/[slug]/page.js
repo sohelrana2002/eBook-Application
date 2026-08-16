@@ -52,9 +52,9 @@ const SingleBookPage = async ({ params }) => {
                   by {bookDetails?.author}
                 </p>
                 <div className="mt-2 flex items-center">
-                  {renderRatingStars(bookDetails?.averageRating)}
+                  {renderRatingStars(bookDetails?.editorialRating)}
                   <span className="ml-2 text-gray-600">
-                    ({bookDetails?.averageRating}/5)
+                    ({bookDetails?.editorialRating}/5)
                   </span>
                 </div>
               </div>

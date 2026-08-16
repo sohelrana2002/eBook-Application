@@ -39,7 +39,7 @@ const addReview = async (req, res, next) => {
     const avgRating =
       reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
-    book.averageRating = avgRating.toFixed(1);
+    book.editorialRating = avgRating.toFixed(1);
     await book.save();
 
     res.status(201).json({
@@ -109,7 +109,7 @@ const updateReview = async (req, res, next) => {
       reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
     await booksModel.findByIdAndUpdate(review.bookId, {
-      averageRating: avgRating.toFixed(1),
+      editorialRating: avgRating.toFixed(1),
     });
 
     res.status(200).json({
@@ -151,7 +151,7 @@ const deleteReview = async (req, res, next) => {
         : 0;
 
     await booksModel.findByIdAndUpdate(review.bookId, {
-      averageRating: avgRating,
+      editorialRating: avgRating,
     });
 
     res.status(200).json({
