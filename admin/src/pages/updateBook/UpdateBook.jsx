@@ -21,7 +21,7 @@ const MultiSelectWithCustomInput = ({
     setSelected(
       selected.includes(item)
         ? selected.filter((i) => i !== item)
-        : [...selected, item]
+        : [...selected, item],
     );
   };
 
@@ -100,7 +100,8 @@ const UpdateBook = () => {
     genre: [],
     language: "",
     publicationDate: "",
-    price: "",
+    price: 0,
+    editorialRating: 0,
     tags: [],
     isOscar: false,
     isNovel: false,
@@ -162,6 +163,8 @@ const UpdateBook = () => {
       setFormData({ ...formData, [name]: checked });
     } else if (name === "price") {
       setFormData({ ...formData, [name]: parseFloat(value) });
+    } else if (name === "editorialRating") {
+      setFormData({ ...formData, [name]: parseFloat(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -198,6 +201,7 @@ const UpdateBook = () => {
     formDataToSend.append("language", formData.language);
     formDataToSend.append("publicationDate", formData.publicationDate);
     formDataToSend.append("price", formData.price);
+    formDataToSend.append("editorialRating", formData.editorialRating);
 
     formData.genre.forEach((g) => formDataToSend.append("genre[]", g));
     formData.tags.forEach((t) => formDataToSend.append("tags[]", t));
@@ -312,13 +316,29 @@ const UpdateBook = () => {
         {/* Price */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Price ($)
+            Price (৳)
           </label>
           <input
             type="number"
             name="price"
             step="0.01"
             value={formData.price}
+            onChange={handleChange}
+            className="px-3 py-2 mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            min={0}
+          />
+        </div>
+
+        {/* Editorial Rating */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Editorial Rating
+          </label>
+          <input
+            type="number"
+            name="editorialRating"
+            step="0.01"
+            value={formData.editorialRating}
             onChange={handleChange}
             className="px-3 py-2 mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
             min={0}
