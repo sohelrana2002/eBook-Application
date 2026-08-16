@@ -3,6 +3,7 @@ import jwtAuthMiddleware from "../middlewares/jwtAuthMiddleware.js";
 import authorizedRoles from "../middlewares/authorizedRole.js";
 import {
   getMyOrders,
+  getPurchasedBooks,
   orderInfoById,
   orderList,
 } from "../controllers/order.controller.js";
@@ -18,6 +19,14 @@ router.get(
   jwtAuthMiddleware,
   authorizedRoles("admin", "user"),
   getMyOrders,
+);
+
+// USERS PURCHASHED BOOKS
+router.get(
+  "/purchased-books",
+  jwtAuthMiddleware,
+  authorizedRoles("admin", "user"),
+  getPurchasedBooks,
 );
 
 // ORDER INFO BY ID (ONLY ADMIN)
