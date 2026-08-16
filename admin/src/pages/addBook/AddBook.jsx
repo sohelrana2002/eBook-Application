@@ -19,7 +19,7 @@ const MultiSelectWithCustomInput = ({
     setSelected(
       selected.includes(item)
         ? selected.filter((i) => i !== item)
-        : [...selected, item]
+        : [...selected, item],
     );
   };
 
@@ -97,8 +97,9 @@ const AddBook = () => {
     genre: [],
     language: "",
     publicationDate: "",
-    price: "",
+    price: 0,
     tags: [],
+    editorialRating: 0,
     isOscar: false,
     isNovel: false,
     isShortStory: false,
@@ -144,6 +145,8 @@ const AddBook = () => {
       setFormData({ ...formData, [name]: checked });
     } else if (name === "price") {
       setFormData({ ...formData, [name]: parseFloat(value) });
+    } else if (name === "editorialRating") {
+      setFormData({ ...formData, [name]: parseFloat(value) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -155,7 +158,7 @@ const AddBook = () => {
       if (typeof value === "boolean") return [key, false];
       if (value instanceof File || value === null) return [key, null];
       return [key, ""];
-    })
+    }),
   );
 
   const mutation = useMutation({
@@ -182,6 +185,7 @@ const AddBook = () => {
     formDataToSend.append("language", formData.language);
     formDataToSend.append("publicationDate", formData.publicationDate);
     formDataToSend.append("price", formData.price);
+    formDataToSend.append("editorialRating", formData.editorialRating);
 
     formData.genre.forEach((g) => formDataToSend.append("genre[]", g));
     formData.tags.forEach((t) => formDataToSend.append("tags[]", t));
@@ -216,6 +220,7 @@ const AddBook = () => {
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
             required
+            placeholder="No country for old men"
           />
         </div>
 
@@ -230,6 +235,7 @@ const AddBook = () => {
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
             required
+            placeholder="Cormac Mccarthy"
           />
         </div>
 
@@ -244,6 +250,7 @@ const AddBook = () => {
             onChange={handleChange}
             rows={4}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
+            placeholder="A violent cat-and-mouse chase through west texas for a satchel full of money."
           />
         </div>
 
@@ -268,6 +275,7 @@ const AddBook = () => {
             value={formData.language}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
+            placeholder="English"
           />
         </div>
 
@@ -282,13 +290,14 @@ const AddBook = () => {
             value={formData.publicationDate}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
+            placeholder="2025-01-01"
           />
         </div>
 
         {/* Price */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Price ($)
+            Price (৳)
           </label>
           <input
             type="number"
@@ -298,6 +307,25 @@ const AddBook = () => {
             step="0.01"
             min={0}
             className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
+            placeholder="1199"
+          />
+        </div>
+
+        {/* editorialRating */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Editorial Rating
+          </label>
+          <input
+            type="number"
+            name="editorialRating"
+            value={formData.editorialRating}
+            onChange={handleChange}
+            step="0.01"
+            min={0}
+            max={5}
+            className="mt-1 w-full rounded-md border-gray-300 shadow-sm px-3 py-2"
+            placeholder="4.5"
           />
         </div>
 
