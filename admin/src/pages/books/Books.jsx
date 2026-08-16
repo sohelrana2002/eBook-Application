@@ -1,21 +1,36 @@
 import { listBooks } from "@/http/api";
 import Heading from "@/shared/heading/Heading";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { BookMarked, CirclePlus } from "lucide-react";
+import {
+  BookMarked,
+  CirclePlus,
+  Eye,
+  Trash2,
+  Pencil,
+  Search,
+} from "lucide-react";
 import Loading from "@/shared/loading/Loading";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteBook } from "@/http/api";
 import defaultImage from "/book.jpg";
+import { Input } from "@/components/ui/input";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: 1,
     search: "",
   });
-  const actionRef = useRef();
   const queryClient = useQueryClient();
 
   const page = parseInt(searchParams.get("page")) || 1;
@@ -36,23 +51,6 @@ const Books = () => {
     placeholderData: keepPreviousData,
   });
 
-  const [openMenuId, setOpenMenuId] = useState(null);
-
-  const toggleMenu = (id) => {
-    setOpenMenuId((prevId) => (prevId === id ? null : id));
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (actionRef.current && !actionRef.current.contains(e.target)) {
-        setOpenMenuId(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   const mutation = useMutation({
     mutationFn: (bookId) => deleteBook(bookId),
     onSuccess: () => {
@@ -69,14 +67,13 @@ const Books = () => {
 
   const handleDelete = (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure want to delete the book?"
+      "Are you sure want to delete the book?",
     );
 
     if (confirmDelete) {
       mutation.mutate(id);
     }
   };
-
   // console.log("data", data);
 
   if (isLoading) {
@@ -98,18 +95,11 @@ const Books = () => {
 
   return (
     <div className="pb-10">
-      <div className="md:flex flex-row items-center justify-between  ">
+      <div>
         <Heading icon={<BookMarked />} title="Books" />
-        <input
-          type="search"
-          value={search}
-          className="mb-5 border rounded px-3 py-2 mt-[-50px] md:mb-0"
-          placeholder="search book..."
-          onChange={handleSearchBook}
-        />
       </div>
 
-      <div className="border p-3 rounded-sm h-full pb-5">
+      <div className="border p-3 md:p-5 rounded-sm h-full pb-5">
         <div className="flex item-center justify-between">
           <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
           <Link to="/book/add-book">
@@ -124,151 +114,137 @@ const Books = () => {
           Manage your books and view their sales performance.
         </p>
 
-        <div className="overflow-x-auto rounded-lg shadow" ref={actionRef}>
-          <table className="min-w-full divide-y divide-gray-200 bg-white">
-            {/* ---books heading---- */}
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Book Image
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Genre
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Price
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Author name
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Publication Date
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-
-            {/* ---books content--- */}
-            {data?.books &&
-              data?.books?.map((curElem) => {
-                return (
-                  <tbody className="divide-y divide-gray-100" key={curElem._id}>
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <img
-                          src={`${
-                            curElem.coverImage
-                              ? curElem.coverImage
-                              : defaultImage
-                          }`}
-                          alt="books images"
-                          className="h-10 w-10 rounded-md object-cover"
-                        />
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
-                        {curElem.title}
-                      </td>
-                      <td className="py-4 whitespace-nowrap text-sm text-gray-700 flex flex-wrap gap-1 items-center">
-                        {curElem?.genre?.map((g, i) => {
-                          return (
-                            <span
-                              key={i}
-                              className="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800"
-                            >
-                              {g}
-                            </span>
-                          );
-                        })}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        ${curElem.price}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 capitalize">
-                        {curElem.author}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {curElem.publicationDate.substring(0, 10)}
-                      </td>
-
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 relative">
-                        <button
-                          onClick={() => toggleMenu(curElem._id)}
-                          className="p-1 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full cursor-pointer"
-                        >
-                          ⋮
-                        </button>
-
-                        {openMenuId === curElem._id && (
-                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col">
-                            <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                              Actions
-                            </div>
-                            <Link
-                              to={`/book/update/${curElem._id}`}
-                              className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 cursor-pointer"
-                            >
-                              Edit
-                            </Link>
-                            <button
-                              className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => handleDelete(curElem._id)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              })}
-          </table>
+        {/* search field  */}
+        <div className="pb-5 flex flex-col md:flex-row gap-y-5 md:gap-0 items-center justify-between">
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              value={search}
+              placeholder="Search books by title, author..."
+              onChange={handleSearchBook}
+              className="pl-8 placeholder:text-sm border-3 max-w-md lg:w-lg"
+              disabled={isLoading}
+            />
+          </div>
+          <div className="text-sm text-muted-foreground">
+            <p>Total Books: {data.totalBooks}</p>
+          </div>
         </div>
 
-        <div className="mt-5 text-sm text-gray-600">
-          <div className="flex justify-center gap-2 mt-4">
-            <button
-              onClick={() =>
-                setSearchParams({
-                  page: page === 1 ? 1 : page - 1,
-                })
-              }
-              disabled={page === 1}
-              className={`px-3 py-1 rounded ${
-                page === 1
-                  ? "bg-white text-black border cursor-auto"
-                  : "bg-black text-white cursor-pointer"
-              }`}
-            >
-              Prev
-            </button>
+        {/* actual table  */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Book Image</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Author name</TableHead>
+              <TableHead>Publication Date</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.books?.length > 0 ? (
+              data?.books?.map((curElem) => (
+                <TableRow key={curElem._id}>
+                  <TableCell className="font-medium capitalize">
+                    <img
+                      src={`${
+                        curElem.coverImage ? curElem.coverImage : defaultImage
+                      }`}
+                      alt="books images"
+                      className="h-10 w-10 rounded-md object-cover"
+                    />
+                  </TableCell>
+                  <TableCell>{curElem.title}</TableCell>
+                  <TableCell>{curElem.author}</TableCell>
+                  <TableCell>
+                    {curElem.publicationDate.substring(0, 10)}
+                  </TableCell>
+                  <TableCell>৳ {curElem.price}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {/* VIEW  */}
+                      <Link
+                        to={`/book/update/${curElem._id}`}
+                        title="View"
+                        className="w-[35px] h-[35px] border-2 grid place-items-center rounded-sm cursor-pointer"
+                      >
+                        <Eye className="w-[16px] h-[20px]" />
+                      </Link>
 
-            <span className="px-4 py-1">
-              {data.currentPage} out of {data.totalPages} & total -{" "}
-              {data.totalBooks}
-            </span>
+                      {/* EDIT  */}
+                      <Link
+                        to={`/book/update/${curElem._id}`}
+                        title="Edit"
+                        className="w-[35px] h-[35px] border-2 grid place-items-center rounded-sm cursor-pointer"
+                      >
+                        <Pencil className="w-[16px] h-[20px]" />
+                      </Link>
 
-            <button
-              onClick={() =>
-                setSearchParams({
-                  page: data.totalPages > page ? page + 1 : page,
-                })
-              }
-              disabled={page === data.totalPages}
-              className={`px-3 py-1 rounded ${
-                page === data.totalPages
-                  ? "bg-white text-black border cursor-auto"
-                  : "bg-black text-white cursor-pointer"
-              }`}
-            >
-              Next
-            </button>
-          </div>
+                      {/* DELETE  */}
+                      <button
+                        title="Delete"
+                        onClick={() => handleDelete(curElem._id)}
+                        className="w-[35px] h-[35px] bg-red-700 grid place-items-center rounded-sm cursor-pointer"
+                      >
+                        <Trash2 className="w-[16px] h-[20px] text-background" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  No books found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination  */}
+      <div className="mt-5 text-sm text-gray-600">
+        <div className="flex justify-center gap-2 mt-4">
+          <button
+            onClick={() =>
+              setSearchParams({
+                page: page === 1 ? 1 : page - 1,
+              })
+            }
+            disabled={page === 1}
+            className={`px-3 py-1 rounded ${
+              page === 1
+                ? "bg-white text-black border cursor-auto"
+                : "bg-black text-white cursor-pointer"
+            }`}
+          >
+            Prev
+          </button>
+
+          <span className="px-4 py-1">
+            {data.currentPage} out of {data.totalPages} & total -{" "}
+            {data.totalBooks}
+          </span>
+
+          <button
+            onClick={() =>
+              setSearchParams({
+                page: data.totalPages > page ? page + 1 : page,
+              })
+            }
+            disabled={page === data.totalPages}
+            className={`px-3 py-1 rounded ${
+              page === data.totalPages
+                ? "bg-white text-black border cursor-auto"
+                : "bg-black text-white cursor-pointer"
+            }`}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
