@@ -109,7 +109,7 @@ export const updateProfile = async ({
 export const listBooks = async ({ queryKey }) => {
   const [_key, { search, page }] = queryKey;
   const res = await api.get("/api/books", {
-    params: { search, page, limit: 5 },
+    params: { search, page, limit: 10 },
   });
   return res.data;
 };
