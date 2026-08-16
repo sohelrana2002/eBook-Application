@@ -1,6 +1,8 @@
 import mongoose, { mongo } from "mongoose";
 import Order from "../models/order.model.js";
 import { customMessage } from "../constants/customMessage.js";
+import User from "../models/auth.model.js";
+import Book from "../models/book.model.js";
 
 // ORDER LIST (ONLY ADMIN)
 const orderList = async (req, res) => {
@@ -342,4 +344,126 @@ const getMyOrders = async (req, res) => {
   }
 };
 
-export { orderList, orderInfoById, getMyOrders };
+// USERS PURCHASHED BOOKS
+const getPurchasedBooks = async (req, res) => {
+  try {
+    const userId = req.jwtPayload.userId;
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+    const { search, fromDate, toDate, page, limit } = req.query;
+
+    // PAGINATION FUNCTIONALITY
+    const pageNumber = Math.max(1, parseInt(page) || 1);
+    const limitNumber = Math.max(1, parseInt(limit) || 10);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // ORDER LEVEL FILTER SETUP
+    const orderMatch = {
+      user: userObjectId,
+      status: "PAID",
+    };
+
+    // DATE FILTER USING ORDER DATE
+    if (fromDate || toDate) {
+      const dateFilter = {};
+      if (fromDate && !isNaN(new Date(fromDate).getTime())) {
+        dateFilter.$gte = new Date(fromDate);
+      }
+      if (toDate && !isNaN(new Date(toDate).getTime())) {
+        const end = new Date(toDate);
+        end.setHours(23, 59, 59, 999);
+        dateFilter.$lte = end;
+      }
+      if (Object.keys(dateFilter).length > 0) {
+        orderMatch.createdAt = dateFilter;
+      }
+    }
+
+    // BOOK FILTER USING LOOKUP
+    const postLookupMatch = {};
+    if (search) {
+      const searchRegex = { $regex: search, $options: "i" };
+      postLookupMatch.$or = [
+        { "bookInfo.title": searchRegex },
+        { "bookInfo.author": searchRegex },
+      ];
+    }
+
+    // AGGREGATION PIPELINE SETUP USING ORDER COLLECTION
+    const pipeline = [
+      { $match: orderMatch },
+
+      // ADDED DATA THROUGH BOOK COLLECTION
+      {
+        $lookup: {
+          from: "books",
+          localField: "book",
+          foreignField: "_id",
+          as: "bookInfo",
+        },
+      },
+      { $unwind: "$bookInfo" },
+
+      // SEARCH QUERY
+      ...(search ? [{ $match: postLookupMatch }] : []),
+
+      // DATA PROCESSING
+      {
+        $facet: {
+          filteredMetadata: [{ $count: "filteredTotal" }],
+          data: [
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limitNumber },
+            {
+              $project: {
+                _id: "$bookInfo._id",
+                title: "$bookInfo.title",
+                author: "$bookInfo.author",
+                description: "$bookInfo.description",
+                language: "$bookInfo.language",
+                publicationDate: "$bookInfo.publicationDate",
+                price: "$bookInfo.price",
+                coverImage: "$bookInfo.coverImage",
+                bookFile: "$bookInfo.bookFile",
+                purchasedAt: "$createdAt",
+              },
+            },
+          ],
+        },
+      },
+    ];
+
+    // RUN PIPELINE
+    const [result, totalBooks] = await Promise.all([
+      Order.aggregate(pipeline),
+      Order.countDocuments({ user: userObjectId, status: "PAID" }),
+    ]);
+
+    const books = result[0]?.data || [];
+    const filteredBooks = result[0]?.filteredMetadata[0]?.filteredTotal || 0;
+
+    return res.status(200).json({
+      success: true,
+      message: customMessage.found("All purchased books", userId),
+      data: {
+        books,
+        pagination: {
+          filteredBooks,
+          totalBooks,
+          pageNumber,
+          totalPages: Math.ceil(filteredBooks / limitNumber) || 0,
+          limit: limitNumber,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Get purchased books error: ", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: customMessage.serverError(),
+    });
+  }
+};
+
+export { orderList, orderInfoById, getMyOrders, getPurchasedBooks };
