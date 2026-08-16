@@ -5,6 +5,7 @@ import cloudinary from "../config/cloudinary.config.js";
 import fs from "fs";
 import mongoose from "mongoose";
 import { customMessage } from "../constants/customMessage.js";
+import { extractPublicId } from "../helper/extractPublicId.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -150,6 +151,7 @@ const updateBook = async (req, res, next) => {
       language,
       publicationDate,
       price,
+      editorialRating,
       tags,
       isOscar,
       isNovel,
@@ -165,52 +167,80 @@ const updateBook = async (req, res, next) => {
 
     if (!book) {
       res.status(404).json({
-        message: "Book not found.",
+        success: false,
+        message: customMessage.notFound("Book", bookId),
       });
     }
 
-    let completeCoverImage = "";
-    if (coverImage) {
-      const coverImageMimeType = coverImage?.[0]?.mimetype.split("/").at(-1);
-      const fileName = coverImage?.[0]?.filename;
-      const filePath = path.resolve(
-        __dirname,
-        "../../public/uploads",
-        fileName,
-      );
+    let completeCoverImage = book.coverImage;
+    let completeBookFile = book.bookFile;
 
-      completeCoverImage = fileName;
-      const coverImageUpload = await cloudinary.uploader.upload(filePath, {
-        public_id: path.parse(completeCoverImage).name,
-        overwrite: true,
-        folder: "cover-image",
-        format: coverImageMimeType,
-      });
+    // IF NEW COVER IMAGE UPLOADED
+    if (coverImage && coverImage.length > 0) {
+      // DELETE OLD COVER IMAGE FROM CLOUDINARY
+      if (book.coverImage) {
+        try {
+          const publicId = extractPublicId(book.coverImage);
+          if (publicId) {
+            await cloudinary.uploader.destroy(publicId);
+            console.log("Old cover image deleted.", publicId);
+          }
+        } catch (deleteError) {
+          console.log("Error deleting old cover image: ", deleteError.message);
+        }
+      }
+
+      // UPLOAD NEW COVER IMAGE IN CLOUDINARY
+      const coverImagePath = coverImage[0].path;
+      const coverImageUpload = await cloudinary.uploader.upload(
+        coverImagePath,
+        {
+          public_id: path.parse(coverImage[0].filename).name,
+          overwrite: true,
+          folder: "cover-image",
+        },
+      );
 
       completeCoverImage = coverImageUpload.secure_url;
-      await fs.promises.unlink(filePath);
+
+      // DELETE TEMP FILE
+      await fs.promises.unlink(coverImagePath).catch((deleteTempError) => {
+        console.log("Delete temp cover image error: ", deleteTempError.message);
+      });
     }
 
-    let completeBookFile = "";
-    if (bookFile) {
-      const bookFileName = bookFile?.[0]?.filename;
-      const bookFilePath = path.resolve(
-        __dirname,
-        "../../public/uploads",
-        bookFileName,
-      );
+    // IF NEW BOOK FILE UPLOADED
+    if (bookFile && bookFile.length > 0) {
+      // DELETE OLD BOOK FILE FROM CLOUDINARY
+      if (book.bookFile) {
+        try {
+          const publicId = extractPublicId(book.bookFile);
+          if (publicId) {
+            await cloudinary.uploader.destroy(publicId, {
+              resource_type: "raw",
+            });
+            console.log("Old book file deleted.", publicId);
+          }
+        } catch (deleteError) {
+          console.log("Error deleting old book file: ", deleteError.message);
+        }
+      }
 
-      completeBookFile = bookFileName;
-      const bookFilesUpload = await cloudinary.uploader.upload(bookFilePath, {
-        public_id: path.parse(completeBookFile).name,
+      // UPLOAD NEW BOOKFILE IN CLOUDINARY
+      const bookFilePath = bookFile[0].path;
+      const bookFileUpload = await cloudinary.uploader.upload(bookFilePath, {
+        public_id: path.parse(bookFile[0].filename).name,
         overwrite: true,
         resource_type: "raw",
         folder: "book-pdfs",
-        format: "pdf",
       });
 
-      completeBookFile = bookFilesUpload.secure_url;
-      await fs.promises.unlink(bookFilePath);
+      completeBookFile = bookFileUpload.secure_url;
+
+      // DELETE TEMP FILE
+      await fs.promises.unlink(bookFilePath).catch((deleteTempError) => {
+        console.log("Delete temp book file error: ", deleteTempError.message);
+      });
     }
 
     const updatedBook = await booksModel.findByIdAndUpdate(
@@ -223,14 +253,15 @@ const updateBook = async (req, res, next) => {
         language,
         publicationDate,
         price: Number(price),
+        editorialRating,
         tags,
         isOscar,
         isNovel,
         isShortStory,
         isPoetry,
         isKidsBook,
-        coverImage: completeCoverImage ? completeCoverImage : book.coverImage,
-        bookFile: completeBookFile ? completeBookFile : book.bookFile,
+        coverImage: completeCoverImage,
+        bookFile: completeBookFile,
       },
       {
         new: true,
@@ -238,18 +269,54 @@ const updateBook = async (req, res, next) => {
     );
 
     if (!updatedBook) {
-      return res.status(404).json({ message: "Book not found" });
+      return res.status(404).json({
+        success: false,
+        message: customMessage.notFound("Book", updatedBook._id),
+      });
     }
 
     res.status(200).json({
-      message: "Book update successfully!",
+      success: true,
+      message: customMessage.updated("Book", updatedBook._id),
       id: updatedBook._id,
     });
   } catch (error) {
     console.error("Update book error.", error.message);
 
+    // CLEANUP FILES IF ERROR OCCURS
+    if (req.files) {
+      const filesToDelete = [];
+
+      if (req.files.coverImage)
+        filesToDelete.push(req.files.coverImage[0].path);
+
+      if (req.files.bookFile) filesToDelete.push(req.files.bookFile[0].path);
+
+      for (const filePath of filesToDelete) {
+        try {
+          await fs.promises.unlink(filePath);
+        } catch (e) {
+          console.log(
+            "Cleanup error from catch block when book update: ",
+            e.message,
+          );
+        }
+      }
+    }
+
+    // CLOUDINARY FILE UPLOAD ROLLBACK
+    if (coverImageUpload?.public_id) {
+      await cloudinary.uploader.destroy(coverImageUpload.public_id);
+    }
+    if (bookFileUpload?.public_id) {
+      await cloudinary.uploader.destroy(bookFileUpload.public_id, {
+        resource_type: "raw",
+      });
+    }
+
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
