@@ -10,30 +10,34 @@ const bookRequest = async (req, res) => {
   const userId = req.jwtPayload.userId;
 
   try {
-    const userExist = await userModel.findOne({ _id: userId });
+    const user = await userModel.findById(userId);
 
-    if (!userExist) {
-      return res.status(400).json({
-        message: "User id not valid",
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: customMessage.notFound("User", userId),
       });
     }
 
-    const newRequest = await bookRequestModel.create({
+    const newRequestedBook = await bookRequestModel.create({
       userId,
       bookName,
       authorName,
       publicationDate,
       language,
     });
+
     res.status(201).json({
-      message: "Added book request successfully",
-      id: newRequest._id,
+      success: true,
+      message: customMessage.created("Requested book"),
+      id: newRequestedBook._id,
     });
   } catch (error) {
-    console.error("Book requedted error.", error.message);
+    console.error("Create requedted book error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
@@ -41,7 +45,9 @@ const bookRequest = async (req, res) => {
 // Get all requests for a user
 const getBookRequest = async (req, res) => {
   try {
+    const { search, status, page, limit } = req.query;
     const userId = req.jwtPayload.userId;
+    // console.log("User id: ", userId);
 
     // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -51,27 +57,58 @@ const getBookRequest = async (req, res) => {
       });
     }
 
-    const requests = await bookRequestModel
-      .find({ userId })
-      .sort({ createdAt: -1 })
-      .lean(); // improves performance
+    let filter = { userId };
 
-    // Always return array
+    // SEARCH FUNCTIONALITY
+    if (search) {
+      const searchRegex = { $regex: search, $options: "i" };
+
+      filter.$or = [{ bookName: searchRegex }, { authorName: searchRegex }];
+    }
+
+    // STATUS FILTERING FUNCTIONALITY
+    if (status) {
+      const statusArray = status.split(",");
+      filter.status = { $in: statusArray };
+    }
+
+    // PAGINATION FUNCTIONALITY
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const requestedBook = await bookRequestModel
+      .find(filter)
+      .sort({ created_at: -1 })
+      .skip(skip)
+      .limit(limitNumber)
+      .lean(); //SPEED UP PERFORMANCE
+
+    const totalRequestedBook = await bookRequestModel.countDocuments({
+      userId,
+    });
+    const filteredRequestedBook = await bookRequestModel.countDocuments(filter);
+
     return res.status(200).json({
       success: true,
-      totalRequest: requests.length,
-      allBookRequest: requests,
-      message:
-        requests.length === 0
-          ? "There are no book requests"
-          : "Book requests fetched successfully",
+      message: customMessage.found("Requested book"),
+      data: {
+        requestedBook,
+        pagination: {
+          totalRequestedBook,
+          filteredRequestedBook,
+          pageNumber,
+          totalPage: Math.ceil(totalRequestedBook / limitNumber),
+          limit: limitNumber,
+        },
+      },
     });
   } catch (error) {
     console.error("Get book requested error:", error);
 
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: customMessage.serverError(),
     });
   }
 };
@@ -84,7 +121,7 @@ const updateBookStatus = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(bookId)) {
       return res.status(400).json({
-        success: true,
+        success: false,
         message: customMessage.invalidId("mongoose", bookId),
       });
     }
@@ -97,15 +134,15 @@ const updateBookStatus = async (req, res) => {
 
     if (!updated) {
       return res.status(404).json({
-        success: true,
+        success: false,
         mesage: customMessage.notFound("Requested book", bookId),
       });
     }
 
     res.status(200).json({
       success: true,
-      message: customMessage.updated("Requested book", updated._id),
-      bookId: updated._id,
+      message: customMessage.updated("Requested book", bookId),
+      id: bookId,
     });
   } catch (error) {
     console.error("Update requested book error: ", error.message);
@@ -120,27 +157,35 @@ const updateBookStatus = async (req, res) => {
 // delete requested book
 const deleteRequestedBook = async (req, res) => {
   try {
-    const bookId = req.params.bookId;
+    const { bookId } = req.params;
 
-    const book = await bookRequestModel.findOne({ _id: bookId });
-
-    if (!book) {
-      return res.status(404).json({
-        message: "Book not found!",
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({
+        success: false,
+        message: customMessage.invalidId("mongoose", bookId),
       });
     }
 
-    await bookRequestModel.deleteOne({ _id: bookId });
+    const deletedBook = await bookRequestModel.findByIdAndDelete(bookId);
+
+    if (!deletedBook) {
+      return res.status(404).json({
+        success: false,
+        message: customMessage.notFound("Requested book", bookId),
+      });
+    }
 
     return res.status(200).json({
-      message: "Requested book deleted successfully!",
+      success: true,
+      message: customMessage.deleted("Requested book", bookId),
       id: bookId,
     });
   } catch (error) {
-    console.error("Delete book request error.", error.message);
+    console.error("Delete requested book error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
@@ -170,20 +215,37 @@ const allRequestedBook = async (req, res) => {
 // single requested book details
 const singleRequestedBook = async (req, res) => {
   const { bookId } = req.params;
+
   try {
-    const singleRequest = await bookRequestModel
-      .findById({ _id: bookId })
-      .populate("userId", "name email");
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({
+        success: false,
+        message: customMessage.invalidId("mongoose", bookId),
+      });
+    }
+
+    const requestedBook = await bookRequestModel
+      .findById(bookId)
+      .populate("userId", "name email phoneNumber -_id");
+
+    if (!requestedBook) {
+      return res.status(404).json({
+        success: false,
+        message: customMessage.notFound("Requested book", bookId),
+      });
+    }
 
     res.status(200).json({
-      message: "success",
-      singleRequestBook: singleRequest,
+      success: true,
+      message: customMessage.found("Requested book", bookId),
+      data: { requestedBook },
     });
   } catch (error) {
-    console.error("Single requested error.", error.message);
+    console.error("Fetch requested book details error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
@@ -192,15 +254,18 @@ const singleRequestedBook = async (req, res) => {
 const newRequestCount = async (req, res) => {
   try {
     const count = await bookRequestModel.countDocuments({ isSeen: false });
+
     res.status(200).json({
-      message: "success",
+      success: true,
+      message: "New requested books count successfully.",
       count: count,
     });
   } catch (error) {
-    console.error("New book requested book error.", error.message);
+    console.error("New requested book count error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
@@ -210,27 +275,39 @@ const markRequestSeen = async (req, res) => {
   try {
     const { bookId } = req.params;
 
-    // Find the current request
-    const existingRequest = await bookRequestModel.findById(bookId);
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({
+        success: false,
+        message: customMessage.invalidId("mongoose", bookId),
+      });
+    }
 
-    if (!existingRequest) {
-      return res.status(404).json({ message: "Book request not found" });
+    // Find the current request
+    const requestedBook = await bookRequestModel.findById(bookId);
+
+    if (!requestedBook) {
+      return res.status(404).json({
+        success: false,
+        message: customMessage.notFound("Requested book", bookId),
+      });
     }
 
     //  Only update if it's not already seen
-    if (!existingRequest.isSeen) {
+    if (!requestedBook.isSeen) {
       await bookRequestModel.findByIdAndUpdate(bookId, { isSeen: true });
     }
 
     res.status(200).json({
-      message: existingRequest.isSeen ? "Already seen" : "Marked as seen",
+      success: true,
+      message: requestedBook.isSeen ? "Already seen" : "Marked as seen",
       id: bookId,
     });
   } catch (error) {
-    console.error("Mark book request seen error.", error.message);
+    console.error("Mark request book seen error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
