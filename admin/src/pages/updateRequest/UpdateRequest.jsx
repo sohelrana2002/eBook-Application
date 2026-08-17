@@ -6,7 +6,6 @@ import {
 } from "@/http/api";
 import { useParams } from "react-router-dom";
 import { HandHelping } from "lucide-react";
-import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
 
 const UpdateRequest = () => {
@@ -59,7 +58,6 @@ const UpdateRequest = () => {
 
   return (
     <main className=" flex items-center flex-col justify-center p-6">
-      <Heading icon={<HandHelping />} title="Book Request Details" />
       <div className="bg-white max-w-xl w-full p-8 rounded-xl shadow-lg border border-gray-100">
         <div className="space-y-3 text-gray-700 text-sm">
           <p className="capitalize">
@@ -87,7 +85,7 @@ const UpdateRequest = () => {
           <p className="capitalize">
             <span className="font-semibold">Published:</span>{" "}
             {new Date(
-              data?.singleRequestBook?.publicationDate
+              data?.singleRequestBook?.publicationDate,
             ).toLocaleDateString()}
           </p>
           <p className="capitalize">
@@ -97,8 +95,8 @@ const UpdateRequest = () => {
                 data?.singleRequestBook?.status === "pending"
                   ? "bg-yellow-100 text-yellow-700"
                   : data?.singleRequestBook?.status === "available"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
               }`}
             >
               {data?.singleRequestBook?.status}

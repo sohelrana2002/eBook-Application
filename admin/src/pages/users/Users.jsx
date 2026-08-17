@@ -1,5 +1,4 @@
 import { allUsers, deleteUser } from "@/http/api";
-import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -187,8 +186,6 @@ const Users = () => {
 
   return (
     <div>
-      <Heading icon={<UsersRound />} title="All Users" />
-
       {/* Table wrapper  */}
       <div className="max-w-6xl mx-auto my-5 p-4 sm:p-6 bg-white shadow-md rounded-lg">
         {/* Toolbar section  */}

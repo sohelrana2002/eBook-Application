@@ -1,4 +1,3 @@
-import Heading from "@/shared/heading/Heading";
 import { CopyPlus, LoaderCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
@@ -225,8 +224,6 @@ const UpdateBook = () => {
 
   return (
     <div className="pb-15">
-      <Heading icon={<CopyPlus />} title="Update a Book" />
-
       <form
         onSubmit={handleSubmit}
         className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow space-y-6"

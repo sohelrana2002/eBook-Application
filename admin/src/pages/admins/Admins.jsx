@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { allAdmins } from "@/http/api";
-import Heading from "@/shared/heading/Heading";
 import Loading from "@/shared/loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import { capitalizedWords } from "@/helpers/stringUtils";
@@ -63,8 +62,6 @@ const Admins = () => {
 
   return (
     <div>
-      <Heading icon={<LockKeyhole />} title="All Admins" />
-
       <div className="max-w-6xl mx-auto mt-10 p-4 sm:p-6 bg-white shadow-md rounded-lg">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3">

@@ -1,5 +1,4 @@
 import React from "react";
-import Heading from "@/shared/heading/Heading";
 import { HandHelping } from "lucide-react";
 import { allRequestedBook } from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
@@ -22,8 +21,6 @@ const RequestedBook = () => {
   return (
     <main>
       <div>
-        <Heading icon={<HandHelping />} title="Requested Book" />
-
         <div className="max-w-6xl mx-auto mt-10 p-4 sm:p-6 bg-white shadow-md rounded-lg">
           <div className="flex items-center justify-between">
             <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">

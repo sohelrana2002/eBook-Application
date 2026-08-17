@@ -19,7 +19,7 @@ import QuickActions from "@/components/dashboard/QuickActions";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+    <div className="w-full">
       {/* Header */}
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
