@@ -1,6 +1,7 @@
 import bookRequestModel from "../models/bookRequest.model.js";
 import userModel from "../models/auth.model.js";
 import mongoose from "mongoose";
+import { customMessage } from "../constants/customMessage.js";
 
 // Create a book request
 const bookRequest = async (req, res) => {
@@ -78,24 +79,40 @@ const getBookRequest = async (req, res) => {
 //  Admin updates status
 const updateBookStatus = async (req, res) => {
   const { status } = req.body;
-  const bookId = req.params.bookId;
+  const { bookId } = req.params;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(bookId)) {
+      return res.status(400).json({
+        success: true,
+        message: customMessage.invalidId("mongoose", bookId),
+      });
+    }
+
     const updated = await bookRequestModel.findByIdAndUpdate(
-      { _id: bookId },
+      bookId,
       { status },
       { new: true },
     );
 
-    res.status(201).json({
-      message: "Book status updated successfully!",
+    if (!updated) {
+      return res.status(404).json({
+        success: true,
+        mesage: customMessage.notFound("Requested book", bookId),
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: customMessage.updated("Requested book", updated._id),
       bookId: updated._id,
     });
   } catch (error) {
-    console.error("Update book requested error.", error.message);
+    console.error("Update requested book error: ", error.message);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
