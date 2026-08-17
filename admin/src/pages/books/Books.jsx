@@ -1,5 +1,4 @@
 import { listBooks } from "@/http/api";
-import Heading from "@/shared/heading/Heading";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   BookMarked,
@@ -94,45 +93,43 @@ const Books = () => {
   }
 
   return (
-    <div className="pb-10">
-      <div>
-        <Heading icon={<BookMarked />} title="Books" />
+    <div className="w-full">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+          All Books
+        </h2>
+        <Link to="/book/add-book">
+          <Button className="cursor-pointer">
+            <CirclePlus />
+            Add Book
+          </Button>
+        </Link>
       </div>
 
-      <div className="border p-3 md:p-5 rounded-sm h-full pb-5">
-        <div className="flex item-center justify-between">
-          <h2 className="text-2xl font-semibold text-gray-800">Books</h2>
-          <Link to="/book/add-book">
-            <Button className="cursor-pointer">
-              <CirclePlus />
-              Add Book
-            </Button>
-          </Link>
+      <p className="text-gray-600 text-sm md:text-[16px] pt-3 md:pt-0">
+        Manage your books and view their sales performance.
+      </p>
+
+      {/* search field  */}
+      <div className="py-5 flex flex-col md:flex-row gap-y-2 md:gap-0 items-start md:items-center justify-between">
+        <div className="relative w-full md:w-md">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            value={search}
+            placeholder="Search books by title, author..."
+            onChange={handleSearchBook}
+            className="pl-8 placeholder:text-sm border-3 w-full"
+            disabled={isLoading}
+          />
         </div>
-
-        <p className="text-gray-500 mb-4">
-          Manage your books and view their sales performance.
-        </p>
-
-        {/* search field  */}
-        <div className="pb-5 flex flex-col md:flex-row gap-y-5 md:gap-0 items-center justify-between">
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              value={search}
-              placeholder="Search books by title, author..."
-              onChange={handleSearchBook}
-              className="pl-8 placeholder:text-sm border-3 max-w-md lg:w-lg"
-              disabled={isLoading}
-            />
-          </div>
-          <div className="text-sm text-muted-foreground">
-            <p>Total Books: {data.totalBooks}</p>
-          </div>
+        <div className="text-sm text-gray-600 border-2 px-3 py-[6px] rounded-sm">
+          <p>Total Books: {data.totalBooks}</p>
         </div>
+      </div>
 
-        {/* actual table  */}
+      {/* actual table  */}
+      <div className="shadow-md p-2 rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
@@ -207,45 +204,43 @@ const Books = () => {
       </div>
 
       {/* Pagination  */}
-      <div className="mt-5 text-sm text-gray-600">
-        <div className="flex justify-center gap-2 mt-4">
-          <button
-            onClick={() =>
-              setSearchParams({
-                page: page === 1 ? 1 : page - 1,
-              })
-            }
-            disabled={page === 1}
-            className={`px-3 py-1 rounded ${
-              page === 1
-                ? "bg-white text-black border cursor-auto"
-                : "bg-black text-white cursor-pointer"
-            }`}
-          >
-            Prev
-          </button>
+      <div className="flex justify-center gap-2 text-sm text-gray-600 pt-6">
+        <button
+          onClick={() =>
+            setSearchParams({
+              page: page === 1 ? 1 : page - 1,
+            })
+          }
+          disabled={page === 1}
+          className={`px-3 py-1 rounded ${
+            page === 1
+              ? "bg-white text-black border cursor-auto"
+              : "bg-black text-white cursor-pointer"
+          }`}
+        >
+          Prev
+        </button>
 
-          <span className="px-4 py-1">
-            {data.currentPage} out of {data.totalPages} & total -{" "}
-            {data.totalBooks}
-          </span>
+        <span className="px-4 py-1">
+          {data.currentPage} out of {data.totalPages} & total -{" "}
+          {data.totalBooks}
+        </span>
 
-          <button
-            onClick={() =>
-              setSearchParams({
-                page: data.totalPages > page ? page + 1 : page,
-              })
-            }
-            disabled={page === data.totalPages}
-            className={`px-3 py-1 rounded ${
-              page === data.totalPages
-                ? "bg-white text-black border cursor-auto"
-                : "bg-black text-white cursor-pointer"
-            }`}
-          >
-            Next
-          </button>
-        </div>
+        <button
+          onClick={() =>
+            setSearchParams({
+              page: data.totalPages > page ? page + 1 : page,
+            })
+          }
+          disabled={page === data.totalPages}
+          className={`px-3 py-1 rounded ${
+            page === data.totalPages
+              ? "bg-white text-black border cursor-auto"
+              : "bg-black text-white cursor-pointer"
+          }`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
