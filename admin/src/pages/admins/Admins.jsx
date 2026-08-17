@@ -27,7 +27,7 @@ const Admins = () => {
   const { data: adminData, isLoading } = useQuery({
     queryKey: ["admins"],
     queryFn: allAdmins,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // Caches fresh data (5-mins)
   });
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,7 +47,7 @@ const Admins = () => {
       selector: (row) => capitalizedWords(row.name),
       sortable: true,
     },
-    { name: "Email", selector: (row) => row.email },
+    { name: "Email", selector: (row) => row.email, sortable: true },
     { name: "Role", selector: (row) => capitalizedWords(row.role) },
     {
       name: "Created At",
@@ -55,24 +55,20 @@ const Admins = () => {
       sortable: true,
     },
   ];
-
   // console.log("columns".columns);
 
   if (isLoading) return <Loading />;
 
   return (
     <div>
-      <div className="max-w-6xl mx-auto mt-10 p-4 sm:p-6 bg-white shadow-md rounded-lg">
+      <div className="w-full">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-            Admin List
-          </h2>
-          <h3>Total Admin: {filteredAdmins.length}</h3>
-        </div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          Admin List
+        </h2>
 
         {/* Toolbar */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 pt-3">
           <div className="flex flex-wrap gap-2 ">
             <button
               onClick={() => exportToCSV(columns, filteredAdmins, "Admin List")}
@@ -108,29 +104,38 @@ const Admins = () => {
             </button>
           </div>
 
-          <div className="relative w-full md:w-72 mb-2">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name, email, or role..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-              }}
-              className="pl-8 placeholder:text-sm"
-              disabled={isLoading}
-            />
+          {/* search field  */}
+          <div className="py-5 flex flex-col md:flex-row gap-y-2 md:gap-0 items-start md:items-center justify-between">
+            <div className="relative w-full md:w-md">
+              <Search className="absolute left-2.5 top-[12px] h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search by name, email, or role..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                }}
+                className="pl-8 placeholder:text-sm border-3 w-full"
+                disabled={isLoading}
+              />
+            </div>
+            <div className="text-sm text-gray-600 border-2 px-3 py-[6px] rounded-sm">
+              <p>Total Admin: {filteredAdmins.length}</p>
+            </div>
           </div>
         </div>
 
         {/* Table */}
-        <DataTable
-          columns={columns}
-          data={filteredAdmins}
-          pagination
-          highlightOnHover
-          striped
-          responsive
-        />
+        <div className="shadow-md rounded-md">
+          <DataTable
+            columns={columns}
+            data={filteredAdmins}
+            pagination
+            highlightOnHover
+            striped
+            responsive
+          />
+        </div>
       </div>
     </div>
   );

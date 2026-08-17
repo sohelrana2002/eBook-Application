@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -35,6 +36,9 @@ const Books = () => {
   const page = parseInt(searchParams.get("page")) || 1;
   const search = searchParams.get("search");
 
+  // ADDED DEBOUNCED SEARCH
+  const debouncedSearch = useDebounce(search, 500);
+
   // ---handle search book ===
   const handleSearchBook = (e) => {
     setSearchParams({
@@ -44,9 +48,9 @@ const Books = () => {
   };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["books", { page, search }],
+    queryKey: ["books", { page, search: debouncedSearch }],
     queryFn: listBooks,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // Caches fresh data (5-mins)
     placeholderData: keepPreviousData,
   });
 
@@ -113,7 +117,7 @@ const Books = () => {
       {/* search field  */}
       <div className="py-5 flex flex-col md:flex-row gap-y-2 md:gap-0 items-start md:items-center justify-between">
         <div className="relative w-full md:w-md">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2.5 top-[12px] h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             value={search}
@@ -204,16 +208,16 @@ const Books = () => {
       </div>
 
       {/* Pagination  */}
-      <div className="flex justify-center gap-2 text-sm text-gray-600 pt-6">
+      <div className="flex items-center justify-center gap-2 text-sm text-gray-600 pt-6">
         <button
           onClick={() =>
             setSearchParams({
               page: page === 1 ? 1 : page - 1,
             })
           }
-          disabled={page === 1}
+          disabled={page <= 1}
           className={`px-3 py-1 rounded ${
-            page === 1
+            page <= 1
               ? "bg-white text-black border cursor-auto"
               : "bg-black text-white cursor-pointer"
           }`}
@@ -221,9 +225,8 @@ const Books = () => {
           Prev
         </button>
 
-        <span className="px-4 py-1">
-          {data.currentPage} out of {data.totalPages} & total -{" "}
-          {data.totalBooks}
+        <span className="px-4">
+          Page {data.currentPage} of {data.totalPages} | {data.totalBooks} books
         </span>
 
         <button
@@ -232,9 +235,9 @@ const Books = () => {
               page: data.totalPages > page ? page + 1 : page,
             })
           }
-          disabled={page === data.totalPages}
+          disabled={page >= data.totalPages}
           className={`px-3 py-1 rounded ${
-            page === data.totalPages
+            page >= data.totalPages
               ? "bg-white text-black border cursor-auto"
               : "bg-black text-white cursor-pointer"
           }`}

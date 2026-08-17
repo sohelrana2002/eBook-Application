@@ -44,7 +44,7 @@ const Users = () => {
   const { data: UsersRes, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: allUsers,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // Caches fresh data (5-mins)
   });
   const userData = UsersRes?.users;
 
@@ -185,64 +185,66 @@ const Users = () => {
   }
 
   return (
-    <div>
-      {/* Table wrapper  */}
-      <div className="max-w-6xl mx-auto my-5 p-4 sm:p-6 bg-white shadow-md rounded-lg">
-        {/* Toolbar section  */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          <button
-            onClick={() => exportToCSV(columns, filteredUsers, "Users List")}
-            className="flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
-          >
-            <FileSpreadsheet size={16} /> CSV
-          </button>
-          <button
-            onClick={() => exportToExcel(columns, filteredUsers, "Users List")}
-            className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded cursor-pointer"
-          >
-            <FileSpreadsheet size={16} /> Excel
-          </button>
-          <button
-            onClick={() => exportToPDF(columns, filteredUsers, "Users List")}
-            className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
-          >
-            <FileText size={16} /> PDF
-          </button>
-          <button
-            onClick={() => copyToClipboard(columns, filteredUsers)}
-            className="flex items-center gap-2 px-3 py-1 bg-yellow-500 text-white rounded cursor-pointer"
-          >
-            <Copy size={16} /> Copy
-          </button>
-          <button
-            onClick={() => printTable(columns, filteredUsers, "Users List")}
-            className="flex items-center gap-2 px-3 py-1 bg-gray-700 text-white rounded cursor-pointer"
-          >
-            <Printer size={16} /> Print
-          </button>
-        </div>
+    <div className="w-full">
+      <h2 className="text-xl md:text-2xl font-bold text-gray-900">User List</h2>
 
-        {/* search field  */}
-        <div className="pb-5 flex flex-col md:flex-row gap-y-5 md:gap-0 items-center justify-between">
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name, email, or role..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="pl-8 placeholder:text-sm"
-              disabled={isLoading}
-            />
-          </div>
-          <div className="text-sm text-muted-foreground">
-            <p>Total Users: {sortedUsers?.length}</p>
-          </div>
-        </div>
+      {/* Toolbar section  */}
+      <div className="flex flex-wrap gap-2 pt-3">
+        <button
+          onClick={() => exportToCSV(columns, filteredUsers, "Users List")}
+          className="flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
+        >
+          <FileSpreadsheet size={16} /> CSV
+        </button>
+        <button
+          onClick={() => exportToExcel(columns, filteredUsers, "Users List")}
+          className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded cursor-pointer"
+        >
+          <FileSpreadsheet size={16} /> Excel
+        </button>
+        <button
+          onClick={() => exportToPDF(columns, filteredUsers, "Users List")}
+          className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
+        >
+          <FileText size={16} /> PDF
+        </button>
+        <button
+          onClick={() => copyToClipboard(columns, filteredUsers)}
+          className="flex items-center gap-2 px-3 py-1 bg-yellow-500 text-white rounded cursor-pointer"
+        >
+          <Copy size={16} /> Copy
+        </button>
+        <button
+          onClick={() => printTable(columns, filteredUsers, "Users List")}
+          className="flex items-center gap-2 px-3 py-1 bg-gray-700 text-white rounded cursor-pointer"
+        >
+          <Printer size={16} /> Print
+        </button>
+      </div>
 
-        {/* actual table  */}
+      {/* search field  */}
+      <div className="py-5 flex flex-col md:flex-row gap-y-2 md:gap-0 items-start md:items-center justify-between">
+        <div className="relative w-full md:w-md">
+          <Search className="absolute left-2.5 top-[12px] h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search by name, email, or role..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="pl-8 placeholder:text-sm border-3 w-full"
+            disabled={isLoading}
+          />
+        </div>
+        <div className="text-sm text-gray-600 border-2 px-3 py-[6px] rounded-sm">
+          <p>Total Users: {sortedUsers?.length}</p>
+        </div>
+      </div>
+
+      {/* actual table  */}
+      <div className="shadow-md p-2 rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
@@ -341,21 +343,30 @@ const Users = () => {
       </div>
 
       {/* Pagination  */}
-      <div className="flex items-center justify-center gap-3 pb-5">
+      <div className="flex items-center justify-center gap-2 text-sm text-gray-600 pt-6">
         <button
           onClick={() => setCurrentPage((prev) => prev - 1)}
           disabled={currentPage <= 1}
-          className={`text-sm md:text-md px-3 md:px-4 py-1 md:py-2 rounded-md ${currentPage <= 1 ? "border-2 bg-white text-black" : "bg-foreground text-background cursor-pointer"}`}
+          className={`px-3 py-1 rounded ${
+            currentPage <= 1
+              ? "bg-white text-black border cursor-auto"
+              : "bg-black text-white cursor-pointer"
+          }`}
         >
           Prev
         </button>
-        <span>
+
+        <span className="px-4">
           Page {currentPage} of {totalPage} | {sortedUsers.length} users.
         </span>
         <button
           onClick={() => setCurrentPage((prev) => prev + 1)}
           disabled={currentPage >= totalPage}
-          className={`text-sm md:text-md px-3 md:px-4 py-1 md:py-2 rounded-md ${currentPage >= totalPage ? "border-2 bg-white text-black" : "bg-foreground text-background cursor-pointer"}`}
+          className={`px-3 py-1 rounded ${
+            currentPage >= totalPage
+              ? "bg-white text-black border cursor-auto"
+              : "bg-black text-white cursor-pointer"
+          }`}
         >
           Next
         </button>
