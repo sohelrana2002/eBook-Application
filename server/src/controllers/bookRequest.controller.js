@@ -193,21 +193,138 @@ const deleteRequestedBook = async (req, res) => {
 // get all requested book
 const allRequestedBook = async (req, res) => {
   try {
-    const allRequest = await bookRequestModel
-      .find()
-      .populate("userId", "name email")
-      .sort({ created_at: -1 });
+    const { search, status, seen, fromDate, toDate, page, limit } = req.query;
 
-    res.status(200).json({
-      message: "success",
-      length: allRequest.length,
-      requestedBook: allRequest,
+    const matchConditions = {};
+
+    // STATUS FILTERING FUNCTIONALITY
+    if (status) {
+      const statusArray = status.split(",");
+      matchConditions.status = { $in: statusArray };
+    }
+
+    // SEEN AND UNSEEN FILTERING FUNCTIONALITY
+    if (seen) {
+      matchConditions.isSeen = seen;
+    }
+
+    // DATE FILTERING FUNCTIONALITY
+    if (fromDate || toDate) {
+      matchConditions.created_at = {};
+
+      if (fromDate) matchConditions.created_at.$gte = new Date(fromDate);
+
+      if (toDate) {
+        const end = new Date(toDate);
+        end.getHours(23, 59, 59, 999);
+        matchConditions.created_at.$lte = end;
+      }
+    }
+
+    // PAGINATION FUNCTIONALITY
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // AGGREGATE PIPELINE SETUP
+    const pipeline = [];
+
+    pipeline.push(
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $unwind: { path: "$userInfo", preserveNullAndEmptyArrays: true },
+      },
+    );
+
+    // SEARCH FILTER FUNCTIONALITY
+    if (search) {
+      const searchRegex = { $regex: search, $options: "i" };
+      const searchConditions = [];
+
+      searchConditions.push(
+        { "userInfo.name": searchRegex },
+        { "userInfo.email": searchRegex },
+        { "userInfo.phoneNumber": searchRegex },
+        { bookName: searchRegex },
+        { authorName: searchRegex },
+      );
+
+      matchConditions.$or = searchConditions;
+    }
+
+    //   PROJECTION
+    pipeline.push({
+      $facet: {
+        filteredMetadata: [
+          { $match: matchConditions },
+          { $count: "filteredTotal" },
+        ],
+
+        allMetadata: [{ $count: "total" }],
+
+        data: [
+          { $match: matchConditions },
+          { $sort: { created_at: -1 } },
+          { $skip: skip },
+          { $limit: limitNumber },
+          {
+            $project: {
+              _id: 1,
+              bookName: 1,
+              authorName: 1,
+              publicationDate: 1,
+              language: 1,
+              status: 1,
+              isSeen: 1,
+              created_at: 1,
+              updated_at: 1,
+
+              user: {
+                _id: "$userInfo._id",
+                name: "$userInfo.name",
+                email: "$userInfo.email",
+                phoneNumber: "$userInfo.phoneNumber",
+                location: "$userInfo.location",
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    const result = await bookRequestModel.aggregate(pipeline);
+    const requestedBooks = result[0]?.data || [];
+    const totalRequestedBooks = result[0]?.allMetadata[0]?.total || 0;
+    const filteredRequestedBooks =
+      result[0]?.filteredMetadata[0]?.filteredTotal || 0;
+
+    return res.status(200).json({
+      success: true,
+      message: customMessage.found("Requested books"),
+      data: {
+        requestedBooks,
+        pagination: {
+          totalRequestedBooks,
+          filteredRequestedBooks,
+          pageNumber,
+          totalPage: Math.ceil(filteredRequestedBooks / limitNumber),
+          limit: limitNumber,
+        },
+      },
     });
   } catch (error) {
-    console.error("All requested book error: ", error);
+    console.error("Fetch all requested book error: ", error);
 
     res.status(500).json({
-      message: "Internal server error",
+      success: false,
+      message: customMessage.serverError(),
     });
   }
 };
