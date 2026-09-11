@@ -1,8 +1,8 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+export const api = axios.create({
+  baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -70,19 +70,19 @@ api.interceptors.response.use(
 export const login = async (email, password) => {
   // console.log("user data", { email, password });
 
-  const res = await api.post("/api/auth/login", { email, password });
+  const res = await api.post("/auth/login", { email, password });
   return res.data;
 };
 
 // ---for individual profile---
 export const fetchProfile = async () => {
-  const res = await api.get("/api/auth/user-profile");
+  const res = await api.get("/auth/user-profile");
   return res.data;
 };
 
 // get individual profile info by id
 export const fetchProfileById = async (id) => {
-  const res = await api.get(`/api/auth/user-profile/view/${id}`);
+  const res = await api.get(`/auth/user-profile/view/${id}`);
   return res.data;
 };
 
@@ -94,7 +94,7 @@ export const updateProfile = async ({
   location,
   language,
 }) => {
-  const res = await api.put("api/auth/update-profile", {
+  const res = await api.put("/auth/update-profile", {
     name,
     phoneNumber,
     bio,
@@ -108,7 +108,7 @@ export const updateProfile = async ({
 // ---for list of books---
 export const listBooks = async ({ queryKey }) => {
   const [_key, { search, page }] = queryKey;
-  const res = await api.get("/api/books", {
+  const res = await api.get("/books", {
     params: { search, page, limit: 10 },
   });
   return res.data;
@@ -116,7 +116,7 @@ export const listBooks = async ({ queryKey }) => {
 
 // ----create a book---
 export const createBook = async (formData) => {
-  const res = await api.post("/api/books", formData, {
+  const res = await api.post("/books", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -126,19 +126,19 @@ export const createBook = async (formData) => {
 
 // ---delete a book---
 export const deleteBook = async (id) => {
-  const res = await api.delete(`/api/books/${id}`);
+  const res = await api.delete(`/books/${id}`);
   return res.data;
 };
 
 // ---get single book infor---
 export const singleBook = async (id) => {
-  const { data } = await api.get(`/api/books/${id}`);
+  const { data } = await api.get(`/books/${id}`);
   return data;
 };
 
 // ---update book---
 export const updateBook = async ({ id, formData }) => {
-  const res = await api.patch(`/api/books/${id}`, formData, {
+  const res = await api.patch(`/books/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data;
@@ -146,48 +146,60 @@ export const updateBook = async ({ id, formData }) => {
 
 // ---get all users---
 export const allUsers = async () => {
-  const res = await api.get("/api/auth/users-info");
+  const res = await api.get("/auth/users-info");
   return res.data;
 };
 
 // ----delete user----
 export const deleteUser = async (id) => {
-  const res = await api.delete(`/api/auth/delete-user/${id}`);
+  const res = await api.delete(`/auth/delete-user/${id}`);
   return res.data;
 };
 
 // ---get all admins---
 export const allAdmins = async () => {
-  const res = await api.get("/api/auth/admin-info");
+  const res = await api.get("/auth/admin-info");
   return res.data;
 };
 
 // get all requested book
-export const allRequestedBook = async () => {
-  const res = await api.get("/api/bookRequest/all-request");
+export const allRequestedBook = async ({ queryKey }) => {
+  const [_key, { search, page, status, seen, fromDate, toDate }] = queryKey;
+
+  const res = await api.get("/bookRequest/all-request", {
+    params: { search, page, status, seen, fromDate, toDate, limit: 10 },
+  });
+
   return res.data;
 };
 
 // single book request details
 export const singleBookRequestDetails = async (bookId) => {
-  const res = await api.get(`/api/bookRequest/single-book-request/${bookId}`);
+  const res = await api.get(`/bookRequest/single-book-request/${bookId}`);
   return res.data;
 };
 
 // update requested book status
 export const updateBookRequestStatus = async ({ bookId, status }) => {
-  const res = await api.post(`/api/bookRequest/${bookId}/status`, { status });
+  const res = await api.post(`/bookRequest/${bookId}/status`, { status });
   return res.data;
 };
 
 // total unseen count book request
 export const getUnseenRequestCount = async () => {
-  const res = await api.get("/api/bookRequest/unseen-count");
+  const res = await api.get("/bookRequest/unseen-count");
   return res.data;
 };
 
 // after update the status mark as seen
 export const markRequestSeen = async ({ bookId }) => {
-  const res = await api.post(`api/bookRequest/${bookId}/mark-seen`);
+  const res = await api.post(`/bookRequest/${bookId}/mark-seen`);
+  return res.data;
+};
+
+// DELETE REQUESTED BOOK
+export const deleteRequestedBook = async (id) => {
+  const res = await api.delete(`/bookRequest/delete/${id}`);
+
   return res.data;
 };
