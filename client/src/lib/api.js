@@ -184,7 +184,7 @@ export async function reviewEachBook(bookId) {
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300 },
     });
 
     return res.json();
@@ -262,7 +262,7 @@ export async function recommentedBook(bookId) {
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
 
     return res.json();

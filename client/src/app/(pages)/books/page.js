@@ -1,8 +1,6 @@
 import BookPage from "@/components/bookPage/BookPage";
 import { fetchBooks } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Discover your next read | e-Book application",
   description:

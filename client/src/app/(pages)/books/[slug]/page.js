@@ -8,8 +8,6 @@ import BookCard from "@/components/bookCard/BookCard";
 const defaultImage = "/book.jpg";
 import HasAccess from "@/components/hasAccess/HasAccess";
 
-export const dynamic = "force-dynamic";
-
 const SingleBookPage = async ({ params }) => {
   const { slug } = await params;
 
