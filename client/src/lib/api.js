@@ -238,8 +238,12 @@ export const updateProfile = async ({
 };
 
 // get individual requested book info
-export const getRequestedBook = async () => {
-  const res = await api.get("/api/bookRequest/user");
+export const getRequestedBook = async ({ queryKey }) => {
+  const [_key, { page, limit, search, status }] = queryKey;
+
+  const res = await api.get("/api/bookRequest/user", {
+    params: { page, limit, search, status },
+  });
 
   return res.data;
 };
