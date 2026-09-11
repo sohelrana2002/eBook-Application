@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@import "react-toastify/dist/ReactToastify.css";
+
 :root {
     --white: #F9FAFB;
     --black: #111827;

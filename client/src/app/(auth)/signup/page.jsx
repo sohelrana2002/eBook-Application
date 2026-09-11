@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { signup } from "@/lib/api";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const router = useRouter();
@@ -30,8 +31,7 @@ const Signup = () => {
   const mutation = useMutation({
     mutationFn: ({ name, email, password }) => signup(name, email, password),
     onSuccess: (data) => {
-      alert("Signup successful!");
-      //   console.log("Signup in user:", data);
+      toast.success(data.message || "Signup successful!");
 
       setUserSignup((prev) => ({
         ...prev,

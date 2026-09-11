@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { addReview } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
 
 const ReviewSection = ({ initialReviews, bookId }) => {
   const [reviews, setReviews] = useState(initialReviews?.review || []);
@@ -53,7 +54,7 @@ const ReviewSection = ({ initialReviews, bookId }) => {
     mutationFn: ({ bookId, rating, comment }) =>
       addReview(bookId, rating, comment),
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
 
       setReviews((prev) => [
         {
@@ -69,7 +70,7 @@ const ReviewSection = ({ initialReviews, bookId }) => {
       setNewReview({ comment: "", rating: 0 });
     },
     onError: (error) => {
-      alert(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 

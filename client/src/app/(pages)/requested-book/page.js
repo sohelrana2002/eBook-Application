@@ -11,6 +11,7 @@ import Loading from "@/app/loading";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import { toast } from "react-toastify";
 
 const STATUS_OPTIONS = ["pending", "in-progress", "available", "not-found"];
 
@@ -91,7 +92,7 @@ const RequestedBookPage = () => {
   const mutation = useMutation({
     mutationFn: deleteRequestedBook,
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
       queryClient.invalidateQueries({ queryKey: ["getRequestedBook"] });
 
       // Fix: if we just deleted the last item on a page beyond page 1,
@@ -101,7 +102,7 @@ const RequestedBookPage = () => {
       }
     },
     onError: (error) => {
-      alert(
+      toast.error(
         error?.response?.data?.message || "Failed to delete requested book",
       );
     },
@@ -125,8 +126,6 @@ const RequestedBookPage = () => {
 
     updateQueryParams({ status: updatedStatus, page: "1" });
   };
-
-  const statusOptions = ["pending", "in-progress", "available", "not-found"];
 
   // SAFE fallback
   const books = data?.data?.requestedBook || [];

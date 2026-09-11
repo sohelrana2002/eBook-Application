@@ -10,6 +10,7 @@ import CopyRight from "@/shared/copyRight/CopyRight";
 import Navbar from "@/shared/navbar/Navbar";
 import { usePathname } from "next/navigation";
 import ServerGate from "@/components/common/ServerGate";
+import { ToastContainer } from "react-toastify";
 
 const Website = ({ children }) => {
   const pathname = usePathname();
@@ -22,6 +23,19 @@ const Website = ({ children }) => {
 
   return (
     <AuthProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        style={{ zIndex: 99999 }}
+      />
       <TanstackProvider>
         <NotificationProvider>
           <CartProvide>

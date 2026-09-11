@@ -4,6 +4,7 @@ import "./Newsletter.css";
 import { useState } from "react";
 import { newsletter } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -11,12 +12,12 @@ const Newsletter = () => {
   const mutation = useMutation({
     mutationFn: (email) => newsletter(email),
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
 
       setEmail("");
     },
     onError: (error) => {
-      alert(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { ChevronDown, CircleUserRound, LogOut, BookCheck } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ProfileDropdown = () => {
   const { name, logOutUser } = useAuth();
@@ -28,7 +29,7 @@ const ProfileDropdown = () => {
 
     if (confirmLogout) {
       logOutUser();
-      alert("Logout successfully");
+      toast.success("Logout successfully");
       router.replace("/login");
     }
   };

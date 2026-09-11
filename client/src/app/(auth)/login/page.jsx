@@ -9,6 +9,7 @@ import { LoaderCircle } from "lucide-react";
 import { login } from "@/lib/api";
 import GoogleButton from "react-google-button";
 import { connectSocket } from "@/helper/socket";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const router = useRouter();
@@ -42,8 +43,7 @@ const Login = () => {
   const mutation = useMutation({
     mutationFn: ({ email, password }) => login(email, password),
     onSuccess: (data) => {
-      alert("Login successful!");
-      //   console.log("Logged in user:", data);
+      toast.success(data.message || "Login successful!");
       storeTokenInLS(data.token, data.name);
       connectSocket(data.token);
 

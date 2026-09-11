@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfile, updateProfile } from "@/lib/api";
 import Loading from "@/app/loading";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const EditProfile = () => {
   const queryClient = useQueryClient();
@@ -34,13 +35,15 @@ const EditProfile = () => {
   const mutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
       router.push("/account-info");
     },
 
     onError: (error) => {
-      alert(error?.response?.data?.message || "Update failed");
+      const errorMessage =
+        error?.response?.data?.message || "Failed to update profile.";
+      toast.error(errorMessage);
     },
   });
 

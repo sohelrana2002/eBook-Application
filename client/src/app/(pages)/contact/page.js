@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createContact } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { LoaderCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ContactPage = () => {
   const [form, setForm] = useState({
@@ -31,7 +32,7 @@ const ContactPage = () => {
   const mutation = useMutation({
     mutationFn: ({ email, message }) => createContact(email, message),
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
 
       setForm({
         email: "",
@@ -39,7 +40,7 @@ const ContactPage = () => {
       });
     },
     onError: (error) => {
-      alert(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 
@@ -57,7 +58,7 @@ const ContactPage = () => {
     e.preventDefault();
 
     if (!isLoggedIn) {
-      alert("You must be logged in to submit a message");
+      toast.warning("You must be logged in to submit a message");
       return;
     }
 

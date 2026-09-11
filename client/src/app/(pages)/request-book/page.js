@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { requestBook } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 const RequestBookPage = () => {
   const { isLoggedIn } = useAuth();
@@ -37,12 +38,12 @@ const RequestBookPage = () => {
   const mutation = useMutation({
     mutationFn: requestBook,
     onSuccess: (data) => {
-      alert(data.message);
+      toast.success(data.message);
       setForm(reset);
     },
     onError: (error) => {
       const errMsg = error?.response?.data?.message;
-      alert(errMsg);
+      toast.error(errMsg);
       // console.log("error", error);
     },
   });

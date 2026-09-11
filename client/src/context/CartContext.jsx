@@ -1,7 +1,8 @@
 "use client";
 
 import cartReducer from "@/reducer/cartReducer";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
+import { toast } from "react-toastify";
 
 const CartContext = createContext();
 
@@ -19,19 +20,19 @@ const CartProvide = ({ children }) => {
     const exists = state.carts.some((cart) => cart?._id === books?._id);
 
     if (exists) {
-      alert("This book is alreday added in the cart.");
+      toast.warning("This book is alreday added in the cart.");
       return state;
     }
     dispatch({ type: "ADD_TO_CART", payload: books });
 
-    alert("This book is added in cart successfully.");
+    toast.success("This book is added in cart successfully.");
   };
 
   // removeFromCart function
   const removeFromCart = (bookId) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: bookId });
 
-    alert("This book is remove from cart successfully!");
+    toast.success("This book is remove from cart successfully!");
   };
 
   // Load data from localstorage
@@ -56,7 +57,7 @@ const CartProvide = ({ children }) => {
   const clearCart = () => {
     dispatch({ type: "CLEAR_CART", payload: initialState });
 
-    alert("Your cart is clear successfully.");
+    toast.success("Your cart is clear successfully.");
   };
 
   const value = {

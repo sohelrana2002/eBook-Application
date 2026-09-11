@@ -23,7 +23,7 @@ const register = async (req, res) => {
 
     // console.log(createUser);
     res.status(201).json({
-      message: "user register Successfull",
+      message: "User register successfull",
       userId: createUser._id.toString(),
     });
   } catch (error) {
@@ -53,7 +53,7 @@ const login = async (req, res, next) => {
     // console.log(isPasswordValid, "isPasswordValid");
     if (isPasswordValid) {
       return res.status(200).json({
-        message: "Successfully login",
+        message: "Login successful!",
         token: await userExist.generateToken(),
         userId: userExist._id.toString(),
         name: userExist.name,
