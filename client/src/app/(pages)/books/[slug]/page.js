@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { singleBook, reviewEachBook, recommentedBook } from "@/lib/api";
+import {
+  singleBook,
+  reviewEachBook,
+  recommentedBook,
+  fetchBooks,
+} from "@/lib/api";
 import ReviewSection from "@/components/reviewSection/ReviewSection";
 import { renderRatingStars } from "@/lib/renderRatingStars";
 import { Suspense } from "react";
@@ -7,6 +12,24 @@ import Loading from "@/app/loading";
 import BookCard from "@/components/bookCard/BookCard";
 const defaultImage = "/book.jpg";
 import HasAccess from "@/components/hasAccess/HasAccess";
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  try {
+    const data = await fetchBooks({ page: 1, limit: 20 });
+    const books = data?.books || [];
+
+    return books.map((book) => ({
+      slug: book.slug || book._id,
+    }));
+  } catch (error) {
+    console.error("generateStaticParams failed:", error);
+    return [];
+  }
+}
+
+export const dynamicParams = true;
 
 const SingleBookPage = async ({ params }) => {
   const { slug } = await params;
@@ -124,9 +147,11 @@ const SingleBookPage = async ({ params }) => {
       {/* smart book recommendation  */}
       <main className="mt-15">
         <h1 className="heading">Recommented Book</h1>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-5 mt-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-5 gap-x-5 mt-4">
           {allRecommentedBook?.length === 0 ? (
-            <h1>There are no recommendation book available</h1>
+            <p className="col-span-full text-center py-8 text-gray-500 font-medium">
+              There are no recommended books available.
+            </p>
           ) : (
             <Suspense fallback={<Loading />}>
               {allRecommentedBook?.recommendations?.map((curElem) => (

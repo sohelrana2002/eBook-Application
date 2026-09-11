@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfile, updateProfile } from "@/http/api";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/shared/loading/Loading";
 
 const EditProfile = () => {
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -12,26 +13,25 @@ const EditProfile = () => {
     location: "",
     language: "",
   });
-
   const navigate = useNavigate();
 
-  const { data: prodileData, isLoading } = useQuery({
-    queryKey: ["fetchProfile"],
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ["userProfile"],
     queryFn: fetchProfile,
   });
-
-  // console.log("prodileData", prodileData.userProfile);
+  // console.log("profileData", profileData.userProfile);
 
   useEffect(() => {
-    if (prodileData) {
-      setFormData({ ...prodileData?.userProfile });
+    if (profileData) {
+      setFormData({ ...profileData?.userProfile });
     }
-  }, [prodileData]);
+  }, [profileData]);
 
   const mutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: (data) => {
       alert(data.message);
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
       navigate("/admin-profile");
     },
 

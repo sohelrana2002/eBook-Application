@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProfile, updateProfile } from "@/lib/api";
 import Loading from "@/app/loading";
 import { useRouter } from "next/navigation";
 
 const EditProfile = () => {
+  const queryClient = useQueryClient();
+
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
@@ -17,23 +19,23 @@ const EditProfile = () => {
 
   const router = useRouter();
 
-  const { data: prodileData, isLoading } = useQuery({
-    queryKey: ["fetchProfile"],
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ["userProfile"],
     queryFn: fetchProfile,
   });
-
-  // console.log("prodileData", prodileData.userProfile);
+  // console.log("profileData", profileData.userProfile);
 
   useEffect(() => {
-    if (prodileData) {
-      setFormData({ ...prodileData?.userProfile });
+    if (profileData) {
+      setFormData({ ...profileData?.userProfile });
     }
-  }, [prodileData]);
+  }, [profileData]);
 
   const mutation = useMutation({
     mutationFn: updateProfile,
     onSuccess: (data) => {
       alert(data.message);
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
       router.push("/account-info");
     },
 

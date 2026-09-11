@@ -55,10 +55,18 @@ const ReviewSection = ({ initialReviews, bookId }) => {
     onSuccess: (data) => {
       alert(data.message);
 
-      setNewReview({
-        comment: "",
-        rating: 0,
-      });
+      setReviews((prev) => [
+        {
+          _id: data?.review?._id || crypto.randomUUID(),
+          reviewerName: newReview.reviewerName,
+          comment: newReview.comment,
+          rating: newReview.rating,
+          created_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+
+      setNewReview({ comment: "", rating: 0 });
     },
     onError: (error) => {
       alert(error?.response?.data?.message);
