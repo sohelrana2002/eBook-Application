@@ -7,7 +7,6 @@ import { SquareChevronLeft } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import FilterBook from "../filterBook/FilterBook";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense } from "react";
 import CustomLoading from "@/shared/customLoading/CustomLoading";
 import { fetchBooks } from "@/lib/api";
 

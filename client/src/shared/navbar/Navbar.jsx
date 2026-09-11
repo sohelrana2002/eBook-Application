@@ -89,7 +89,7 @@ const Navbar = () => {
   return (
     <nav className="nav relative">
       <div className="container navbar__conatiner">
-        <Link href={"/"} className="logo">
+        <Link href={"/"} prefetch={false} className="logo">
           <span>Knowledgea</span>
         </Link>
 
@@ -103,6 +103,7 @@ const Navbar = () => {
                 <Link
                   href={curElem.path}
                   key={curElem.id}
+                  prefetch={false}
                   className={
                     pathName === curElem.path
                       ? "border-b-2 border-[var(--blue)]"
@@ -118,7 +119,7 @@ const Navbar = () => {
 
         <div className="user">
           {/* Cart */}
-          <Link href="/cart" className="notifications">
+          <Link href="/cart" prefetch={false} className="notifications">
             <div className="w-[35px] h-[35px] cursor-pointer border-2 border-[var(--border)] rounded-sm grid place-items-center relative">
               <ShoppingCart size={20} />
               <div className="absolute right-[-12px] top-[-12px] w-[17px] h-[17px] md:w-[20px] md:h-[20px] rounded-full bg-black grid place-items-center">
@@ -195,6 +196,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/login"
+                prefetch={false}
                 className="rounded-full flex items-center justify-center bg-[#000] px-4 py-2 text-sm font-medium text-white hover:bg-[#000000c9] focus:outline-none cursor-pointer capitalize"
               >
                 Login
