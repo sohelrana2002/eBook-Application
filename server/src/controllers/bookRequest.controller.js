@@ -205,7 +205,7 @@ const allRequestedBook = async (req, res) => {
 
     // SEEN AND UNSEEN FILTERING FUNCTIONALITY
     if (seen) {
-      matchConditions.isSeen = seen;
+      matchConditions.isSeen = Boolean(seen);
     }
 
     // DATE FILTERING FUNCTIONALITY
@@ -314,7 +314,7 @@ const allRequestedBook = async (req, res) => {
           totalRequestedBooks,
           filteredRequestedBooks,
           pageNumber,
-          totalPage: Math.ceil(filteredRequestedBooks / limitNumber),
+          totalPages: Math.ceil(filteredRequestedBooks / limitNumber),
           limit: limitNumber,
         },
       },
