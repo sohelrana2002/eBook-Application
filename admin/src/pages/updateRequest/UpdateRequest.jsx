@@ -15,7 +15,7 @@ const UpdateRequest = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["singleBookRequest", bookId],
     queryFn: () => singleBookRequestDetails(bookId),
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   // console.log("data", data);

@@ -4,7 +4,6 @@ import ReviewSection from "@/components/reviewSection/ReviewSection";
 import { renderRatingStars } from "@/lib/renderRatingStars";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
-import Link from "next/link";
 import BookCard from "@/components/bookCard/BookCard";
 const defaultImage = "/book.jpg";
 import HasAccess from "@/components/hasAccess/HasAccess";
@@ -19,10 +18,6 @@ const SingleBookPage = async ({ params }) => {
 
   const bookReview = await reviewEachBook(bookDetails?._id);
   const allRecommentedBook = await recommentedBook(slug);
-
-  // console.log("bookReview", bookReview);
-
-  // console.log("bookDetails", bookDetails);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 lg:px-8">

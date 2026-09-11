@@ -18,7 +18,7 @@ const ViewProfile = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchProfile,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   // console.log("data", data);

@@ -11,7 +11,6 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination } from "swiper/modules";
 import BookCard from "../bookCard/BookCard";
-import Link from "next/link";
 
 const FeaturedBook = ({ allFeaturedBook }) => {
   //   console.log("allFeaturedBook", allFeaturedBook);

@@ -148,7 +148,7 @@ export const fetchBooks = async (filters = {}) => {
   url.search = params.toString();
 
   try {
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error("Failed to fetch books");
     return await res.json();
   } catch (error) {
@@ -163,7 +163,7 @@ export async function singleBook(bookId) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/books/${bookId}`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
       },
     );
 
@@ -277,7 +277,7 @@ export async function featuredBook() {
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
 
     return res.json();

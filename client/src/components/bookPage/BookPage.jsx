@@ -148,6 +148,7 @@ const BookPage = ({ initialBookData, serverParams }) => {
         limit,
       }),
     placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5, // 5 minutes
     initialData: initialBookData,
   });
 

@@ -8,19 +8,19 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
   const { data: genreData } = useQuery({
     queryKey: ["allGenre"],
     queryFn: allGenre,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const { data: authorData } = useQuery({
     queryKey: ["allAuthor"],
     queryFn: allAuthor,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const { data: languageData } = useQuery({
     queryKey: ["allLanguage"],
     queryFn: allLanguage,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   // Genre options
@@ -57,7 +57,6 @@ const FilterBook = ({ selectedFilters, setSelectedFilters, updateUrl }) => {
       genre: selectedOptions.map((opt) => opt.value),
       page: 1,
     };
-
     // console.log("newFilters", newFilters);
 
     setSelectedFilters(newFilters);
