@@ -17,7 +17,11 @@ const BookCard = ({ books }) => {
 
   return (
     <div className="w-full  md:max-w-xs bg-[var(--light-gray)] shadow-lg rounded-lg  hover:shadow-xl transition-shadow duration-300 border-2 border-[var(--border)] overflow-hidden flex flex-col justify-between">
-      <Link href={`/books/${books?.slug}`} className="block flex-1">
+      <Link
+        href={`/books/${books?.slug}`}
+        prefetch={false}
+        className="block flex-1"
+      >
         {/* Image wrapper */}
         <div className="relative w-full h-25 md:h-40">
           <Image
