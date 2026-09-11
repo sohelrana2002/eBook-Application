@@ -140,8 +140,10 @@ const Books = () => {
               <TableHead>Book Image</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Author name</TableHead>
-              <TableHead>Publication Date</TableHead>
-              <TableHead>Price</TableHead>
+              <TableHead className="hidden md:table-cell">
+                Publication Date
+              </TableHead>
+              <TableHead className="hidden md:table-cell">Price</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -160,10 +162,12 @@ const Books = () => {
                   </TableCell>
                   <TableCell>{curElem.title}</TableCell>
                   <TableCell>{curElem.author}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     {curElem.publicationDate.substring(0, 10)}
                   </TableCell>
-                  <TableCell>৳ {curElem.price}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    ৳ {curElem.price}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       {/* VIEW  */}

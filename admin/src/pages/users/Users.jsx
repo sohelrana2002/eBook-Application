@@ -280,7 +280,7 @@ const Users = () => {
               </TableHead>
               <TableHead>Role</TableHead>
               <TableHead
-                className="cursor-pointer"
+                className="hidden md:table-cell cursor-pointer"
                 onClick={() => requestSort("created_at")}
               >
                 <Tooltip>
@@ -308,7 +308,7 @@ const Users = () => {
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell className="capitalize">{user.role}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     {new Date(user.created_at).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
