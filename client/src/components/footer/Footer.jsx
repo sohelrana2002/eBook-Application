@@ -1,6 +1,5 @@
 import "./Footer.css";
 
-import { NotebookText } from "lucide-react";
 import Link from "next/link";
 import { FaFacebook, FaPhoneAlt } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
@@ -13,7 +12,7 @@ const Footer = () => {
     <footer className="footer__container">
       <div className="logo__section">
         <div>
-          <Link href={"/"} className="logo">
+          <Link href={"/"} prefetch={false} className="logo">
             <span>Knowledgea</span>
           </Link>
         </div>
@@ -24,16 +23,16 @@ const Footer = () => {
         </p>
 
         <div className="social__icon">
-          <Link href="#">
+          <Link href="#" prefetch={false}>
             <FaFacebook size={20} />
           </Link>
-          <Link href="#">
+          <Link href="#" prefetch={false}>
             <AiFillInstagram size={20} />
           </Link>
-          <Link href="#">
+          <Link href="#" prefetch={false}>
             <ImLinkedin size={20} />
           </Link>
-          <Link href="#">
+          <Link href="#" prefetch={false}>
             <BsGithub size={20} />
           </Link>
         </div>
@@ -41,21 +40,33 @@ const Footer = () => {
 
       <div className="explore">
         <h1 className="footer_heading">Explore</h1>
-        <Link href="/">Home</Link>
-        <Link href="/books">Books</Link>
-        <Link href="/about-us">About Us</Link>
-        <Link href="/blogs">Blogs</Link>
-        <Link href="/contact">Contact</Link>
-        <Link href="/request-book">Request Book</Link>
+        <Link href="/" prefetch={false}>
+          Home
+        </Link>
+        <Link href="/books" prefetch={false}>
+          Books
+        </Link>
+        <Link href="/about-us" prefetch={false}>
+          About Us
+        </Link>
+        <Link href="/blogs" prefetch={false}>
+          Blogs
+        </Link>
+        <Link href="/contact" prefetch={false}>
+          Contact
+        </Link>
+        <Link href="/request-book" prefetch={false}>
+          Request Book
+        </Link>
       </div>
 
       <div className="contact">
         <h1 className="footer_heading">Contact</h1>
-        <Link href="#">
+        <Link href="#" prefetch={false}>
           <FaPhoneAlt size={21} className="align-middle" />{" "}
           <span>01751070854</span>
         </Link>
-        <Link href="#">
+        <Link href="#" prefetch={false}>
           <MdEmail size={24} className="align-middle" />
           <span>sohelrana070854@gmail.com</span>
         </Link>
